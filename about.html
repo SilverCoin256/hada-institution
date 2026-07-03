@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Shaurya Gupta</title>
+<meta name="description" content="Research mission and method. Not a biography — a description of how this research program works.">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Stylesheets -->
+<link rel="stylesheet" href="css/design-system.css?v=4">
+<link rel="stylesheet" href="css/components.css?v=4">
+<link rel="stylesheet" href="css/v3.css?v=4">
+<link rel="stylesheet" href="css/v4.css?v=4">
+<style>
+/* Navigation */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+nav {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--space-16) var(--gutter);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+}
+
+.nav-links {
+  display: flex;
+  gap: var(--space-24);
+  font-size: 0.9rem;
+  list-style: none;
+  margin: 0;
+}
+
+.nav-links a {
+  color: var(--ink-secondary);
+  transition: color var(--duration-hover);
+}
+
+.nav-links a:hover {
+  color: var(--accent);
+}
+
+.nav-links a.active {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* Hero */
+.hero .eyebrow {
+  display: block;
+  margin-bottom: var(--space-16);
+}
+
+.hero .subtitle-label {
+  font-size: 1.25rem;
+  color: var(--ink-secondary);
+  max-width: 700px;
+  margin-bottom: var(--space-16);
+  line-height: 1.6;
+}
+
+.hero .framing {
+  font-size: 0.9375rem;
+  color: var(--ink-secondary);
+  max-width: 650px;
+  font-style: italic;
+}
+
+/* Prose sections */
+.prose {
+  max-width: 780px;
+}
+
+.prose p {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: var(--ink);
+  margin-bottom: var(--space-24);
+}
+
+.prose p:last-child {
+  margin-bottom: 0;
+}
+
+.section-link {
+  display: inline-block;
+  margin-top: var(--space-8);
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+/* Tools list within How I Work */
+.tools-line {
+  font-size: 0.9375rem;
+  color: var(--ink-secondary);
+  line-height: 1.75;
+  border-top: 1px solid var(--border);
+  padding-top: var(--space-24);
+  margin-top: var(--space-8);
+}
+
+.tools-line strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* Principles list */
+.principles-list {
+  list-style: none;
+  max-width: 780px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-20);
+}
+
+.principles-list li {
+  display: flex;
+  gap: var(--space-16);
+  align-items: baseline;
+  padding: var(--space-20) var(--space-24);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  transition: all var(--duration-hover) var(--ease-smooth);
+}
+
+.principles-list li:hover {
+  border-color: var(--accent);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+.principles-list .num {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--accent);
+  flex-shrink: 0;
+  padding-top: 0.2em;
+}
+
+/* Influences grid */
+.influences-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-20);
+}
+
+.influence-item {
+  padding: var(--space-20);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.influence-item h4 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: var(--space-8);
+}
+
+.influence-item p {
+  font-size: 0.875rem;
+  color: var(--ink-secondary);
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+/* Contact */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-20);
+  max-width: 780px;
+}
+
+.contact-item {
+  padding: var(--space-24);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.contact-item .mono {
+  display: block;
+  margin-bottom: var(--space-12);
+}
+
+.contact-item a {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink);
+  word-break: break-word;
+}
+
+.contact-item a:hover {
+  color: var(--accent);
+}
+
+/* Footer */
+footer {
+  background: var(--hover);
+  border-top: 1px solid var(--border);
+  padding: var(--space-96) 0 var(--space-48);
+  margin-top: var(--space-96);
+}
+
+footer .container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-48);
+  margin-bottom: var(--space-48);
+}
+
+footer h4 {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+  margin-bottom: var(--space-16);
+}
+
+footer a {
+  display: block;
+  padding: var(--space-8) 0;
+  font-size: 0.9375rem;
+  color: var(--ink-secondary);
+  transition: color var(--duration-hover);
+}
+
+footer a:hover {
+  color: var(--accent);
+}
+
+footer .footer-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: var(--space-32);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  color: var(--ink-secondary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+
+  .hero {
+    padding: 80px 0 60px;
+  }
+
+  footer .container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-32);
+  }
+
+  footer .footer-bottom {
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<header>
+  <nav>
+    <div class="nav-brand">Shaurya Gupta</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="research.html">Research</a></li>
+      <li><a href="atlas.html">Atlas</a></li>
+      <li><a href="lab.html">Lab</a></li>
+      <li><a href="notebook.html">Notebook</a></li>
+      <li><a href="about.html" class="active">About</a></li>
+      <li><a href="contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- Main -->
+<main>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content container">
+      <span class="mono eyebrow">Not a biography. A description of method.</span>
+      <h1>About</h1>
+      <p class="subtitle-label">Research Mission</p>
+    </div>
+  </section>
+
+  <!-- Research Mission -->
+  <section>
+    <div class="container">
+      <div class="section-header">
+        <span class="mono">01 — Mission</span>
+        <h2>Research Mission</h2>
+      </div>
+      <div class="prose reveal">
+        <p>This is a research program, not a portfolio. It studies one recurring pattern: AI makes it cheap to produce a judgment — a forecast, a classification, a recommendation — and expensive, in a way that hasn't gotten cheaper, for an institution to actually authorize it. That gap shows up everywhere once you look for it: in how audit committees sign off on models they can't inspect, in how regulators are measured by proxies that don't hold up against their own data, in how a hiring model's fairness numbers survive contact with a real pipeline, in how a person weighs a machine's number differently than a person's.</p>
+        <p>The work spans institutional theory, formal queueing models, behavioral experiments, and applied machine learning audits — not because the questions are unrelated, but because the same underlying mechanism keeps showing up in different disciplinary clothing. A theory paper says authority migrates from substance to procedure. A queueing model says exactly when. A GitHub telemetry study says you can see it happen in ordinary operational data. None of these papers work alone; each is a different instrument pointed at the same phenomenon.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Institutions -->
+  <section class="alt">
+    <div class="container">
+      <div class="section-header">
+        <span class="mono">02 — Framing</span>
+        <h2>Why Institutions</h2>
+      </div>
+      <div class="prose reveal">
+        <p>Individual AI capability gets most of the attention. This program bets the more consequential story is institutional: not what a model can do, but what an organization can responsibly do with what it produces. An institution that cannot authorize its own AI outputs at the rate it produces them doesn't stop functioning — it adapts, usually by substituting the appearance of review for the substance of it. That adaptation is not a moral failure of any individual inside the institution. It is closer to a predictable, formally describable equilibrium. Naming that equilibrium precisely enough to model it, and to detect it from outside, is the throughline connecting the theory work to the queueing models to the audit papers.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How I Work / Research OS -->
+  <section>
+    <div class="container">
+      <div class="section-header">
+        <span class="mono">03 — Method</span>
+        <h2>How I Work</h2>
+      </div>
+      <div class="prose reveal">
+        <p>Every claim in this program is required to survive contact with a real number before it appears in a paper. That has meant killing a regulatory-debt thesis that didn't survive the SEC's own statistics, rebuilding a fairness-audit pipeline after a reviewer caught illustrative constants standing in for real model output, and re-running a metric's validation design after a self-audit found it was circular. The failures section on this site exists because that process — not the papers that survived it — is the actual research output worth being honest about.</p>
+        <a class="section-link" href="research.html#failures">See the full record →</a>
+        <p class="tools-line"><strong>Tools:</strong> Python for formal modeling and simulation (queueing theory, Monte Carlo, discrete-event simulation); scikit-learn, CatBoost, and SHAP for the applied ML audits; structured coding rubrics with inter-rater reliability for the text-as-data work; and a shared open-source observatory — five metrics, public datasets, reserved replication slots — so the infrastructure outlives any one paper.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Principles -->
+  <section class="alt">
+    <div class="container">
+      <div class="section-header">
+        <span class="mono">04 — Principles</span>
+        <h2>Principles</h2>
+      </div>
+      <ol class="principles-list">
+        <li class="reveal"><span class="num">01</span><span>A falsified hypothesis is a result, not a failure to hide.</span></li>
+        <li class="reveal"><span class="num">02</span><span>If a number can't be traced to a pipeline, it doesn't go in a figure.</span></li>
+        <li class="reveal"><span class="num">03</span><span>Audit your own metric before a reviewer does.</span></li>
+        <li class="reveal"><span class="num">04</span><span>A proxy is not the thing it proxies for until you've checked.</span></li>
+        <li class="reveal"><span class="num">05</span><span>Infrastructure should outlive the paper it was built for.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Research Timeline -->
+  <section>
+    <div class="container">
+      <div class="section-header">
+        <span class="mono">05 — Arc</span>
+        <h2>Research Timeline</h2>
+        <p>How this program's threads opened, from applied ML audits to formal models to shared infrastructure.</p>
+      </div>
+      <div class="timeline" id="timeline-container"></div>
+    </div>
+  </section>
+
+  <!-- Selected Influences -->
+  <section class="alt">
+    <div class="container">
+      <div class="section-header">
+        <span class="mono">06 — Influences</span>
+        <h2>Selected Influences</h2>
+      </div>
+      <div class="influences-grid">
+        <div class="influence-item reveal">
+          <h4>Herbert Simon</h4>
+          <p>Bounded rationality as the starting point this program's central construct is built to succeed.</p>
+        </div>
+        <div class="influence-item reveal">
+          <h4>James March &amp; the Carnegie School</h4>
+          <p>Organizations as information-processing systems under constraint.</p>
+        </div>
+        <div class="influence-item reveal">
+          <h4>William Ocasio</h4>
+          <p>The attention-based view of the firm.</p>
+        </div>
+        <div class="influence-item reveal">
+          <h4>Wanda Orlikowski</h4>
+          <p>Sociomateriality; infrastructure as an active participant, not a backdrop.</p>
+        </div>
+        <div class="influence-item reveal">
+          <h4>John Meyer &amp; Brian Rowan</h4>
+          <p>Institutional decoupling between formal structure and actual activity.</p>
+        </div>
+        <div class="influence-item reveal">
+          <h4>Niklas Luhmann</h4>
+          <p>Legitimacy through procedure.</p>
+        </div>
+        <div class="influence-item reveal">
+          <h4>Michael Power</h4>
+          <p>The audit society; ritualized verification as an institutional response to complexity.</p>
+        </div>
+        <div class="influence-item reveal">
+          <h4>Ben Green &amp; Madeleine Elish</h4>
+          <p>Empirical critiques of human oversight and "moral crumple zones" in algorithmic systems.</p>
+        </div>
+        <div class="influence-item reveal">
+          <h4>J.F.C. Kingman &amp; Ward Whitt</h4>
+          <p>The queueing-theory foundations the formal models are built on.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section>
+    <div class="container">
+      <div class="section-header">
+        <span class="mono">07 — Contact</span>
+        <h2>Contact</h2>
+      </div>
+      <div class="contact-grid" id="contact-container"></div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div>
+      <h4>About</h4>
+      <p>Independent researcher studying how AI reshapes institutions, labor, judgment, and governance.</p>
+    </div>
+    <div>
+      <h4>Work</h4>
+      <a href="research.html">Research</a>
+      <a href="lab.html">Lab</a>
+      <a href="atlas.html">Atlas</a>
+      <a href="notebook.html">Notebook</a>
+    </div>
+    <div>
+      <h4>Elsewhere</h4>
+      <a href="#">GitHub</a>
+      <a href="#">Google Scholar</a>
+      <a href="#">ORCID</a>
+      <a href="#">Twitter</a>
+    </div>
+    <div>
+      <h4>Connect</h4>
+      <a href="#">Email</a>
+      <a href="about.html">About</a>
+      <a href="#">CV (PDF)</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© 2026 Shaurya Gupta. All work public and documented.</span>
+    <span style="font-family: var(--font-mono);">SET IN SPACE GROTESK · INTER · ROBOTO MONO</span>
+  </div>
+</footer>
+
+<!-- Scripts -->
+<script>
+fetch('data/sample-data.json')
+  .then(r => r.json())
+  .then(data => {
+    // Render research timeline
+    const timelineContainer = document.getElementById('timeline-container');
+    data.timeline.forEach(event => {
+      const el = document.createElement('div');
+      el.className = 'timeline-event reveal';
+      el.innerHTML = `
+        <div class="date">${event.date}</div>
+        <h4>${event.title}</h4>
+        <p>${event.description}</p>
+      `;
+      timelineContainer.appendChild(el);
+    });
+
+    // Render contact from metadata
+    const contactContainer = document.getElementById('contact-container');
+    const contacts = [
+      { label: 'Email', value: data.metadata.email, href: `mailto:${data.metadata.email}` },
+      { label: 'GitHub', value: 'GitHub →', href: data.metadata.social.github },
+      { label: 'ORCID', value: 'ORCID →', href: data.metadata.social.orcid }
+    ];
+    contacts.forEach(c => {
+      const el = document.createElement('div');
+      el.className = 'contact-item reveal';
+      el.innerHTML = `
+        <span class="mono">${c.label}</span>
+        <a href="${c.href}" target="_blank" rel="noopener">${c.value}</a>
+      `;
+      contactContainer.appendChild(el);
+    });
+
+    // Reveal animations
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    reveals.forEach(el => observer.observe(el));
+  });
+</script>
+</body>
+</html>

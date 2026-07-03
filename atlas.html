@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atlas — Shaurya Gupta</title>
+<meta name="description" content="Open Institutional Capacity Observatory — shared, open-source infrastructure for measuring institutional capacity, oversight saturation, and governance specificity from public data.">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Stylesheets -->
+<link rel="stylesheet" href="css/design-system.css?v=4">
+<link rel="stylesheet" href="css/components.css?v=4">
+<link rel="stylesheet" href="css/v3.css?v=4">
+<link rel="stylesheet" href="css/v4.css?v=4">
+<style>
+/* Navigation (matches index.html) */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+nav {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--space-16) var(--gutter);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+}
+
+.nav-links {
+  display: flex;
+  gap: var(--space-24);
+  font-size: 0.9rem;
+  list-style: none;
+  margin: 0;
+}
+
+.nav-links a {
+  color: var(--ink-secondary);
+  transition: color var(--duration-hover);
+}
+
+.nav-links a:hover {
+  color: var(--accent);
+}
+
+.nav-links a.active {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* Page header */
+.page-header {
+  padding: 96px 0 var(--space-64);
+}
+
+.page-header .eyebrow {
+  display: block;
+  margin-bottom: var(--space-16);
+}
+
+.page-header h1 {
+  max-width: 800px;
+  margin-bottom: var(--space-20);
+}
+
+.page-header .subtitle {
+  font-size: 1.125rem;
+  color: var(--ink-secondary);
+  max-width: 680px;
+  line-height: 1.6;
+  margin-bottom: var(--space-32);
+}
+
+.page-header .header-cta {
+  display: flex;
+  gap: var(--space-16);
+  flex-wrap: wrap;
+}
+
+/* Stats strip */
+.stats-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--space-24);
+  padding: var(--space-32) 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.stat .value {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: var(--space-8);
+}
+
+.stat .label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-secondary);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Metric cards */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-24);
+}
+
+.metric-card {
+  padding: var(--space-32);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition: all var(--duration-hover) var(--ease-smooth);
+}
+
+.metric-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 12px 32px rgba(124, 58, 237, 0.08);
+  transform: translateY(-4px);
+}
+
+.metric-card .metric-id {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  display: block;
+  margin-bottom: var(--space-12);
+}
+
+.metric-card h3 {
+  margin-bottom: var(--space-12);
+}
+
+.metric-card p {
+  font-size: 0.9375rem;
+  color: var(--ink-secondary);
+  margin-bottom: var(--space-16);
+}
+
+.metric-card .metric-paper {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Dataset table */
+.dataset-list {
+  display: grid;
+  gap: var(--space-16);
+}
+
+.dataset-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: var(--space-16);
+  padding: var(--space-20) var(--space-24);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  align-items: center;
+}
+
+.dataset-row .name {
+  font-weight: 600;
+}
+
+.dataset-row .meta {
+  font-size: 0.8125rem;
+  color: var(--ink-secondary);
+  font-family: var(--font-mono);
+}
+
+/* Honesty note block */
+.honesty-note {
+  padding: var(--space-32);
+  border-left: 3px solid var(--data-amber);
+  background: var(--hover);
+  border-radius: 0 8px 8px 0;
+}
+
+.honesty-note p {
+  font-size: 0.9375rem;
+  color: var(--ink-secondary);
+  margin-bottom: 0;
+}
+
+/* Footer */
+footer {
+  background: var(--hover);
+  border-top: 1px solid var(--border);
+  padding: var(--space-96) 0 var(--space-48);
+  margin-top: var(--space-96);
+}
+
+footer .container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-48);
+  margin-bottom: var(--space-48);
+}
+
+footer h4 {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+  margin-bottom: var(--space-16);
+}
+
+footer a {
+  display: block;
+  padding: var(--space-8) 0;
+  font-size: 0.9375rem;
+  color: var(--ink-secondary);
+  transition: color var(--duration-hover);
+}
+
+footer a:hover {
+  color: var(--accent);
+}
+
+footer .footer-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: var(--space-32);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  color: var(--ink-secondary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .page-header { padding: 64px 0 var(--space-48); }
+  .dataset-row { grid-template-columns: 1fr; gap: var(--space-8); }
+  footer .container { grid-template-columns: repeat(2, 1fr); gap: var(--space-32); }
+  footer .footer-bottom { flex-direction: column; gap: var(--space-16); }
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<header>
+  <nav>
+    <div class="nav-brand">Shaurya Gupta</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="research.html">Research</a></li>
+      <li><a href="atlas.html" class="active">Atlas</a></li>
+      <li><a href="lab.html">Lab</a></li>
+      <li><a href="notebook.html">Notebook</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="about.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+
+  <!-- Header -->
+  <section class="page-header">
+    <div class="container">
+      <span class="mono eyebrow">Shared research infrastructure</span>
+      <h1>Open Institutional Capacity Observatory</h1>
+      <p class="subtitle">A small, real, open-source dataset and metric library for measuring institutional capacity, administrative congestion, oversight saturation, and governance specificity from public records — built so this research program (and others) stop rebuilding the same scraping and provenance pipelines from scratch.</p>
+      <div class="header-cta">
+        <a href="https://github.com/SilverCoin256" class="btn" target="_blank" rel="noopener">View on GitHub</a>
+        <a href="research.html" class="btn outline">See the papers it supports</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section style="padding-top: var(--space-48); padding-bottom: var(--space-48);">
+    <div class="container">
+      <div class="stats-strip">
+        <div class="stat reveal">
+          <div class="value">5</div>
+          <div class="label">Metrics</div>
+        </div>
+        <div class="stat reveal">
+          <div class="value">v1.0.0-rc1</div>
+          <div class="label">Release</div>
+        </div>
+        <div class="stat reveal">
+          <div class="value">MIT / CC BY 4.0</div>
+          <div class="label">License</div>
+        </div>
+        <div class="stat reveal">
+          <div class="value">4</div>
+          <div class="label">Reserved replication slots</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Metrics -->
+  <section>
+    <div class="container">
+      <div class="section-header">
+        <span class="mono">The five metrics</span>
+        <h2>One instrument per research question</h2>
+        <p>Each metric operationalizes a specific paper in this program. None of them claim to fully identify institutional quality or causality on their own — the documentation is explicit about that.</p>
+      </div>
+      <div class="metrics-grid">
+        <div class="metric-card reveal">
+          <span class="metric-id">QAI — Queue Acceleration Index</span>
+          <h3>Backlog pressure</h3>
+          <p>(Pending<sub>t</sub> − Pending<sub>t-1</sub>) / Completions<sub>t</sub>. A simple, auditable measure of whether an administrative queue is accelerating faster than it's being cleared.</p>
+          <span class="metric-paper">Supports a planned submission — no paper yet</span>
+        </div>
+        <div class="metric-card reveal">
+          <span class="metric-id">SEDI — State-Estimation Degradation Index</span>
+          <h3>Oversight observability</h3>
+          <p>Computable purely from boundary telemetry — timestamps, queue depth, dispute rates — without inspecting the content of the decisions under review.</p>
+          <a class="metric-paper" href="research.html#paper-p5">→ Capacity Degradation in Distributed Human-in-the-Loop AI Pipelines</a>
+        </div>
+        <div class="metric-card reveal">
+          <span class="metric-id">Authorization Saturation</span>
+          <h3>Substantive vs. ceremonial review</h3>
+          <p>A coupled-queue formalization of the point at which institutions substitute fast sign-off for slow, substantive review.</p>
+          <a class="metric-paper" href="research.html#paper-p4">→ Modeling Authorization Saturation</a>
+        </div>
+        <div class="metric-card reveal">
+          <span class="metric-id">Procedural Capacity</span>
+          <h3>Review, contest, hold accountable</h3>
+          <p>An institution's joint capacity to review an AI-influenced decision, let someone contest it, and hold someone accountable for it.</p>
+          <a class="metric-paper" href="research.html#paper-p8">→ Simulating AI Governance Failure</a>
+        </div>
+        <div class="metric-card reveal">
+          <span class="metric-id">ASI — Accountability Specificity Index</span>
+          <h3>Rhetoric vs. binding authority</h3>
+          <p>An 8-dimension coding scheme scoring how specifically a governance document assigns responsibility, versus merely invoking it.</p>
+          <a class="metric-paper" href="research.html#paper-p7">→ Who Owns the Decision?</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Datasets -->
+  <section class="alt">
+    <div class="container">
+      <div class="section-header">
+        <span class="mono">Public data</span>
+        <h2>What's actually in it</h2>
+        <p>Small pilot tables from public sources, not scraped-and-hoped-for big data.</p>
+      </div>
+      <div class="dataset-list">
+        <div class="dataset-row reveal">
+          <span class="name">EOIR / USCIS / CFPB / SEC pilot tables</span>
+          <span class="meta">~450 records</span>
+          <span class="meta">CSV</span>
+          <span class="meta">CC BY 4.0</span>
+        </div>
+        <div class="dataset-row reveal">
+          <span class="name">ASI-adjudicated governance corpus</span>
+          <span class="meta">23 documents</span>
+          <span class="meta">coded excerpts</span>
+          <span class="meta">codebook original</span>
+        </div>
+        <div class="dataset-row reveal">
+          <span class="name">Institution / queue-observation schema tables</span>
+          <span class="meta">5-entity model</span>
+          <span class="meta">CSV + manifest</span>
+          <span class="meta">checksummed</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Honesty note -->
+  <section>
+    <div class="container">
+      <div class="honesty-note reveal">
+        <p><strong>What this is not:</strong> a live dashboard, a leaderboard, or a claim of ground truth. Two candidate data sources (SSA and Meta institutional snapshots) were excluded from the first release after failing a retrieval audit. There is no public leaderboard yet — the benchmarks exist as regression tests and classroom exercises until independent labels and frozen splits are in place. See the <a href="notebook.html">notebook</a> for the release notes.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div>
+      <h4>About</h4>
+      <p>Independent researcher studying how AI reshapes institutions, labor, judgment, and governance.</p>
+    </div>
+    <div>
+      <h4>Work</h4>
+      <a href="research.html">Research</a>
+      <a href="lab.html">Lab</a>
+      <a href="atlas.html">Atlas</a>
+      <a href="notebook.html">Notebook</a>
+    </div>
+    <div>
+      <h4>Elsewhere</h4>
+      <a href="https://github.com/SilverCoin256" target="_blank" rel="noopener">GitHub</a>
+      <a href="#">Google Scholar</a>
+      <a href="https://orcid.org/0009-0001-7642-9247" target="_blank" rel="noopener">ORCID</a>
+      <a href="#">Twitter</a>
+    </div>
+    <div>
+      <h4>Connect</h4>
+      <a href="mailto:shauryaguptaa8@gmail.com">Email</a>
+      <a href="about.html">About</a>
+      <a href="#">CV (PDF)</a>
+      <a href="about.html#contact">Contact</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© 2026 Shaurya Gupta. All work public and documented.</span>
+    <span style="font-family: var(--font-mono);">SET IN SPACE GROTESK · INTER · ROBOTO MONO</span>
+  </div>
+</footer>
+
+<script>
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('in');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research — Shaurya Gupta</title>
+<meta name="description" content="Research archive organized by standing question: papers, experiments, datasets, methods, and documented failures.">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Stylesheets -->
+<link rel="stylesheet" href="css/design-system.css?v=4">
+<link rel="stylesheet" href="css/components.css?v=4">
+<link rel="stylesheet" href="css/v3.css?v=4">
+<link rel="stylesheet" href="css/v4.css?v=4">
+<style>
+/* Navigation (matches index.html) */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+nav {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--space-16) var(--gutter);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+}
+
+.nav-links {
+  display: flex;
+  gap: var(--space-24);
+  font-size: 0.9rem;
+  list-style: none;
+  margin: 0;
+}
+
+.nav-links a {
+  color: var(--ink-secondary);
+  transition: color var(--duration-hover);
+}
+
+.nav-links a:hover {
+  color: var(--accent);
+}
+
+.nav-links a.active {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* Page header */
+.page-header {
+  padding: var(--space-64) 0 var(--space-48);
+  border-bottom: 1px solid var(--border);
+}
+
+.page-header p.lead {
+  font-size: 1.125rem;
+  color: var(--ink-secondary);
+  max-width: 700px;
+}
+
+/* Research question grid */
+.questions-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-24);
+}
+
+.research-question {
+  scroll-margin-top: 100px;
+  cursor: pointer;
+}
+
+.research-question .rq-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-16);
+  margin-bottom: var(--space-4);
+}
+
+.research-question .subtitle {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: var(--space-12);
+  display: block;
+}
+
+.research-question p {
+  font-size: 0.9375rem;
+  color: var(--ink-secondary);
+}
+
+.research-question .rq-link {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--accent);
+}
+
+/* Sticky filter bar */
+.filter-bar {
+  position: sticky;
+  top: 65px;
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: var(--space-16) 0;
+  margin-bottom: var(--space-48);
+}
+
+.filter-bar .container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+}
+
+.tab {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: var(--space-8) var(--space-16);
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--ink-secondary);
+  cursor: pointer;
+  transition: all var(--duration-hover) var(--ease-smooth);
+}
+
+.tab:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.tab.active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--bg);
+}
+
+.secondary-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-12);
+  align-items: center;
+}
+
+.secondary-filters select {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  padding: var(--space-8) var(--space-12);
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.secondary-filters select:focus,
+.secondary-filters select:hover {
+  border-color: var(--accent);
+}
+
+.filter-count {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-secondary);
+  margin-left: auto;
+}
+
+.clear-filters {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-4) var(--space-8);
+  text-decoration: underline;
+}
+
+/* Content panels */
+.panel {
+  display: none;
+}
+
+.panel.active {
+  display: block;
+}
+
+.panel-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--space-32);
+}
+
+.panel-heading h2 {
+  margin-bottom: 0;
+}
+
+.empty-state {
+  padding: var(--space-64) 0;
+  text-align: center;
+  color: var(--ink-secondary);
+  font-size: 0.9375rem;
+}
+
+/* Paper card extras */
+.paper-card {
+  margin-bottom: 0;
+}
+
+.paper-card .abstract {
+  font-size: 0.875rem;
+  color: var(--ink-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--space-12);
+}
+
+.paper-card .key-finding {
+  font-size: 0.875rem;
+  padding: var(--space-12) var(--space-16);
+  background: var(--accent-soft);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  margin-bottom: var(--space-12);
+}
+
+.paper-card .key-finding .label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-4);
+}
+
+.paper-card .other-venues {
+  font-size: 0.8125rem;
+  color: var(--ink-secondary);
+  font-style: italic;
+  margin-bottom: var(--space-12);
+}
+
+.paper-card .question-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+  margin-bottom: var(--space-12);
+}
+
+.paper-card .question-tag {
+  font-size: 0.75rem;
+  padding: var(--space-4) var(--space-12);
+  background: #1e40af10;
+  color: #1e40af;
+  border-radius: 100px;
+  font-weight: 500;
+}
+
+.paper-card .venue {
+  font-size: 0.8125rem;
+  color: var(--ink-secondary);
+  margin-bottom: var(--space-12);
+}
+
+/* Status badges — visually distinct by honesty tier */
+.status-badge {
+  display: inline-block;
+  padding: var(--space-4) var(--space-12);
+  border-radius: 100px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.status-badge.st-accepted { background: rgba(16, 185, 129, 0.1); color: var(--data-green); }
+.status-badge.st-under-review,
+.status-badge.st-working-paper,
+.status-badge.st-running,
+.status-badge.st-complete { background: var(--hover); color: var(--ink-secondary); }
+.status-badge.st-in-revision,
+.status-badge.st-data-collection { background: rgba(245, 158, 11, 0.1); color: var(--data-amber); }
+.status-badge.st-failed,
+.status-badge.st-blocked { background: rgba(239, 68, 68, 0.1); color: var(--data-red); }
+.status-badge.st-active,
+.status-badge.st-validated,
+.status-badge.st-processed { background: var(--accent-soft); color: var(--accent); }
+
+/* Grids */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: var(--space-24);
+  margin-bottom: var(--space-64);
+}
+
+.card-grid.experiments,
+.card-grid.datasets {
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+}
+
+/* Experiment card extras */
+.experiment-card .backlink {
+  font-size: 0.8125rem;
+}
+
+.experiment-card.is-failed,
+.experiment-card.is-blocked {
+  border-color: rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.03);
+}
+
+.experiment-card.is-failed .finding,
+.experiment-card.is-blocked .finding {
+  background: rgba(239, 68, 68, 0.08);
+  border-left-color: var(--data-red);
+}
+
+/* Dataset card extras */
+.dataset-card .description {
+  font-size: 0.875rem;
+  color: var(--ink-secondary);
+  margin-bottom: var(--space-16);
+}
+
+.dataset-card .meta-row {
+  font-size: 0.8125rem;
+  color: var(--ink-secondary);
+  margin-bottom: var(--space-8);
+}
+
+/* Method card */
+.method-card {
+  padding: var(--space-20);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+}
+
+.method-card .category {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-8);
+  display: block;
+}
+
+.method-card h4 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: var(--space-12);
+}
+
+.method-card p {
+  font-size: 0.9rem;
+  color: var(--ink-secondary);
+  margin-bottom: var(--space-12);
+}
+
+.method-card .tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+  margin-bottom: var(--space-12);
+}
+
+.method-card .tool-tag {
+  font-size: 0.75rem;
+  padding: var(--space-4) var(--space-12);
+  background: var(--hover);
+  border-radius: 100px;
+  color: var(--ink-secondary);
+  font-family: var(--font-mono);
+}
+
+.method-card .used-in {
+  font-size: 0.8125rem;
+  padding-top: var(--space-12);
+  border-top: 1px solid var(--border);
+}
+
+.method-card .used-in a {
+  margin-right: var(--space-8);
+}
+
+/* Failures section */
+.failures-intro {
+  max-width: 700px;
+  margin-bottom: var(--space-48);
+}
+
+.failure-entry {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: var(--space-32);
+  margin-bottom: var(--space-24);
+}
+
+.failure-entry .failure-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-16);
+  margin-bottom: var(--space-20);
+}
+
+.failure-entry h3 {
+  margin-bottom: var(--space-4);
+  font-size: 1.15rem;
+}
+
+.failure-entry .date {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-secondary);
+  white-space: nowrap;
+}
+
+.failure-stages {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-16);
+  margin-bottom: var(--space-20);
+}
+
+.failure-stage {
+  padding: var(--space-16);
+  border-radius: 8px;
+  background: var(--hover);
+}
+
+.failure-stage.assumed { border-left: 3px solid var(--ink-secondary); }
+.failure-stage.found { border-left: 3px solid var(--data-red); }
+.failure-stage.response { border-left: 3px solid var(--data-green); }
+
+.failure-stage .stage-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-8);
+  color: var(--ink-secondary);
+}
+
+.failure-stage p {
+  font-size: 0.875rem;
+  line-height: 1.55;
+  margin-bottom: 0;
+  color: var(--ink);
+}
+
+.failure-entry .tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+}
+
+.failure-entry .tag {
+  font-size: 0.75rem;
+  padding: var(--space-4) var(--space-12);
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-radius: 100px;
+}
+
+/* Timeline section */
+.timeline-section .container {
+  max-width: 820px;
+}
+
+/* Footer (matches index.html) */
+footer {
+  background: var(--hover);
+  border-top: 1px solid var(--border);
+  padding: var(--space-96) 0 var(--space-48);
+  margin-top: var(--space-96);
+}
+
+footer .container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-48);
+  margin-bottom: var(--space-48);
+}
+
+footer h4 {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+  margin-bottom: var(--space-16);
+}
+
+footer a {
+  display: block;
+  padding: var(--space-8) 0;
+  font-size: 0.9375rem;
+  color: var(--ink-secondary);
+  transition: color var(--duration-hover);
+}
+
+footer a:hover {
+  color: var(--accent);
+}
+
+footer .footer-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: var(--space-32);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  color: var(--ink-secondary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+
+  .filter-bar {
+    top: 0;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .failure-stages {
+    grid-template-columns: 1fr;
+  }
+
+  .secondary-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-count {
+    margin-left: 0;
+  }
+
+  footer .container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-32);
+  }
+
+  footer .footer-bottom {
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<header>
+  <nav>
+    <div class="nav-brand">Shaurya Gupta</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="research.html" class="active">Research</a></li>
+      <li><a href="atlas.html">Atlas</a></li>
+      <li><a href="lab.html">Lab</a></li>
+      <li><a href="notebook.html">Notebook</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- Main -->
+<main>
+
+  <!-- Page Header -->
+  <section class="page-header">
+    <div class="container">
+      <span class="mono">Research Archive</span>
+      <h1>Research</h1>
+      <p class="lead">Every project below answers one of six standing questions. Start with the question, not the paper.</p>
+    </div>
+  </section>
+
+  <!-- Research Questions -->
+  <section id="questions">
+    <div class="container">
+      <div class="section-header">
+        <span class="mono">Standing questions</span>
+        <h2>What this program is trying to answer</h2>
+        <p>Six questions organize everything below. Click one to jump to its related papers.</p>
+      </div>
+      <div class="questions-grid" id="questions-grid"></div>
+    </div>
+  </section>
+
+  <!-- Filter bar -->
+  <div class="filter-bar">
+    <div class="container">
+      <div class="tabs" id="tabs">
+        <button class="tab active" data-tab="all">All</button>
+        <button class="tab" data-tab="papers">Papers</button>
+        <button class="tab" data-tab="experiments">Experiments</button>
+        <button class="tab" data-tab="datasets">Datasets</button>
+        <button class="tab" data-tab="methods">Methods</button>
+        <button class="tab" data-tab="failures">Failures</button>
+      </div>
+      <div class="secondary-filters">
+        <select id="question-filter">
+          <option value="">All questions</option>
+        </select>
+        <select id="status-filter">
+          <option value="">All statuses</option>
+          <option value="working-paper">Working paper</option>
+          <option value="under-review">Under review</option>
+          <option value="accepted">Accepted</option>
+          <option value="in-revision">In revision</option>
+          <option value="data-collection">Data collection</option>
+        </select>
+        <button class="clear-filters" id="clear-filters">Clear filters</button>
+        <span class="filter-count" id="filter-count"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <section id="content" style="padding-top:0;">
+    <div class="container">
+
+      <!-- Papers -->
+      <div class="panel active" id="panel-papers">
+        <div class="panel-heading"><h2>Papers</h2></div>
+        <div class="card-grid" id="papers-grid"></div>
+        <div class="empty-state" id="papers-empty" style="display:none;">No papers match the current filters.</div>
+      </div>
+
+      <!-- Experiments -->
+      <div class="panel active" id="panel-experiments">
+        <div class="panel-heading"><h2>Experiments</h2></div>
+        <div class="card-grid experiments" id="experiments-grid"></div>
+        <div class="empty-state" id="experiments-empty" style="display:none;">No experiments match the current filters.</div>
+      </div>
+
+      <!-- Datasets -->
+      <div class="panel active" id="panel-datasets">
+        <div class="panel-heading"><h2>Datasets</h2></div>
+        <div class="card-grid datasets" id="datasets-grid"></div>
+        <div class="empty-state" id="datasets-empty" style="display:none;">No datasets match the current filters.</div>
+      </div>
+
+      <!-- Methods -->
+      <div class="panel active" id="panel-methods">
+        <div class="panel-heading"><h2>Methods</h2></div>
+        <div class="card-grid" id="methods-grid"></div>
+        <div class="empty-state" id="methods-empty" style="display:none;">No methods match the current filters.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Failures & Falsifications -->
+  <section class="alt" id="panel-failures">
+    <div class="container">
+      <div class="section-header">
+        <span class="mono">Failures & falsifications</span>
+        <h2>What didn't survive contact with data or review</h2>
+        <p class="failures-intro">Research that never fails isn't being tested hard enough. These are the assumptions that didn't survive contact with real data or a real reviewer, and what changed as a result.</p>
+      </div>
+      <div id="failures-list"></div>
+      <div class="empty-state" id="failures-empty" style="display:none;">No failures match the current filters.</div>
+    </div>
+  </section>
+
+  <!-- Research Timeline -->
+  <section class="timeline-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="mono">Arc of the work</span>
+        <h2>Research Timeline</h2>
+        <p>How this program actually developed, in order.</p>
+      </div>
+      <div class="timeline" id="timeline"></div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div>
+      <h4>About</h4>
+      <p>Independent researcher studying how AI reshapes institutions, labor, judgment, and governance.</p>
+    </div>
+    <div>
+      <h4>Work</h4>
+      <a href="research.html">Research</a>
+      <a href="lab.html">Lab</a>
+      <a href="atlas.html">Atlas</a>
+      <a href="notebook.html">Notebook</a>
+    </div>
+    <div>
+      <h4>Elsewhere</h4>
+      <a href="#">GitHub</a>
+      <a href="#">Google Scholar</a>
+      <a href="#">ORCID</a>
+      <a href="#">Twitter</a>
+    </div>
+    <div>
+      <h4>Connect</h4>
+      <a href="#">Email</a>
+      <a href="about.html">About</a>
+      <a href="#">CV (PDF)</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© 2026 Shaurya Gupta. All work public and documented.</span>
+    <span style="font-family: var(--font-mono);">SET IN SPACE GROTESK · INTER · ROBOTO MONO</span>
+  </div>
+</footer>
+
+<!-- Scripts -->
+<script>
+let DATA = null;
+let currentTab = 'all';
+let questionFilter = '';
+let statusFilter = '';
+
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function statusClass(status) {
+  return 'st-' + String(status).toLowerCase().replace(/\s+/g, '-');
+}
+
+function statusLabel(status) {
+  return String(status).replace(/-/g, ' ');
+}
+
+function methodNames(ids) {
+  return (ids || []).map(id => {
+    const m = DATA.methods.find(m => m.id === id);
+    return m ? m.name : id;
+  });
+}
+
+function questionById(id) {
+  return DATA.researchQuestions.find(q => q.id === id);
+}
+
+function paperById(id) {
+  return DATA.papers.find(p => p.id === id);
+}
+
+/* ── Research Questions ─────────────────────────────── */
+function renderQuestions() {
+  const grid = document.getElementById('questions-grid');
+  grid.innerHTML = DATA.researchQuestions.map(q => `
+    <div class="research-question reveal" id="${q.id}" data-question-jump="${q.id}">
+      <div class="research-question-icon">${q.icon || '◈'}</div>
+      <div class="research-question-content">
+        <div class="rq-top">
+          <h3>${escapeHtml(q.title)}</h3>
+          <span class="status-badge st-${escapeHtml(q.status)}">${escapeHtml(q.status)}</span>
+        </div>
+        <span class="subtitle">${escapeHtml(q.subtitle)}</span>
+        <p>${escapeHtml(q.description)}</p>
+        <div class="research-question-meta">
+          <span>${q.relatedPapers.length} related paper${q.relatedPapers.length === 1 ? '' : 's'}</span>
+          <span class="rq-link">Jump to papers ↓</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  grid.querySelectorAll('[data-question-jump]').forEach(el => {
+    el.addEventListener('click', () => {
+      const qid = el.getAttribute('data-question-jump');
+      questionFilter = qid;
+      document.getElementById('question-filter').value = qid;
+      setTab('papers');
+      document.getElementById('content').scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+}
+
+function populateQuestionFilter() {
+  const sel = document.getElementById('question-filter');
+  DATA.researchQuestions.forEach(q => {
+    const opt = document.createElement('option');
+    opt.value = q.id;
+    opt.textContent = q.title.length > 60 ? q.title.slice(0, 57) + '…' : q.title;
+    sel.appendChild(opt);
+  });
+}
+
+/* ── Papers ──────────────────────────────────────────── */
+function renderPapers() {
+  let papers = DATA.papers.slice();
+  if (questionFilter) papers = papers.filter(p => p.relatedQuestions.includes(questionFilter));
+  if (statusFilter) papers = papers.filter(p => p.status === statusFilter);
+
+  const grid = document.getElementById('papers-grid');
+  const empty = document.getElementById('papers-empty');
+
+  if (!papers.length) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    return 0;
+  }
+  empty.style.display = 'none';
+
+  grid.innerHTML = papers.map(p => `
+    <div class="paper-card reveal">
+      <div class="year">${p.year}</div>
+      <span class="status-badge ${statusClass(p.status)}">${escapeHtml(statusLabel(p.status))}</span>
+      <h4>${escapeHtml(p.title)}</h4>
+      <div class="authors">${escapeHtml(p.authors.join(', '))}</div>
+      ${p.venue ? `<div class="venue">${escapeHtml(p.venue)}</div>` : ''}
+      ${p.otherVenues && p.otherVenues.length ? `<div class="other-venues">also adapted for: ${escapeHtml(p.otherVenues.join('; '))}</div>` : ''}
+      <div class="question-tags">
+        ${p.relatedQuestions.map(qid => {
+          const q = questionById(qid);
+          return q ? `<a href="#${q.id}" class="question-tag">${escapeHtml(q.icon)} ${escapeHtml(q.subtitle)}</a>` : '';
+        }).join('')}
+      </div>
+      <p class="abstract">${escapeHtml(p.abstract)}</p>
+      <div class="key-finding">
+        <span class="label">Key finding</span>
+        ${escapeHtml(p.keyFinding)}
+      </div>
+      <div class="method-stack">
+        ${methodNames(p.methods).map(m => `<span class="method-tag">${escapeHtml(m)}</span>`).join('')}
+      </div>
+      <div class="links">
+        ${p.doi ? `<a href="https://doi.org/${p.doi}">DOI</a>` : ''}
+        ${p.arxiv ? `<a href="https://arxiv.org/${p.arxiv}">arXiv</a>` : ''}
+        ${p.code ? `<a href="${p.code}">Code</a>` : ''}
+        ${p.replication ? `<a href="${p.replication}">Replication</a>` : ''}
+      </div>
+    </div>
+  `).join('');
+  return papers.length;
+}
+
+/* ── Experiments ─────────────────────────────────────── */
+function renderExperiments() {
+  let experiments = DATA.experiments.slice();
+  if (questionFilter) {
+    const paperIds = new Set((questionById(questionFilter) || { relatedPapers: [] }).relatedPapers);
+    experiments = experiments.filter(e => e.relatedPapers.some(pid => paperIds.has(pid)));
+  }
+  if (statusFilter) {
+    // experiments don't share paper-status vocab directly; skip cross-mapping, filter only if exact match exists
+    experiments = experiments.filter(e => e.status === statusFilter);
+  }
+
+  const grid = document.getElementById('experiments-grid');
+  const empty = document.getElementById('experiments-empty');
+
+  if (!experiments.length) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    return 0;
+  }
+  empty.style.display = 'none';
+
+  grid.innerHTML = experiments.map(e => {
+    const failClass = (e.status === 'failed' || e.status === 'blocked') ? ' is-failed' : '';
+    const relatedTitles = e.relatedPapers.map(pid => {
+      const p = paperById(pid);
+      return p ? p.title : pid;
+    });
+    return `
+    <div class="experiment-card reveal${failClass}">
+      <div class="header">
+        <h4>${escapeHtml(e.title)}</h4>
+        <span class="phase">phase ${escapeHtml(String(e.phase))}</span>
+      </div>
+      <div class="meta">
+        <div class="meta-item">
+          <span class="meta-label">Status</span>
+          <span class="status-badge ${statusClass(e.status)}">${escapeHtml(statusLabel(e.status))}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Sample size</span>
+          ${e.sampleSize !== null ? escapeHtml(String(e.sampleSize)) : 'n/a'}
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Duration / scope</span>
+          ${escapeHtml(e.duration)}
+        </div>
+      </div>
+      <div class="finding">${escapeHtml(e.finding)}</div>
+      <div class="backlink">
+        ${relatedTitles.map((t, i) => `<a href="#paper-${e.relatedPapers[i]}">${escapeHtml(t)} →</a>`).join(', ')}
+      </div>
+    </div>
+  `; }).join('');
+  return experiments.length;
+}
+
+/* ── Datasets ────────────────────────────────────────── */
+function renderDatasets() {
+  let datasets = DATA.datasets.slice();
+  if (questionFilter) {
+    const paperIds = new Set((questionById(questionFilter) || { relatedPapers: [] }).relatedPapers);
+    const expDatasetIds = new Set(
+      DATA.experiments.filter(e => e.relatedPapers.some(pid => paperIds.has(pid))).map(e => e.datasetId)
+    );
+    datasets = datasets.filter(d => expDatasetIds.has(d.id));
+  }
+  if (statusFilter) {
+    datasets = datasets.filter(d => d.status === statusFilter);
+  }
+
+  const grid = document.getElementById('datasets-grid');
+  const empty = document.getElementById('datasets-empty');
+
+  if (!datasets.length) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    return 0;
+  }
+  empty.style.display = 'none';
+
+  grid.innerHTML = datasets.map(d => {
+    const relatedExperiments = DATA.experiments.filter(e => e.datasetId === d.id);
+    const relatedPaperIds = [...new Set(relatedExperiments.flatMap(e => e.relatedPapers))];
+    return `
+    <div class="dataset-card reveal">
+      <div class="header">
+        <h4>${escapeHtml(d.name)}</h4>
+        <span class="status-badge ${statusClass(d.status)}">${escapeHtml(statusLabel(d.status))}</span>
+      </div>
+      <p class="description">${escapeHtml(d.description)}</p>
+      <div class="stats">
+        <div>
+          <span class="stat-value">${d.records !== null ? escapeHtml(String(d.records)) : '—'}</span>
+          records
+        </div>
+        <div>
+          <span class="stat-value">${d.format.length}</span>
+          format${d.format.length === 1 ? '' : 's'}: ${escapeHtml(d.format.join(', '))}
+        </div>
+      </div>
+      <div class="meta-row">License: ${escapeHtml(d.license)}</div>
+      ${relatedPaperIds.length ? `<div class="meta-row">Used in: ${relatedPaperIds.map(pid => {
+        const p = paperById(pid);
+        return p ? `<a href="#paper-${pid}">${escapeHtml(p.title)}</a>` : '';
+      }).join(', ')}</div>` : ''}
+      ${(d.documentation || d.access) ? `
+      <div class="actions">
+        ${d.documentation ? `<a href="${d.documentation}">Docs</a>` : ''}
+        ${d.access ? `<a href="${d.access}">Access</a>` : ''}
+      </div>` : ''}
+    </div>
+  `; }).join('');
+  return datasets.length;
+}
+
+/* ── Methods ─────────────────────────────────────────── */
+function renderMethods() {
+  let methods = DATA.methods.slice();
+  if (questionFilter) {
+    const paperIds = new Set((questionById(questionFilter) || { relatedPapers: [] }).relatedPapers);
+    methods = methods.filter(m => m.papers.some(pid => paperIds.has(pid)));
+  }
+  // status filter doesn't apply to methods (no status field) — ignore silently
+
+  const grid = document.getElementById('methods-grid');
+  const empty = document.getElementById('methods-empty');
+
+  if (!methods.length) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    return 0;
+  }
+  empty.style.display = 'none';
+
+  grid.innerHTML = methods.map(m => `
+    <div class="method-card reveal">
+      <span class="category">${escapeHtml(m.category)}</span>
+      <h4>${escapeHtml(m.name)}</h4>
+      <p>${escapeHtml(m.description)}</p>
+      <div class="tools">
+        ${m.tools.map(t => `<span class="tool-tag">${escapeHtml(t)}</span>`).join('')}
+      </div>
+      <div class="used-in">
+        Used in: ${m.papers.map(pid => {
+          const p = paperById(pid);
+          return p ? `<a href="#paper-${pid}">${escapeHtml(p.title.length > 40 ? p.title.slice(0, 37) + '…' : p.title)}</a>` : '';
+        }).join(', ')}
+      </div>
+    </div>
+  `).join('');
+  return methods.length;
+}
+
+/* ── Failures ────────────────────────────────────────── */
+function renderFailures() {
+  let failures = DATA.failures.slice();
+  if (questionFilter) {
+    const paperIds = new Set((questionById(questionFilter) || { relatedPapers: [] }).relatedPapers);
+    failures = failures.filter(f => f.project && paperIds.has(f.project));
+  }
+
+  const list = document.getElementById('failures-list');
+  const empty = document.getElementById('failures-empty');
+
+  if (!failures.length) {
+    list.innerHTML = '';
+    empty.style.display = 'block';
+    return 0;
+  }
+  empty.style.display = 'none';
+
+  list.innerHTML = failures.map(f => {
+    const project = f.project ? paperById(f.project) : null;
+    return `
+    <div class="failure-entry reveal">
+      <div class="failure-top">
+        <div>
+          <h3>${escapeHtml(f.title)}</h3>
+          ${project ? `<a href="#paper-${project.id}" style="font-size:0.8125rem;">${escapeHtml(project.title)}</a>` : ''}
+        </div>
+        <span class="date">${escapeHtml(new Date(f.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }))}</span>
+      </div>
+      <div class="failure-stages">
+        <div class="failure-stage assumed">
+          <span class="stage-label">Assumed →</span>
+          <p>${escapeHtml(f.whatWeThought)}</p>
+        </div>
+        <div class="failure-stage found">
+          <span class="stage-label">Found →</span>
+          <p>${escapeHtml(f.whatHappened)}</p>
+        </div>
+        <div class="failure-stage response">
+          <span class="stage-label">Response →</span>
+          <p>${escapeHtml(f.whatWeDid)}</p>
+        </div>
+      </div>
+      <div class="tags">
+        ${f.tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('')}
+      </div>
+    </div>
+  `; }).join('');
+  return failures.length;
+}
+
+/* ── Timeline ────────────────────────────────────────── */
+function renderTimeline() {
+  const sorted = DATA.timeline.slice(); // already chronological in source data
+  document.getElementById('timeline').innerHTML = sorted.map(t => `
+    <div class="timeline-event reveal">
+      <div class="date">${escapeHtml(t.date)}${t.status === 'active' ? ' · ongoing' : ''}</div>
+      <h4>${escapeHtml(t.title)}</h4>
+      <p>${escapeHtml(t.description)}</p>
+    </div>
+  `).join('');
+}
+
+/* ── Anchors for cross-linking (paper ids) ────────────── */
+function addPaperAnchors() {
+  document.querySelectorAll('#papers-grid .paper-card').forEach((card, i) => {
+    // set id after render pass matching current filtered order — instead use data attr approach
+  });
+}
+
+/* ── Tabs ────────────────────────────────────────────── */
+function setTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === tab);
+  });
+  const panels = {
+    papers: document.getElementById('panel-papers'),
+    experiments: document.getElementById('panel-experiments'),
+    datasets: document.getElementById('panel-datasets'),
+    methods: document.getElementById('panel-methods'),
+    failures: document.getElementById('panel-failures')
+  };
+  Object.keys(panels).forEach(key => {
+    const show = tab === 'all' || tab === key;
+    panels[key].classList.toggle('active', show);
+    panels[key].style.display = show ? '' : 'none';
+  });
+}
+
+function updateFilterCount(counts) {
+  const total = counts.papers + counts.experiments + counts.datasets + counts.methods + counts.failures;
+  document.getElementById('filter-count').textContent = `${total} result${total === 1 ? '' : 's'} shown`;
+}
+
+function renderAll() {
+  const counts = {
+    papers: renderPapers(),
+    experiments: renderExperiments(),
+    datasets: renderDatasets(),
+    methods: renderMethods(),
+    failures: renderFailures()
+  };
+  // assign paper anchors for cross-linking after render
+  const paperCards = document.querySelectorAll('#papers-grid .paper-card');
+  const visiblePapers = DATA.papers.filter(p => {
+    if (questionFilter && !p.relatedQuestions.includes(questionFilter)) return false;
+    if (statusFilter && p.status !== statusFilter) return false;
+    return true;
+  });
+  paperCards.forEach((card, i) => {
+    if (visiblePapers[i]) card.id = 'paper-' + visiblePapers[i].id;
+  });
+  updateFilterCount(counts);
+  observeReveals();
+}
+
+function observeReveals() {
+  const reveals = document.querySelectorAll('.reveal:not(.in)');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  reveals.forEach(el => observer.observe(el));
+}
+
+/* ── Init ────────────────────────────────────────────── */
+fetch('data/sample-data.json')
+  .then(r => r.json())
+  .then(data => {
+    DATA = data;
+    renderQuestions();
+    populateQuestionFilter();
+    renderTimeline();
+    renderAll();
+
+    document.getElementById('tabs').addEventListener('click', e => {
+      const btn = e.target.closest('.tab');
+      if (!btn) return;
+      setTab(btn.dataset.tab);
+    });
+
+    document.getElementById('question-filter').addEventListener('change', e => {
+      questionFilter = e.target.value;
+      renderAll();
+    });
+
+    document.getElementById('status-filter').addEventListener('change', e => {
+      statusFilter = e.target.value;
+      renderAll();
+    });
+
+    document.getElementById('clear-filters').addEventListener('click', () => {
+      questionFilter = '';
+      statusFilter = '';
+      document.getElementById('question-filter').value = '';
+      document.getElementById('status-filter').value = '';
+      renderAll();
+    });
+
+    setTab('all');
+    observeReveals();
+
+    // Deep-link support: research.html#failures activates the Failures tab,
+    // research.html#paper-p7 (or #q2, etc.) scrolls to that anchor once rendered.
+    const hash = window.location.hash.replace('#', '');
+    if (hash) {
+      const tabNames = ['papers', 'experiments', 'datasets', 'methods', 'failures'];
+      if (tabNames.includes(hash)) setTab(hash);
+      requestAnimationFrame(() => {
+        const target = document.getElementById(hash);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
+  });
+</script>
+</body>
+</html>

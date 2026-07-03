@@ -1,0 +1,243 @@
+/* ────────────────────────────────────────────────────────────
+   V3 — EDITORIAL LAYER
+   Kills the box/card language site-wide. Content is separated
+   by hairlines and whitespace, not rectangles. Motion gets a
+   blur-settle reveal. Type scales up. Loaded on every page
+   after design-system.css + components.css; uses !important
+   deliberately so it also beats per-page inline <style> blocks.
+   ──────────────────────────────────────────────────────────── */
+
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* ── Type scale up ─────────────────────────────────────────── */
+h1 {
+  font-size: clamp(2.5rem, 6.5vw, 5.25rem) !important;
+  letter-spacing: -0.035em !important;
+}
+
+h2 {
+  font-size: clamp(1.75rem, 4vw, 3rem) !important;
+}
+
+/* ── Boxes die: every card-ish component becomes an editorial
+     entry — hairline above, air below, no radius, no shadow ── */
+.card,
+.paper-card,
+.experiment-card,
+.dataset-card,
+.notebook-entry,
+.research-question,
+.guestbook-entry,
+.investigation-card,
+.finding,
+.notebook-preview,
+.metric-card,
+.method-card,
+.atlas-preview,
+.dataset-row,
+.detail-panel,
+.honesty-note,
+.lab-note,
+.timeline-event,
+.failure-entry,
+.influence-item,
+.principles-list li {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: none !important;
+  border-top: 1px solid var(--border) !important;
+  background: transparent !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  transition: border-color 0.5s var(--ease-snappy),
+              transform 0.5s var(--ease-snappy),
+              opacity 0.5s var(--ease-snappy) !important;
+}
+
+/* Hover: no lift-and-shadow. A slide and an ink change. */
+.card:hover,
+.paper-card:hover,
+.experiment-card:hover,
+.dataset-card:hover,
+.notebook-entry:hover,
+.research-question:hover,
+.guestbook-entry:hover,
+.investigation-card:hover,
+.finding:hover,
+.notebook-preview:hover,
+.metric-card:hover,
+.method-card:hover,
+.dataset-row:hover {
+  transform: translateX(12px) !important;
+  border-top-color: var(--accent) !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+/* Category accents that used to be colored left borders on
+   notebook entries move to the top hairline */
+.notebook-entry[data-category="failure"] { border-top-color: var(--data-amber) !important; }
+.notebook-entry[data-category="finding"] { border-top-color: var(--data-green) !important; }
+
+/* Key-finding block inside paper cards: keep the violet bar,
+   lose the tinted rectangle */
+.paper-card .key-finding {
+  background: transparent !important;
+  border-left: 2px solid var(--accent) !important;
+  border-top: none !important;
+  border-radius: 0 !important;
+  padding-left: var(--space-16) !important;
+}
+
+/* Honesty/lab notes: amber sidebar stays (it means something),
+   gray fill goes */
+.honesty-note,
+.lab-note {
+  border-top: none !important;
+  border-left: 2px solid var(--data-amber) !important;
+  padding-left: var(--space-24) !important;
+}
+
+/* Alt sections lose the gray slab — whitespace does the work */
+section.alt {
+  background: transparent !important;
+}
+
+/* Graph containers: hairline, not a rounded gray box */
+#universe-preview,
+#universe-full {
+  border-radius: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  border-top: 1px solid var(--border) !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+#universe-preview svg,
+#universe-full svg {
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+/* Buttons: rectangles → typographic links with an arrow feel */
+.btn {
+  background: transparent !important;
+  color: var(--ink) !important;
+  border: none !important;
+  border-bottom: 2px solid var(--accent) !important;
+  border-radius: 0 !important;
+  padding: var(--space-8) 2px !important;
+  font-family: var(--font-display) !important;
+  font-size: 1.0625rem !important;
+}
+
+.btn::after {
+  content: ' →';
+  color: var(--accent);
+  transition: padding-left 0.4s var(--ease-snappy);
+}
+
+.btn:hover {
+  transform: none !important;
+  box-shadow: none !important;
+  color: var(--accent) !important;
+}
+
+.btn:hover::after {
+  padding-left: 8px;
+}
+
+.btn.outline {
+  border-bottom-color: var(--border) !important;
+}
+
+.btn.outline:hover {
+  border-bottom-color: var(--accent) !important;
+}
+
+/* Filter pills/tabs: keep them round (round ≠ box) but quiet */
+.tab,
+.filter-btn {
+  border-radius: 100px !important;
+}
+
+/* ── Reveal: settle out of a blur, slight rise. Feels physical. */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  filter: blur(10px);
+  transition: opacity 0.9s var(--ease-snappy),
+              transform 0.9s var(--ease-snappy),
+              filter 0.9s var(--ease-snappy);
+}
+
+.reveal.in {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* ── Hero canvas (index) ───────────────────────────────────── */
+.hero {
+  min-height: 92vh;
+  display: flex;
+  align-items: center;
+}
+
+#hero-3d {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero::after {
+  /* white fog so the lattice recedes behind the words */
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 90% 70% at 28% 45%, rgba(255,255,255,0.94) 0%, rgba(255,255,255,0.55) 55%, rgba(255,255,255,0) 100%);
+}
+
+.hero .hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* ── Big editorial index numerals for section headers ─────── */
+.section-header {
+  text-align: left !important;
+}
+
+.section-header .mono {
+  color: var(--accent) !important;
+}
+
+/* ── Footer: lighter, no slab ──────────────────────────────── */
+footer {
+  background: transparent !important;
+  border-top: 1px solid var(--ink) !important;
+}
+
+@media (max-width: 768px) {
+  .hero { min-height: 70vh; }
+  .card:hover, .paper-card:hover, .experiment-card:hover,
+  .dataset-card:hover, .notebook-entry:hover, .research-question:hover,
+  .guestbook-entry:hover, .investigation-card:hover, .finding:hover,
+  .notebook-preview:hover, .metric-card:hover, .method-card:hover,
+  .dataset-row:hover { transform: none !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { filter: none; transform: none; opacity: 1; }
+}

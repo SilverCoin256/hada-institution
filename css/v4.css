@@ -1,0 +1,412 @@
+/* ────────────────────────────────────────────────────────────
+   V4 — UNORTHODOX EDITORIAL LAYER
+   Broadsheet/ledger presentation: giant index numerals, date
+   rails, pull-quotes, generated plates, film. Loaded after
+   v3.css on every page. The node-graph language is retired.
+   ──────────────────────────────────────────────────────────── */
+
+/* ── Giant ledger numerals on the research archive ─────────── */
+#papers-grid {
+  grid-template-columns: 1fr !important;
+  gap: 0 !important;
+  counter-reset: papers;
+}
+
+#papers-grid .paper-card {
+  counter-increment: papers;
+  display: grid !important;
+  grid-template-columns: 140px 1fr;
+  gap: var(--space-24);
+  padding-top: var(--space-48) !important;
+  padding-bottom: var(--space-48) !important;
+  position: relative;
+}
+
+#papers-grid .paper-card::before {
+  content: counter(papers, decimal-leading-zero);
+  font-family: var(--font-display);
+  font-size: 4.5rem;
+  font-weight: 700;
+  line-height: 0.9;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--border);
+  transition: all 0.5s var(--ease-snappy);
+  grid-row: 1 / span 20;
+}
+
+#papers-grid .paper-card:hover::before {
+  color: var(--accent);
+  -webkit-text-stroke: 0px transparent;
+}
+
+#papers-grid .paper-card > * {
+  grid-column: 2;
+}
+
+/* Experiments / datasets / methods keep hairline rows but go
+   single-column ledger too — no side-by-side card grid */
+.card-grid {
+  grid-template-columns: 1fr !important;
+  gap: 0 !important;
+}
+
+/* ── Notebook: date rail ledger ────────────────────────────── */
+.entry-list .notebook-entry,
+.notebook-entry {
+  display: grid !important;
+  grid-template-columns: 170px 1fr;
+  column-gap: var(--space-32);
+  padding-top: var(--space-32) !important;
+  padding-bottom: var(--space-32) !important;
+}
+
+.notebook-entry .date {
+  grid-column: 1;
+  grid-row: 1 / span 20;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem !important;
+  color: var(--ink) !important;
+  letter-spacing: 0.05em;
+}
+
+.notebook-entry > *:not(.date) {
+  grid-column: 2;
+}
+
+/* ── Index page: standing-questions ledger ─────────────────── */
+.q-ledger {
+  counter-reset: rq;
+}
+
+.q-row {
+  counter-increment: rq;
+  display: grid;
+  grid-template-columns: 150px 1fr 340px;
+  gap: var(--space-32);
+  align-items: start;
+  padding: var(--space-48) 0;
+  border-top: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.5s var(--ease-snappy);
+  position: relative;
+}
+
+.q-row::before {
+  content: counter(rq, decimal-leading-zero);
+  font-family: var(--font-display);
+  font-size: 5.5rem;
+  font-weight: 700;
+  line-height: 0.85;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--border);
+  transition: all 0.5s var(--ease-snappy);
+}
+
+.q-row:hover {
+  transform: translateX(12px);
+  border-top-color: var(--accent);
+}
+
+.q-row:hover::before {
+  color: var(--accent);
+  -webkit-text-stroke: 0px transparent;
+}
+
+.q-row h3 {
+  font-size: clamp(1.375rem, 2.6vw, 2.125rem);
+  line-height: 1.15;
+  margin-bottom: var(--space-12);
+  letter-spacing: -0.02em;
+}
+
+.q-row .q-sub {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: block;
+  margin-bottom: var(--space-8);
+}
+
+.q-row .q-desc {
+  font-size: 0.9375rem;
+  color: var(--ink-secondary);
+  max-width: 60ch;
+  margin: 0;
+}
+
+.q-row figure {
+  margin: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: scale(0.96) rotate(0.5deg);
+  transition: all 0.7s var(--ease-snappy);
+}
+
+.q-row:hover figure {
+  opacity: 1;
+  transform: scale(1) rotate(0);
+}
+
+.q-row figure img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── Investigations: asymmetric editorial rows ─────────────── */
+.inv-ledger {
+  counter-reset: inv;
+}
+
+.inv-row {
+  counter-increment: inv;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: var(--space-48);
+  padding: var(--space-64) 0;
+  border-top: 1px solid var(--border);
+  align-items: start;
+}
+
+.inv-row:nth-child(even) {
+  grid-template-columns: 1fr 260px;
+}
+
+.inv-row:nth-child(even) figure {
+  order: 2;
+}
+
+.inv-row figure {
+  margin: 0;
+}
+
+.inv-row figure img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  display: block;
+  transition: transform 1.2s var(--ease-snappy);
+}
+
+.inv-row:hover figure img {
+  transform: scale(1.04);
+}
+
+.inv-row .inv-num {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  display: block;
+  margin-bottom: var(--space-16);
+}
+
+.inv-row h3 {
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-16);
+}
+
+.inv-row p {
+  font-size: 1rem;
+  color: var(--ink-secondary);
+  max-width: 58ch;
+}
+
+/* ── Findings as pull-quotes ───────────────────────────────── */
+.pull-findings {
+  display: grid;
+  gap: 0;
+}
+
+.pull-quote {
+  padding: var(--space-64) 0;
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 1fr;
+  max-width: 900px;
+}
+
+.pull-quote .pq-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-16);
+}
+
+.pull-quote blockquote {
+  font-family: var(--font-display);
+  font-size: clamp(1.375rem, 2.8vw, 2.25rem);
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--space-16);
+  border-left: 3px solid var(--accent);
+  padding-left: var(--space-32);
+}
+
+.pull-quote p {
+  font-size: 0.9375rem;
+  color: var(--ink-secondary);
+  max-width: 60ch;
+  padding-left: calc(var(--space-32) + 3px);
+}
+
+.pull-quote:nth-child(2) { margin-left: 8%; }
+.pull-quote:nth-child(3) { margin-left: 16%; }
+
+/* ── Notebook wire (index): date rail ledger ───────────────── */
+.wire {
+  border-top: 1px solid var(--ink);
+}
+
+.wire-entry {
+  display: grid;
+  grid-template-columns: 170px 110px 1fr;
+  gap: var(--space-24);
+  padding: var(--space-24) 0;
+  border-bottom: 1px solid var(--border);
+  align-items: baseline;
+  transition: all 0.4s var(--ease-snappy);
+}
+
+.wire-entry:hover {
+  transform: translateX(12px);
+}
+
+.wire-entry .w-date {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.05em;
+}
+
+.wire-entry .w-cat {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.wire-entry .w-cat.failure { color: var(--data-amber); }
+.wire-entry .w-cat.finding { color: var(--data-green); }
+.wire-entry .w-cat.observation { color: var(--ink-secondary); }
+
+.wire-entry h4 {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  margin-bottom: var(--space-8);
+}
+
+.wire-entry p {
+  font-size: 0.9375rem;
+  color: var(--ink-secondary);
+  margin: 0;
+  max-width: 68ch;
+}
+
+/* ── Film / plate treatment ────────────────────────────────── */
+.film {
+  width: 100%;
+  display: block;
+}
+
+.plate-band {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: var(--space-64);
+  align-items: center;
+  padding: var(--space-64) 0;
+  border-top: 1px solid var(--border);
+}
+
+.plate-band img {
+  width: 100%;
+  display: block;
+}
+
+/* Plates gallery (lab) */
+.plates {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-48) var(--space-32);
+}
+
+.plate {
+  margin: 0;
+}
+
+.plate img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  display: block;
+  transition: transform 1.2s var(--ease-snappy);
+}
+
+.plate:hover img {
+  transform: scale(1.03);
+}
+
+.plate figcaption {
+  padding-top: var(--space-12);
+  border-top: 1px solid var(--ink);
+  margin-top: var(--space-16);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-secondary);
+}
+
+.plate figcaption .pl-num {
+  color: var(--accent);
+  margin-right: var(--space-8);
+}
+
+/* ── Hero video ────────────────────────────────────────────── */
+#hero-film {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.45;
+}
+
+/* stronger wash than v3's radial fog: keep the ink visible at the
+   edges, keep the words on near-white */
+.hero::after {
+  background:
+    linear-gradient(to bottom, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.2) 55%, rgba(255,255,255,1) 100%),
+    radial-gradient(ellipse 95% 80% at 30% 45%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.6) 55%, rgba(255,255,255,0.1) 100%) !important;
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .q-row { grid-template-columns: 80px 1fr; }
+  .q-row figure { display: none; }
+  .q-row::before { font-size: 3rem; }
+  .inv-row, .inv-row:nth-child(even) { grid-template-columns: 1fr; }
+  .inv-row:nth-child(even) figure { order: 0; }
+  .inv-row figure img { aspect-ratio: 16 / 10; }
+  .pull-quote:nth-child(2), .pull-quote:nth-child(3) { margin-left: 0; }
+  .wire-entry { grid-template-columns: 1fr; gap: var(--space-8); }
+  .plates { grid-template-columns: 1fr 1fr; }
+  .plate-band { grid-template-columns: 1fr; }
+  #papers-grid .paper-card { grid-template-columns: 1fr; }
+  #papers-grid .paper-card::before { grid-row: auto; margin-bottom: var(--space-16); }
+  #papers-grid .paper-card > * { grid-column: 1; }
+  .notebook-entry { grid-template-columns: 1fr !important; }
+  .notebook-entry .date { grid-row: auto; margin-bottom: var(--space-8); }
+  .notebook-entry > *:not(.date) { grid-column: 1; }
+}
+
+@media (max-width: 600px) {
+  .plates { grid-template-columns: 1fr; }
+}

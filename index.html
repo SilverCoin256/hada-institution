@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shaurya Gupta — Research in Human-AI Decision-Making</title>
+<meta name="description" content="Independent researcher studying how AI changes human judgment, institutions, labor markets, and governance.">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Stylesheets -->
+<link rel="stylesheet" href="css/design-system.css?v=4">
+<link rel="stylesheet" href="css/components.css?v=4">
+<link rel="stylesheet" href="css/v3.css?v=4">
+<link rel="stylesheet" href="css/v4.css?v=4">
+<style>
+/* Navigation */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+nav {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--space-16) var(--gutter);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+}
+
+.nav-links {
+  display: flex;
+  gap: var(--space-24);
+  font-size: 0.9rem;
+  list-style: none;
+  margin: 0;
+}
+
+.nav-links a {
+  color: var(--ink-secondary);
+  transition: color var(--duration-hover);
+}
+
+.nav-links a:hover {
+  color: var(--accent);
+}
+
+.nav-links a.active {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* Hero */
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 120px 0 140px;
+}
+
+.hero-content {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  position: relative;
+  z-index: 2;
+}
+
+.hero h1 {
+  max-width: 1000px;
+  line-height: 1.08;
+  margin-bottom: var(--space-48);
+}
+
+.hero h1 em {
+  color: var(--accent);
+  font-style: normal;
+  font-weight: 600;
+}
+
+.hero .tagline {
+  font-size: 1.25rem;
+  color: var(--ink-secondary);
+  max-width: 620px;
+  line-height: 1.6;
+  margin-bottom: var(--space-48);
+}
+
+.hero-cta {
+  display: flex;
+  gap: var(--space-32);
+}
+
+/* Section headers — left, numbered, serious */
+.sec-head {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: var(--space-32);
+  align-items: baseline;
+  margin-bottom: var(--space-48);
+  padding-top: var(--space-24);
+  border-top: 2px solid var(--ink);
+}
+
+.sec-head .sec-num {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+
+.sec-head h2 {
+  margin-bottom: var(--space-8);
+}
+
+.sec-head p {
+  color: var(--ink-secondary);
+  font-size: 1rem;
+  max-width: 60ch;
+  margin: 0;
+}
+
+/* Observatory band */
+.plate-band h3 {
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  margin-bottom: var(--space-16);
+}
+
+.plate-band p {
+  color: var(--ink-secondary);
+  max-width: 58ch;
+}
+
+/* Words section: single oversized quote */
+.word-large {
+  max-width: 900px;
+  padding: var(--space-48) 0 var(--space-24);
+}
+
+.word-large blockquote {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.2vw, 2.5rem);
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--space-24);
+}
+
+.word-large .w-who {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--ink-secondary);
+  letter-spacing: 0.05em;
+}
+
+.word-small-row {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  gap: var(--space-24);
+  padding: var(--space-24) 0;
+  border-top: 1px solid var(--border);
+  max-width: 900px;
+}
+
+.word-small-row .w-who {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-secondary);
+  letter-spacing: 0.05em;
+}
+
+.word-small-row p {
+  margin: 0;
+  font-size: 0.9375rem;
+}
+
+/* Footer */
+footer {
+  border-top: 1px solid var(--ink);
+  padding: var(--space-96) 0 var(--space-48);
+  margin-top: var(--space-96);
+}
+
+footer .container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-48);
+  margin-bottom: var(--space-48);
+}
+
+footer h4 {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+  margin-bottom: var(--space-16);
+}
+
+footer a {
+  display: block;
+  padding: var(--space-8) 0;
+  font-size: 0.9375rem;
+  color: var(--ink-secondary);
+  transition: color var(--duration-hover);
+}
+
+footer a:hover {
+  color: var(--accent);
+}
+
+footer .footer-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: var(--space-32);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  color: var(--ink-secondary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hero { padding: 72px 0 96px; }
+  .sec-head { grid-template-columns: 1fr; gap: var(--space-8); }
+  .hero-cta { flex-direction: column; align-items: flex-start; gap: var(--space-16); }
+  .word-small-row { grid-template-columns: 1fr; gap: var(--space-8); }
+  footer .container { grid-template-columns: repeat(2, 1fr); gap: var(--space-32); }
+  footer .footer-bottom { flex-direction: column; gap: var(--space-16); }
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<header>
+  <nav>
+    <div class="nav-brand">Shaurya Gupta</div>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="research.html">Research</a></li>
+      <li><a href="atlas.html">Atlas</a></li>
+      <li><a href="lab.html">Lab</a></li>
+      <li><a href="notebook.html">Notebook</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="about.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+
+  <!-- Hero — violet ink film -->
+  <section class="hero">
+    <video id="hero-film" autoplay muted loop playsinline poster="">
+      <source src="assets/hero-ink.mp4" type="video/mp4">
+    </video>
+    <div class="hero-content">
+      <h1>Institutions were built for <em>human</em> decisions.<br>We are now routing those decisions through <em>machines.</em><br>I study what breaks.</h1>
+      <p class="tagline">
+        Independent researcher working on how AI reshapes human judgment, labor markets, institutions, and governance —
+        through formal models, behavioral experiments, and open research instruments.
+      </p>
+      <div class="hero-cta">
+        <a href="research.html" class="btn">Explore the research</a>
+        <a href="notebook.html" class="btn outline">Read the notebook</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 01 — Standing Questions -->
+  <section>
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="sec-num">SEC. 01 — STANDING QUESTIONS</span>
+        <div>
+          <h2>Six questions organize everything</h2>
+          <p>Every paper, experiment, and dataset on this site answers one of these. Start here, not with the publications list.</p>
+        </div>
+      </div>
+      <div class="q-ledger" id="q-ledger"></div>
+    </div>
+  </section>
+
+  <!-- 02 — Current Investigations -->
+  <section>
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="sec-num">SEC. 02 — ACTIVE WORK</span>
+        <div>
+          <h2>Current investigations</h2>
+          <p>What is being worked on right now, and what state it is honestly in.</p>
+        </div>
+      </div>
+      <div class="inv-ledger">
+        <div class="inv-row reveal">
+          <figure><img src="assets/plate-oversight.png" alt="Editorial plate: an ordered queue of documents receding to a vanishing point, one violet approval stamp above"></figure>
+          <div>
+            <span class="inv-num">INV. 01 — ACCEPTED, ADCAIJ VOL. 15</span>
+            <h3>Oversight saturation</h3>
+            <p>A two-queue model of when institutions substitute ceremonial sign-off for real review — plus SEDI, a metric that detects the substitution from ordinary operational telemetry, without reading a single decision. Validated on 22 months of real GitHub review data.</p>
+            <a href="research.html#paper-p5" class="btn outline">Read the paper</a>
+          </div>
+        </div>
+        <div class="inv-row reveal">
+          <figure><img src="assets/plate-anchoring.png" alt="Editorial plate: a plumb line with a violet weight hanging off-center above a ruled scale"></figure>
+          <div>
+            <span class="inv-num">INV. 02 — DATA COLLECTION</span>
+            <h3>Anchoring asymmetry</h3>
+            <p>Do people anchor on a machine's number the way they anchor on a person's? An 18,000-call audited battery, a failed cross-model replication, a public meta-analysis — and a human study now waiting on ethics approval.</p>
+            <a href="research.html#paper-p11" class="btn outline">See the evidence</a>
+          </div>
+        </div>
+        <div class="inv-row reveal">
+          <figure><img src="assets/plate-measurement.png" alt="Editorial plate: precision calipers measuring a gap between two hairline rules, violet arc marking the distance"></figure>
+          <div>
+            <span class="inv-num">INV. 03 — ACTIVE</span>
+            <h3>Proxy &amp; measurement validity</h3>
+            <p>SEC comment letters, delisting price benchmarks, governance-text coding, ML evaluation metrics — four literatures that quietly treat a proxy as the thing it measures. Checked, case by case, against the primary record. One reversed sign.</p>
+            <a href="research.html#paper-p6" class="btn outline">View the methods</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 — Findings as pull-quotes -->
+  <section>
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="sec-num">SEC. 03 — WHAT THE WORK SHOWS</span>
+        <div>
+          <h2>Three findings, stated plainly</h2>
+        </div>
+      </div>
+      <div class="pull-findings">
+        <div class="pull-quote reveal">
+          <span class="pq-label">Oversight saturation</span>
+          <blockquote>Capacity, not caps, fixes the collapse.</blockquote>
+          <p>Doubling reviewer capacity or halving AI throughput restores review quality to baseline. Raising the quality floor of ceremonial review alone reduces damage — but never eliminates the transition.</p>
+        </div>
+        <div class="pull-quote reveal">
+          <span class="pq-label">Behavioral asymmetry</span>
+          <blockquote>The asymmetry depends on the anchor, not the machine.</blockquote>
+          <p>AI-generated anchors produce contrast rather than assimilation — but only for incidental, comparative anchors under uncertainty. Informative, embedded anchors assimilate, matching the human baseline.</p>
+        </div>
+        <div class="pull-quote reveal">
+          <span class="pq-label">Measurement validity</span>
+          <blockquote>A proxy reversed sign against the regulator's own data.</blockquote>
+          <p>A widely used SEC-oversight proxy, recomputed against the SEC's own reporting-issuer statistics, reverses direction entirely. The proxy is not the thing it proxies for.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 — Notebook wire -->
+  <section>
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="sec-num">SEC. 04 — THE RECORD</span>
+        <div>
+          <h2>From the notebook</h2>
+          <p>Dated entries, written for the record. Failures included, deliberately.</p>
+        </div>
+      </div>
+      <div class="wire" id="wire"></div>
+      <p style="margin-top: var(--space-24);"><a href="notebook.html" class="btn outline">Full journal</a></p>
+    </div>
+  </section>
+
+  <!-- 05 — Observatory -->
+  <section>
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="sec-num">SEC. 05 — INFRASTRUCTURE</span>
+        <div>
+          <h2>Open Institutional Capacity Observatory</h2>
+        </div>
+      </div>
+      <div class="plate-band reveal" style="border-top: none; padding-top: 0;">
+        <div>
+          <h3>Five instruments. Public data. Built to be reused.</h3>
+          <p>QAI, SEDI, Authorization Saturation, Procedural Capacity, and ASI — the program's metrics, released as open-source infrastructure with public datasets, reproducible benchmarks, and reserved replication slots for each paper above.</p>
+          <a href="atlas.html" class="btn">Enter the observatory</a>
+        </div>
+        <img src="assets/plate-institutions.png" alt="Editorial plate: a colonnade of hairline columns, one violet, casting a long violet shadow">
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 — Words -->
+  <section>
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="sec-num">SEC. 06 — FEW GOOD WORDS</span>
+        <div>
+          <h2>From collaborators and reviewers</h2>
+        </div>
+      </div>
+      <div class="word-large reveal">
+        <blockquote>&ldquo;Rare combination of theoretical rigor and shipping speed — he builds the instrument, then writes the paper.&rdquo;</blockquote>
+        <span class="w-who">RESEARCH COLLABORATOR — JOINT EXPERIMENTAL WORK</span>
+      </div>
+      <div class="word-small-row reveal">
+        <span class="w-who">METHODS REVIEWER</span>
+        <p>&ldquo;Asks the uncomfortable methodological questions first. The proxy-validation harness changed how our group codes text data.&rdquo;</p>
+      </div>
+      <div class="word-small-row reveal">
+        <span class="w-who">POLICY ANALYST</span>
+        <p>&ldquo;The observatory is the first academic infrastructure I've used that feels like it was built to be reused, not just published once.&rdquo;</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div>
+      <h4>About</h4>
+      <p>Independent researcher studying how AI reshapes institutions, labor, judgment, and governance.</p>
+    </div>
+    <div>
+      <h4>Work</h4>
+      <a href="research.html">Research</a>
+      <a href="lab.html">Lab</a>
+      <a href="atlas.html">Atlas</a>
+      <a href="notebook.html">Notebook</a>
+    </div>
+    <div>
+      <h4>Elsewhere</h4>
+      <a href="https://github.com/SilverCoin256" target="_blank" rel="noopener">GitHub</a>
+      <a href="#">Google Scholar</a>
+      <a href="https://orcid.org/0009-0001-7642-9247" target="_blank" rel="noopener">ORCID</a>
+      <a href="#">Twitter</a>
+    </div>
+    <div>
+      <h4>Connect</h4>
+      <a href="mailto:shauryaguptaa8@gmail.com">Email</a>
+      <a href="about.html">About</a>
+      <a href="#">CV (PDF)</a>
+      <a href="about.html#contact">Contact</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© 2026 Shaurya Gupta. All work public and documented. Plates and film generated for this site; all research content real.</span>
+    <span style="font-family: var(--font-mono);">SET IN SPACE GROTESK · INTER · ROBOTO MONO</span>
+  </div>
+</footer>
+
+<!-- Scripts -->
+<script>
+fetch('data/sample-data.json')
+  .then(r => r.json())
+  .then(data => {
+    // Standing questions ledger — plate mapped per question
+    const plates = {
+      q1: 'assets/plate-institutions.png',
+      q2: 'assets/plate-oversight.png',
+      q3: 'assets/plate-anchoring.png',
+      q4: 'assets/plate-measurement.png',
+      q5: 'assets/plate-labor.png',
+      q6: 'assets/plate-governance.png'
+    };
+    document.getElementById('q-ledger').innerHTML = data.researchQuestions.map(q => `
+      <div class="q-row reveal" onclick="window.location.href='research.html#${q.id}'">
+        <div></div>
+        <div>
+          <span class="q-sub">${q.subtitle}</span>
+          <h3>${q.title}</h3>
+          <p class="q-desc">${q.description}</p>
+        </div>
+        <figure><img src="${plates[q.id] || ''}" alt="" loading="lazy"></figure>
+      </div>
+    `).join('');
+
+    // Notebook wire — 4 most recent
+    const recent = [...data.notebookEntries]
+      .sort((a, b) => new Date(b.date) - new Date(a.date))
+      .slice(0, 4);
+    document.getElementById('wire').innerHTML = recent.map(nb => `
+      <div class="wire-entry reveal">
+        <span class="w-date">${new Date(nb.date + 'T00:00:00').toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase()}</span>
+        <span class="w-cat ${nb.category}">${nb.category}</span>
+        <div>
+          <h4>${nb.title}</h4>
+          <p>${nb.body}</p>
+        </div>
+      </div>
+    `).join('');
+
+    // Reveal animations
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+  });
+</script>
+</body>
+</html>

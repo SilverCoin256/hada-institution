@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lab — Shaurya Gupta</title>
+<meta name="description" content="The visual wing of the research program — commissioned plates, film, and interactive pieces in progress.">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Stylesheets -->
+<link rel="stylesheet" href="css/design-system.css?v=4">
+<link rel="stylesheet" href="css/components.css?v=4">
+<link rel="stylesheet" href="css/v3.css?v=4">
+<link rel="stylesheet" href="css/v4.css?v=4">
+<style>
+/* Navigation (matches index.html) */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+nav {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--space-16) var(--gutter);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+}
+
+.nav-links {
+  display: flex;
+  gap: var(--space-24);
+  font-size: 0.9rem;
+  list-style: none;
+  margin: 0;
+}
+
+.nav-links a {
+  color: var(--ink-secondary);
+  transition: color var(--duration-hover);
+}
+
+.nav-links a:hover {
+  color: var(--accent);
+}
+
+.nav-links a.active {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* Page header */
+.page-header {
+  padding: 96px 0 var(--space-48);
+}
+
+.page-header .eyebrow {
+  display: block;
+  margin-bottom: var(--space-16);
+}
+
+.page-header h1 {
+  max-width: 800px;
+  margin-bottom: var(--space-16);
+}
+
+.page-header .subtitle {
+  font-size: 1.0625rem;
+  color: var(--ink-secondary);
+  max-width: 680px;
+  line-height: 1.6;
+}
+
+/* Film section */
+.film-wrap {
+  border-top: 2px solid var(--ink);
+  padding-top: var(--space-16);
+}
+
+.film-caption {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-secondary);
+  padding: var(--space-12) 0 var(--space-24);
+}
+
+/* Section heads (match index) */
+.sec-head {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: var(--space-32);
+  align-items: baseline;
+  margin-bottom: var(--space-48);
+  padding-top: var(--space-24);
+  border-top: 2px solid var(--ink);
+}
+
+.sec-head .sec-num {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+
+.sec-head h2 { margin-bottom: var(--space-8); }
+
+.sec-head p {
+  color: var(--ink-secondary);
+  font-size: 1rem;
+  max-width: 60ch;
+  margin: 0;
+}
+
+/* Footer */
+footer {
+  border-top: 1px solid var(--ink);
+  padding: var(--space-96) 0 var(--space-48);
+  margin-top: var(--space-96);
+}
+
+footer .container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-48);
+  margin-bottom: var(--space-48);
+}
+
+footer h4 {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+  margin-bottom: var(--space-16);
+}
+
+footer a {
+  display: block;
+  padding: var(--space-8) 0;
+  font-size: 0.9375rem;
+  color: var(--ink-secondary);
+  transition: color var(--duration-hover);
+}
+
+footer a:hover { color: var(--accent); }
+
+footer .footer-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: var(--space-32);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  color: var(--ink-secondary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .page-header { padding: 64px 0 var(--space-32); }
+  .sec-head { grid-template-columns: 1fr; gap: var(--space-8); }
+  footer .container { grid-template-columns: repeat(2, 1fr); gap: var(--space-32); }
+  footer .footer-bottom { flex-direction: column; gap: var(--space-16); }
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<header>
+  <nav>
+    <div class="nav-brand">Shaurya Gupta</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="research.html">Research</a></li>
+      <li><a href="atlas.html">Atlas</a></li>
+      <li><a href="lab.html" class="active">Lab</a></li>
+      <li><a href="notebook.html">Notebook</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="about.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+
+  <!-- Header -->
+  <section class="page-header">
+    <div class="container">
+      <span class="mono eyebrow">The visual wing</span>
+      <h1>Lab</h1>
+      <p class="subtitle">Each standing question in the research program has a plate — a commissioned visual argument, not decoration. Film and interactive pieces live here as they're produced.</p>
+    </div>
+  </section>
+
+  <!-- Film -->
+  <section style="padding-top: 0;">
+    <div class="container">
+      <div class="film-wrap reveal">
+        <video class="film" autoplay muted loop playsinline>
+          <source src="assets/hero-ink.mp4" type="video/mp4">
+        </video>
+        <div class="film-caption">
+          <span>FILM 01 — DISPERSION. A DECISION ENTERING AN INSTITUTION.</span>
+          <span>8s · LOOP · GENERATED</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Plates -->
+  <section>
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="sec-num">PLATES I–VI</span>
+        <div>
+          <h2>One plate per standing question</h2>
+          <p>Click any plate to open the question's research in the archive.</p>
+        </div>
+      </div>
+      <div class="plates">
+        <figure class="plate reveal">
+          <a href="research.html#q1"><img src="assets/plate-institutions.png" alt="A colonnade of hairline columns, one violet, casting a long violet shadow"></a>
+          <figcaption><span class="pl-num">PL. I</span> WHAT HAPPENS WHEN INSTITUTIONS DELEGATE JUDGMENT TO AI</figcaption>
+        </figure>
+        <figure class="plate reveal">
+          <a href="research.html#q2"><img src="assets/plate-oversight.png" alt="An ordered queue of documents receding to a vanishing point, one violet approval stamp above"></a>
+          <figcaption><span class="pl-num">PL. II</span> WHERE HUMAN OVERSIGHT SATURATES — AND HOW TO SEE IT</figcaption>
+        </figure>
+        <figure class="plate reveal">
+          <a href="research.html#q3"><img src="assets/plate-anchoring.png" alt="A plumb line with a violet weight hanging off-center above a ruled scale"></a>
+          <figcaption><span class="pl-num">PL. III</span> DO MACHINE NUMBERS ANCHOR LIKE HUMAN ONES</figcaption>
+        </figure>
+        <figure class="plate reveal">
+          <a href="research.html#q4"><img src="assets/plate-measurement.png" alt="Precision calipers measuring a gap between two hairline rules, violet arc marking the distance"></a>
+          <figcaption><span class="pl-num">PL. IV</span> CAN THE PROXIES BE TRUSTED</figcaption>
+        </figure>
+        <figure class="plate reveal">
+          <a href="research.html#q5"><img src="assets/plate-labor.png" alt="A balanced wire mobile holding small paper rectangles, one violet"></a>
+          <figcaption><span class="pl-num">PL. V</span> DOES AI CHANGE LABOR INSTITUTIONS THE SAME WAY</figcaption>
+        </figure>
+        <figure class="plate reveal">
+          <a href="research.html#q6"><img src="assets/plate-governance.png" alt="Nine thin flags in a row, each folded at a different angle, the middle one violet"></a>
+          <figcaption><span class="pl-num">PL. VI</span> WHY NATIONAL AI STRATEGIES DIVERGE</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- Provenance note -->
+  <section>
+    <div class="container">
+      <div class="lab-note reveal">
+        <p><strong>Provenance:</strong> the plates and film are generated imagery, art-directed for this site and disclosed as such — the research they illustrate is real, documented, and linked. Interactive simulations and visual essays are the next additions here; they'll appear when they exist, not before.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div>
+      <h4>About</h4>
+      <p>Independent researcher studying how AI reshapes institutions, labor, judgment, and governance.</p>
+    </div>
+    <div>
+      <h4>Work</h4>
+      <a href="research.html">Research</a>
+      <a href="lab.html">Lab</a>
+      <a href="atlas.html">Atlas</a>
+      <a href="notebook.html">Notebook</a>
+    </div>
+    <div>
+      <h4>Elsewhere</h4>
+      <a href="https://github.com/SilverCoin256" target="_blank" rel="noopener">GitHub</a>
+      <a href="#">Google Scholar</a>
+      <a href="https://orcid.org/0009-0001-7642-9247" target="_blank" rel="noopener">ORCID</a>
+      <a href="#">Twitter</a>
+    </div>
+    <div>
+      <h4>Connect</h4>
+      <a href="mailto:shauryaguptaa8@gmail.com">Email</a>
+      <a href="about.html">About</a>
+      <a href="#">CV (PDF)</a>
+      <a href="about.html#contact">Contact</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© 2026 Shaurya Gupta. All work public and documented. Plates and film generated for this site; all research content real.</span>
+    <span style="font-family: var(--font-mono);">SET IN SPACE GROTESK · INTER · ROBOTO MONO</span>
+  </div>
+</footer>
+
+<script>
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('in');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
