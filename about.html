@@ -11,10 +11,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <!-- Stylesheets -->
-<link rel="stylesheet" href="css/design-system.css?v=4">
-<link rel="stylesheet" href="css/components.css?v=4">
-<link rel="stylesheet" href="css/v3.css?v=4">
-<link rel="stylesheet" href="css/v4.css?v=4">
+<link rel="stylesheet" href="css/design-system.css?v=5">
+<link rel="stylesheet" href="css/components.css?v=5">
+<link rel="stylesheet" href="css/v3.css?v=5">
+<link rel="stylesheet" href="css/v4.css?v=5">
+<link rel="stylesheet" href="css/v5.css?v=5">
 <style>
 /* Navigation */
 header {
@@ -314,6 +315,16 @@ footer .footer-bottom {
     </div>
   </section>
 
+  <!-- Position / affiliation -->
+  <section style="padding-top: var(--space-32); padding-bottom: var(--space-32);">
+    <div class="container">
+      <div class="prose reveal" style="border-top: 2px solid var(--ink); padding-top: var(--space-24);">
+        <p style="margin-bottom: var(--space-8);"><strong>Research assistant</strong>, University of Oxford — Saïd Business School.</p><!-- TODO before wide sharing: confirm exact role title, group/PI name, and dates; adjust wording to match what you're cleared to state -->
+        <p style="margin-bottom: 0;"><strong>Peer-reviewed:</strong> one paper accepted at ADCAIJ (Advances in Distributed Computing and Artificial Intelligence Journal, Universidad de Salamanca, Vol. 15, 2026). Everything else on this site is a working paper, under review, in data collection, or openly retired — the <a href="research.html#failures">failures record</a> says which.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- Research Mission -->
   <section>
     <div class="container">
@@ -363,12 +374,13 @@ footer .footer-bottom {
         <span class="mono">04 — Principles</span>
         <h2>Principles</h2>
       </div>
+      <p class="prose" style="margin-bottom: var(--space-32); color: var(--ink-secondary); max-width: 62ch;">These aren't mottos — each one is here because I got it wrong first. The rule is what I do differently now.</p>
       <ol class="principles-list">
-        <li class="reveal"><span class="num">01</span><span>A falsified hypothesis is a result, not a failure to hide.</span></li>
-        <li class="reveal"><span class="num">02</span><span>If a number can't be traced to a pipeline, it doesn't go in a figure.</span></li>
-        <li class="reveal"><span class="num">03</span><span>Audit your own metric before a reviewer does.</span></li>
-        <li class="reveal"><span class="num">04</span><span>A proxy is not the thing it proxies for until you've checked.</span></li>
-        <li class="reveal"><span class="num">05</span><span>Infrastructure should outlive the paper it was built for.</span></li>
+        <li class="reveal"><span class="num">01</span><span>Keep the failures in. The regulatory-debt thesis died against the SEC's own data — so that failure, not a salvaged version of the claim, is what the paper reports.</span></li>
+        <li class="reveal"><span class="num">02</span><span>Trace every figure to a pipeline. A reviewer once caught illustrative constants standing in for real model output in a fairness audit; now no number reaches a figure unless it re-computes from raw data.</span></li>
+        <li class="reveal"><span class="num">03</span><span>Audit your own metric before a reviewer does. A self-audit found an oversight metric was validated against a process that shared its assumptions — circular — so I rebuilt the validation on non-circular data.</span></li>
+        <li class="reveal"><span class="num">04</span><span>Check the proxy against the primary record. Recomputing one SEC-oversight proxy against the regulator's own counts reversed its sign; I now pull the primary series before trusting any proxy.</span></li>
+        <li class="reveal"><span class="num">05</span><span>Build the infrastructure to outlive the paper. The five metrics and datasets are released so the next question doesn't rebuild the same scraping and provenance from scratch.</span></li>
       </ol>
     </div>
   </section>

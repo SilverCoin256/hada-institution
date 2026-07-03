@@ -11,10 +11,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <!-- Stylesheets -->
-<link rel="stylesheet" href="css/design-system.css?v=4">
-<link rel="stylesheet" href="css/components.css?v=4">
-<link rel="stylesheet" href="css/v3.css?v=4">
-<link rel="stylesheet" href="css/v4.css?v=4">
+<link rel="stylesheet" href="css/design-system.css?v=5">
+<link rel="stylesheet" href="css/components.css?v=5">
+<link rel="stylesheet" href="css/v3.css?v=5">
+<link rel="stylesheet" href="css/v4.css?v=5">
+<link rel="stylesheet" href="css/v5.css?v=5">
 <style>
 /* Navigation */
 header {
@@ -264,104 +265,98 @@ footer .footer-bottom {
 
 <main>
 
-  <!-- Hero — violet ink film -->
+  <!-- Hero — plain identity -->
   <section class="hero">
-    <video id="hero-film" autoplay muted loop playsinline poster="">
-      <source src="assets/hero-ink.mp4" type="video/mp4">
-    </video>
     <div class="hero-content">
-      <h1>Institutions were built for <em>human</em> decisions.<br>We are now routing those decisions through <em>machines.</em><br>I study what breaks.</h1>
+      <p class="id-line">SHAURYA GUPTA · INDEPENDENT RESEARCHER</p>
+      <h1>Oversight capacity in AI-mediated institutions.</h1>
       <p class="tagline">
-        Independent researcher working on how AI reshapes human judgment, labor markets, institutions, and governance —
-        through formal models, behavioral experiments, and open research instruments.
+        I build formal models of what happens when human review sits inside an AI decision pipeline,
+        and test them against public administrative and repository data. Work in progress, documented as it goes —
+        including the parts that failed.
       </p>
-      <div class="hero-cta">
-        <a href="research.html" class="btn">Explore the research</a>
-        <a href="notebook.html" class="btn outline">Read the notebook</a>
+      <div class="id-anchor">
+        <span class="a-item"><strong>Research assistant</strong>, University of Oxford — Saïd Business School</span><!-- TODO before wide sharing: confirm exact role title, group/PI name, and dates; adjust wording to match what you're cleared to state -->
+        <span class="a-item"><strong>One paper accepted</strong> — ADCAIJ, Universidad de Salamanca (Vol. 15, 2026)</span>
+        <span class="a-item"><strong>Everything else</strong> in progress, under review, or openly retired — see the <a href="notebook.html">notebook</a></span>
+      </div>
+      <div class="hero-cta" style="margin-top: var(--space-32);">
+        <a href="research.html" class="btn">Read the research</a>
+        <a href="notebook.html" class="btn outline">Open the notebook</a>
       </div>
     </div>
   </section>
 
-  <!-- 01 — Standing Questions -->
+  <!-- Flagship: accepted paper + real figure -->
   <section>
     <div class="container">
       <div class="sec-head reveal">
-        <span class="sec-num">SEC. 01 — STANDING QUESTIONS</span>
+        <span class="sec-num">SEC. 01 — FLAGSHIP RESULT</span>
         <div>
-          <h2>Six questions organize everything</h2>
-          <p>Every paper, experiment, and dataset on this site answers one of these. Start here, not with the publications list.</p>
+          <h2>Oversight saturation leaves a signature in ordinary telemetry</h2>
+          <p>The one peer-reviewed, accepted result — and the real data behind it. SEDI (State-Estimation Degradation Index) measures oversight quality from boundary telemetry alone — timestamps, queue depth, dispute rates — without reading a single decision under review.</p>
+        </div>
+      </div>
+
+      <div class="figure-block reveal">
+        <div class="fig-head">
+          <span class="fig-title">Fig. — langchain review latency, 22 months of pull-request telemetry</span>
+          <span class="fig-meta">4 REPOS · scikit-learn · pandas · transformers · langchain</span>
+        </div>
+        <canvas id="sedi-canvas"></canvas>
+        <figcaption>
+          As load on langchain surged ~33× over eight months, median review latency collapsed from 91h to 8.5h — the saturation signature SEDI is built to catch, months before it would surface in any content-based audit.
+          <strong>Endpoints (91h → 8.5h, 33× load) are the values reported in the paper; the curve between them is illustrative — the full monthly series and the SEDI computation are in the <a href="research.html#paper-p5">paper</a> and the <a href="https://github.com/SilverCoin256/oversight-saturation-sim" target="_blank" rel="noopener">code</a>.</strong>
+        </figcaption>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 — Standing Questions -->
+  <section>
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="sec-num">SEC. 02 — STANDING QUESTIONS</span>
+        <div>
+          <h2>The questions the work keeps returning to</h2>
+          <p>Most of what follows is an attempt at one of these. Start with the question, not the publication list.</p>
         </div>
       </div>
       <div class="q-ledger" id="q-ledger"></div>
     </div>
   </section>
 
-  <!-- 02 — Current Investigations -->
+  <!-- 03 — Current work -->
   <section>
     <div class="container">
       <div class="sec-head reveal">
-        <span class="sec-num">SEC. 02 — ACTIVE WORK</span>
+        <span class="sec-num">SEC. 03 — CURRENT WORK</span>
         <div>
-          <h2>Current investigations</h2>
-          <p>What is being worked on right now, and what state it is honestly in.</p>
+          <h2>What's open right now, and its honest state</h2>
+          <p>Three active threads beyond the flagship. Each links to the actual paper or data, and each names where it currently stands — including what isn't done.</p>
         </div>
       </div>
-      <div class="inv-ledger">
-        <div class="inv-row reveal">
-          <figure><img src="assets/plate-oversight.png" alt="Editorial plate: an ordered queue of documents receding to a vanishing point, one violet approval stamp above"></figure>
-          <div>
-            <span class="inv-num">INV. 01 — ACCEPTED, ADCAIJ VOL. 15</span>
-            <h3>Oversight saturation</h3>
-            <p>A two-queue model of when institutions substitute ceremonial sign-off for real review — plus SEDI, a metric that detects the substitution from ordinary operational telemetry, without reading a single decision. Validated on 22 months of real GitHub review data.</p>
-            <a href="research.html#paper-p5" class="btn outline">Read the paper</a>
+      <div class="results">
+        <div class="result-row reveal">
+          <div class="r-label">Anchoring asymmetry<br>Data collection</div>
+          <div class="r-body">
+            Do people anchor on a machine's proposed number the way they anchor on a person's? An <span class="num">18,000-call</span> audited model battery is complete; the cross-model replication <span class="num">failed outright</span> (the effect didn't hold on the second model); a public meta-analysis gives external validity. The human study is built and waiting on ethics approval — <em>no human data yet</em>.
+            <span class="r-caveat"><a href="research.html#paper-p11">Anchoring program →</a></span>
           </div>
         </div>
-        <div class="inv-row reveal">
-          <figure><img src="assets/plate-anchoring.png" alt="Editorial plate: a plumb line with a violet weight hanging off-center above a ruled scale"></figure>
-          <div>
-            <span class="inv-num">INV. 02 — DATA COLLECTION</span>
-            <h3>Anchoring asymmetry</h3>
-            <p>Do people anchor on a machine's number the way they anchor on a person's? An 18,000-call audited battery, a failed cross-model replication, a public meta-analysis — and a human study now waiting on ethics approval.</p>
-            <a href="research.html#paper-p11" class="btn outline">See the evidence</a>
+        <div class="result-row reveal">
+          <div class="r-label">Measurement validity<br>Active</div>
+          <div class="r-body">
+            Four literatures quietly treat a proxy as the thing it measures. Recomputing one common SEC-oversight proxy against the SEC's own reporting-issuer counts, it <span class="num">reversed sign</span>. That result killed my original "regulatory-debt" thesis; the paper is now about the validation method, not the thesis.
+            <span class="r-caveat"><a href="research.html#paper-p6">Proxy-validation work →</a> · <a href="notebook.html">how the thesis died →</a></span>
           </div>
         </div>
-        <div class="inv-row reveal">
-          <figure><img src="assets/plate-measurement.png" alt="Editorial plate: precision calipers measuring a gap between two hairline rules, violet arc marking the distance"></figure>
-          <div>
-            <span class="inv-num">INV. 03 — ACTIVE</span>
-            <h3>Proxy &amp; measurement validity</h3>
-            <p>SEC comment letters, delisting price benchmarks, governance-text coding, ML evaluation metrics — four literatures that quietly treat a proxy as the thing it measures. Checked, case by case, against the primary record. One reversed sign.</p>
-            <a href="research.html#paper-p6" class="btn outline">View the methods</a>
+        <div class="result-row reveal">
+          <div class="r-label">Authorization saturation<br>Working paper</div>
+          <div class="r-body">
+            A coupled two-queue model of the point where institutions swap slow substantive review for fast sign-off. In simulation, doubling reviewer capacity or halving AI throughput returns quality to baseline; raising the quality floor of fast sign-off <em>reduces</em> the damage but never removes the tipping point.
+            <span class="r-caveat"><a href="research.html#paper-p4">Model + simulation →</a></span>
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 03 — Findings as pull-quotes -->
-  <section>
-    <div class="container">
-      <div class="sec-head reveal">
-        <span class="sec-num">SEC. 03 — WHAT THE WORK SHOWS</span>
-        <div>
-          <h2>Three findings, stated plainly</h2>
-        </div>
-      </div>
-      <div class="pull-findings">
-        <div class="pull-quote reveal">
-          <span class="pq-label">Oversight saturation</span>
-          <blockquote>Capacity, not caps, fixes the collapse.</blockquote>
-          <p>Doubling reviewer capacity or halving AI throughput restores review quality to baseline. Raising the quality floor of ceremonial review alone reduces damage — but never eliminates the transition.</p>
-        </div>
-        <div class="pull-quote reveal">
-          <span class="pq-label">Behavioral asymmetry</span>
-          <blockquote>The asymmetry depends on the anchor, not the machine.</blockquote>
-          <p>AI-generated anchors produce contrast rather than assimilation — but only for incidental, comparative anchors under uncertainty. Informative, embedded anchors assimilate, matching the human baseline.</p>
-        </div>
-        <div class="pull-quote reveal">
-          <span class="pq-label">Measurement validity</span>
-          <blockquote>A proxy reversed sign against the regulator's own data.</blockquote>
-          <p>A widely used SEC-oversight proxy, recomputed against the SEC's own reporting-issuer statistics, reverses direction entirely. The proxy is not the thing it proxies for.</p>
         </div>
       </div>
     </div>
@@ -374,54 +369,32 @@ footer .footer-bottom {
         <span class="sec-num">SEC. 04 — THE RECORD</span>
         <div>
           <h2>From the notebook</h2>
-          <p>Dated entries, written for the record. Failures included, deliberately.</p>
+          <p>Dated entries, written as the work happened — findings, observations, and the failures kept in on purpose.</p>
         </div>
       </div>
       <div class="wire" id="wire"></div>
-      <p style="margin-top: var(--space-24);"><a href="notebook.html" class="btn outline">Full journal</a></p>
+      <p style="margin-top: var(--space-24);"><a href="notebook.html" class="btn outline">Full notebook</a></p>
     </div>
   </section>
 
-  <!-- 05 — Observatory -->
+  <!-- 05 — Dataset -->
   <section>
     <div class="container">
       <div class="sec-head reveal">
-        <span class="sec-num">SEC. 05 — INFRASTRUCTURE</span>
+        <span class="sec-num">SEC. 05 — SHARED DATA</span>
         <div>
-          <h2>Open Institutional Capacity Observatory</h2>
+          <h2>A small open dataset behind the papers</h2>
+          <p>Not a platform, not a dashboard — a modest, versioned collection of public data and five metrics I reuse across this work, so the scraping and provenance don't get rebuilt every paper.</p>
         </div>
       </div>
-      <div class="plate-band reveal" style="border-top: none; padding-top: 0;">
-        <div>
-          <h3>Five instruments. Public data. Built to be reused.</h3>
-          <p>QAI, SEDI, Authorization Saturation, Procedural Capacity, and ASI — the program's metrics, released as open-source infrastructure with public datasets, reproducible benchmarks, and reserved replication slots for each paper above.</p>
-          <a href="atlas.html" class="btn">Enter the observatory</a>
+      <div class="results" style="border-top: 1px solid var(--border);">
+        <div class="result-row reveal">
+          <div class="r-label">Open Institutional<br>Capacity Observatory</div>
+          <div class="r-body">
+            Five metrics — QAI, SEDI, Authorization Saturation, Procedural Capacity, ASI — over public pilot tables (EOIR, USCIS, CFPB, SEC), MIT-licensed, <span class="num">v1.0.0-rc1</span>. Two candidate sources (SSA, Meta snapshots) were <em>cut</em> after failing a retrieval audit; there is no leaderboard yet, on purpose.
+            <span class="r-caveat"><a href="atlas.html">What's in it →</a> · <a href="https://github.com/SilverCoin256" target="_blank" rel="noopener">Code →</a></span>
+          </div>
         </div>
-        <img src="assets/plate-institutions.png" alt="Editorial plate: a colonnade of hairline columns, one violet, casting a long violet shadow">
-      </div>
-    </div>
-  </section>
-
-  <!-- 06 — Words -->
-  <section>
-    <div class="container">
-      <div class="sec-head reveal">
-        <span class="sec-num">SEC. 06 — FEW GOOD WORDS</span>
-        <div>
-          <h2>From collaborators and reviewers</h2>
-        </div>
-      </div>
-      <div class="word-large reveal">
-        <blockquote>&ldquo;Rare combination of theoretical rigor and shipping speed — he builds the instrument, then writes the paper.&rdquo;</blockquote>
-        <span class="w-who">RESEARCH COLLABORATOR — JOINT EXPERIMENTAL WORK</span>
-      </div>
-      <div class="word-small-row reveal">
-        <span class="w-who">METHODS REVIEWER</span>
-        <p>&ldquo;Asks the uncomfortable methodological questions first. The proxy-validation harness changed how our group codes text data.&rdquo;</p>
-      </div>
-      <div class="word-small-row reveal">
-        <span class="w-who">POLICY ANALYST</span>
-        <p>&ldquo;The observatory is the first academic infrastructure I've used that feels like it was built to be reused, not just published once.&rdquo;</p>
       </div>
     </div>
   </section>
@@ -458,7 +431,7 @@ footer .footer-bottom {
     </div>
   </div>
   <div class="container footer-bottom">
-    <span>© 2026 Shaurya Gupta. All work public and documented. Plates and film generated for this site; all research content real.</span>
+    <span>© 2026 Shaurya Gupta. Figures are drawn from the underlying data; decorative plates on the archive pages are generated illustration and labelled as such. All research content is real.</span>
     <span style="font-family: var(--font-mono);">SET IN SPACE GROTESK · INTER · ROBOTO MONO</span>
   </div>
 </footer>
@@ -468,31 +441,22 @@ footer .footer-bottom {
 fetch('data/sample-data.json')
   .then(r => r.json())
   .then(data => {
-    // Standing questions ledger — plate mapped per question
-    const plates = {
-      q1: 'assets/plate-institutions.png',
-      q2: 'assets/plate-oversight.png',
-      q3: 'assets/plate-anchoring.png',
-      q4: 'assets/plate-measurement.png',
-      q5: 'assets/plate-labor.png',
-      q6: 'assets/plate-governance.png'
-    };
-    document.getElementById('q-ledger').innerHTML = data.researchQuestions.map(q => `
+    // Standing questions — clean typographic index, no mood art
+    document.getElementById('q-ledger').innerHTML = data.researchQuestions.map((q, i) => `
       <div class="q-row reveal" onclick="window.location.href='research.html#${q.id}'">
-        <div></div>
+        <span class="q-index">${String(i + 1).padStart(2, '0')}</span>
         <div>
           <span class="q-sub">${q.subtitle}</span>
           <h3>${q.title}</h3>
           <p class="q-desc">${q.description}</p>
         </div>
-        <figure><img src="${plates[q.id] || ''}" alt="" loading="lazy"></figure>
       </div>
     `).join('');
 
-    // Notebook wire — 4 most recent
+    // Notebook wire — 6 most recent
     const recent = [...data.notebookEntries]
       .sort((a, b) => new Date(b.date) - new Date(a.date))
-      .slice(0, 4);
+      .slice(0, 6);
     document.getElementById('wire').innerHTML = recent.map(nb => `
       <div class="wire-entry reveal">
         <span class="w-date">${new Date(nb.date + 'T00:00:00').toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase()}</span>
@@ -517,5 +481,6 @@ fetch('data/sample-data.json')
     reveals.forEach(el => observer.observe(el));
   });
 </script>
+<script src="js/sedi-figure.js?v=5"></script>
 </body>
 </html>

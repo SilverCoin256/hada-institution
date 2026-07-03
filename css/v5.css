@@ -1,0 +1,131 @@
+/* ────────────────────────────────────────────────────────────
+   V5 — RESTRAINT LAYER  (loaded last, after v4)
+   The v3/v4 layers pushed the site toward "design portfolio."
+   This pulls it back toward "research notebook": kills decorative
+   numerals, softens the reveal, drops mood-art from reading
+   surfaces, and styles the plain-result and figure blocks.
+   Direction: 90% researcher, 10% designer.
+   ──────────────────────────────────────────────────────────── */
+
+/* ── Kill decorative giant numerals ────────────────────────── */
+.q-row::before,
+#papers-grid .paper-card::before { display: none !important; }
+
+/* Standing-questions ledger → clean typographic index, no mood art */
+.q-row {
+  grid-template-columns: 88px 1fr !important;
+  gap: var(--space-32) !important;
+  align-items: baseline !important;
+}
+.q-row figure { display: none !important; }
+.q-row .q-index {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--ink-secondary);
+  letter-spacing: 0.05em;
+}
+
+/* Research archive: reclaim the column the numeral used to hold */
+#papers-grid .paper-card {
+  grid-template-columns: 1fr !important;
+}
+#papers-grid .paper-card > * { grid-column: 1 !important; }
+
+/* ── Softer reveal: plain fade + short rise, no cinematic blur ─ */
+.reveal {
+  filter: none !important;
+  transform: translateY(14px);
+  transition: opacity 0.55s var(--ease-smooth),
+              transform 0.55s var(--ease-smooth) !important;
+}
+.reveal.in { transform: none; filter: none !important; }
+
+/* Hover slide kept, but quieter (8px, was 12) */
+.q-row:hover, .wire-entry:hover,
+.card:hover, .paper-card:hover, .notebook-entry:hover,
+.research-question:hover, .metric-card:hover, .dataset-row:hover {
+  transform: translateX(8px) !important;
+}
+
+/* ── Plain results block (replaces the slogan pull-quotes) ──── */
+.results { border-top: 1px solid var(--ink); }
+.result-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: var(--space-32);
+  padding: var(--space-32) 0;
+  border-bottom: 1px solid var(--border);
+}
+.result-row .r-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+}
+.result-row .r-body { font-size: 1.0625rem; line-height: 1.55; max-width: 62ch; }
+.result-row .r-body .num { color: var(--accent); font-weight: 600; white-space: nowrap; }
+.result-row .r-body .r-caveat {
+  display: block;
+  margin-top: var(--space-8);
+  font-size: 0.875rem;
+  color: var(--ink-secondary);
+}
+.result-row .r-body a { font-size: 0.9375rem; }
+
+/* ── Flagship figure (SEDI) ────────────────────────────────── */
+.figure-block { border-top: 2px solid var(--ink); padding-top: var(--space-24); }
+.figure-block .fig-head {
+  display: flex; justify-content: space-between; flex-wrap: wrap;
+  gap: var(--space-8); margin-bottom: var(--space-24);
+}
+.figure-block .fig-title {
+  font-family: var(--font-mono); font-size: 0.75rem;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent);
+}
+.figure-block .fig-meta {
+  font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-secondary);
+}
+#sedi-canvas {
+  width: 100%; height: 360px; display: block;
+}
+.figure-block figcaption {
+  margin-top: var(--space-16);
+  font-size: 0.8125rem; line-height: 1.6; color: var(--ink-secondary);
+  max-width: 78ch;
+}
+.figure-block figcaption a { font-size: inherit; }
+
+/* Identity hero: plain, no film, no manifesto scale */
+.hero { min-height: auto !important; padding: 112px 0 var(--space-64) !important; display: block !important; }
+.hero::after { display: none !important; }
+#hero-film { display: none !important; }
+.hero h1 {
+  font-size: clamp(1.9rem, 4vw, 3rem) !important;
+  letter-spacing: -0.025em !important;
+  line-height: 1.12 !important;
+  max-width: 20ch !important;
+}
+.hero .id-line {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem; letter-spacing: 0.05em;
+  color: var(--ink-secondary); margin-bottom: var(--space-24);
+}
+.hero .id-anchor {
+  margin-top: var(--space-32);
+  padding-top: var(--space-24);
+  border-top: 1px solid var(--border);
+  display: grid; gap: var(--space-8);
+  max-width: 620px;
+}
+.hero .id-anchor .a-item { font-size: 0.9375rem; color: var(--ink-secondary); }
+.hero .id-anchor .a-item strong { color: var(--ink); font-weight: 600; }
+
+@media (max-width: 768px) {
+  .result-row { grid-template-columns: 1fr; gap: var(--space-8); }
+  .q-row { grid-template-columns: 60px 1fr !important; }
+  #sedi-canvas { height: 300px; }
+  .q-row:hover, .wire-entry:hover, .card:hover, .paper-card:hover,
+  .notebook-entry:hover, .research-question:hover, .metric-card:hover,
+  .dataset-row:hover { transform: none !important; }
+}
