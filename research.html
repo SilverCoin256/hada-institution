@@ -11,11 +11,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <!-- Stylesheets -->
-<link rel="stylesheet" href="css/design-system.css?v=5">
-<link rel="stylesheet" href="css/components.css?v=5">
-<link rel="stylesheet" href="css/v3.css?v=5">
-<link rel="stylesheet" href="css/v4.css?v=5">
-<link rel="stylesheet" href="css/v5.css?v=5">
+<link rel="stylesheet" href="css/design-system.css?v=6">
+<link rel="stylesheet" href="css/components.css?v=6">
+<link rel="stylesheet" href="css/v3.css?v=6">
+<link rel="stylesheet" href="css/v4.css?v=6">
+<link rel="stylesheet" href="css/v5.css?v=6">
+<link rel="stylesheet" href="css/v6.css?v=6">
 <style>
 /* Navigation (matches index.html) */
 header {
@@ -856,6 +857,10 @@ function renderPapers() {
 
   grid.innerHTML = papers.map(p => `
     <div class="paper-card reveal">
+      <figure class="paper-fig fig-frame">
+        <img src="assets/fig-${p.id}.png" alt="" loading="lazy">
+        <figcaption class="fig-cap"><span class="fig-no">FIG. ${p.id.replace('p','').padStart(2,'0')}</span><span>GENERATED ILL.</span></figcaption>
+      </figure>
       <div class="year">${p.year}</div>
       <span class="status-badge ${statusClass(p.status)}">${escapeHtml(statusLabel(p.status))}</span>
       <h4>${escapeHtml(p.title)}</h4>

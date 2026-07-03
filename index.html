@@ -11,11 +11,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <!-- Stylesheets -->
-<link rel="stylesheet" href="css/design-system.css?v=5">
-<link rel="stylesheet" href="css/components.css?v=5">
-<link rel="stylesheet" href="css/v3.css?v=5">
-<link rel="stylesheet" href="css/v4.css?v=5">
-<link rel="stylesheet" href="css/v5.css?v=5">
+<link rel="stylesheet" href="css/design-system.css?v=6">
+<link rel="stylesheet" href="css/components.css?v=6">
+<link rel="stylesheet" href="css/v3.css?v=6">
+<link rel="stylesheet" href="css/v4.css?v=6">
+<link rel="stylesheet" href="css/v5.css?v=6">
+<link rel="stylesheet" href="css/v6.css?v=6">
 <style>
 /* Navigation */
 header {
@@ -103,6 +104,20 @@ nav {
 .hero-cta {
   display: flex;
   gap: var(--space-32);
+}
+
+.hero-content { position: relative; }
+
+.hero-plate {
+  position: absolute;
+  top: 8px;
+  right: var(--gutter);
+  width: 300px;
+  margin: 0;
+}
+
+@media (max-width: 1080px) {
+  .hero-plate { display: none; }
 }
 
 /* Section headers — left, numbered, serious */
@@ -284,6 +299,10 @@ footer .footer-bottom {
         <a href="research.html" class="btn">Read the research</a>
         <a href="notebook.html" class="btn outline">Open the notebook</a>
       </div>
+      <figure class="fig-frame hero-plate">
+        <img src="assets/proc-stripchart.png" alt="Patent-style drawing of a laboratory strip-chart recorder in cutaway view, pen arm in violet">
+        <figcaption class="fig-cap"><span class="fig-no">PL. 00</span><span>STRIP-CHART RECORDER · GENERATED ILL.</span></figcaption>
+      </figure>
     </div>
   </section>
 
@@ -337,25 +356,37 @@ footer .footer-bottom {
         </div>
       </div>
       <div class="results">
-        <div class="result-row reveal">
+        <div class="result-row with-fig reveal">
           <div class="r-label">Anchoring asymmetry<br>Data collection</div>
           <div class="r-body">
             Do people anchor on a machine's proposed number the way they anchor on a person's? An <span class="num">18,000-call</span> audited model battery is complete; the cross-model replication <span class="num">failed outright</span> (the effect didn't hold on the second model); a public meta-analysis gives external validity. The human study is built and waiting on ethics approval — <em>no human data yet</em>.
             <span class="r-caveat"><a href="research.html#paper-p11">Anchoring program →</a></span>
           </div>
-        </div>
-        <div class="result-row reveal">
-          <div class="r-label">Measurement validity<br>Active</div>
-          <div class="r-body">
-            Four literatures quietly treat a proxy as the thing it measures. Recomputing one common SEC-oversight proxy against the SEC's own reporting-issuer counts, it <span class="num">reversed sign</span>. That result killed my original "regulatory-debt" thesis; the paper is now about the validation method, not the thesis.
-            <span class="r-caveat"><a href="research.html#paper-p6">Proxy-validation work →</a> · <a href="notebook.html">how the thesis died →</a></span>
+          <div class="r-fig fig-frame">
+            <canvas id="anchor-canvas"></canvas>
+            <div class="fig-cap"><span class="fig-no">FIG. A</span><span>EFFECT-DIRECTION SCHEMATIC — MAGNITUDES IN THE PAPER</span></div>
           </div>
         </div>
-        <div class="result-row reveal">
+        <div class="result-row with-fig reveal">
+          <div class="r-label">Measurement validity<br>Active</div>
+          <div class="r-body">
+            Four literatures quietly treat a proxy as the thing it measures. Recomputing one common SEC-oversight proxy against the SEC's own reporting-issuer counts, it <span class="num">reversed sign</span>: the proxy's "active filer" denominator rose <span class="num">186%</span> over a period in which the SEC's own reporting-issuer count fell <span class="num">20%</span>. That result killed my original "regulatory-debt" thesis; the paper is now about the validation method, not the thesis.
+            <span class="r-caveat"><a href="research.html#paper-p6">Proxy-validation work →</a> · <a href="notebook.html">how the thesis died →</a></span>
+          </div>
+          <div class="r-fig fig-frame">
+            <canvas id="proxy-canvas"></canvas>
+            <div class="fig-cap"><span class="fig-no">FIG. B</span><span>ENDPOINTS AS REPORTED — PATH ILLUSTRATIVE</span></div>
+          </div>
+        </div>
+        <div class="result-row with-fig reveal">
           <div class="r-label">Authorization saturation<br>Working paper</div>
           <div class="r-body">
             A coupled two-queue model of the point where institutions swap slow substantive review for fast sign-off. In simulation, doubling reviewer capacity or halving AI throughput returns quality to baseline; raising the quality floor of fast sign-off <em>reduces</em> the damage but never removes the tipping point.
             <span class="r-caveat"><a href="research.html#paper-p4">Model + simulation →</a></span>
+          </div>
+          <div class="r-fig fig-frame">
+            <canvas id="queue-canvas"></canvas>
+            <div class="fig-cap"><span class="fig-no">FIG. C</span><span>MECHANISM SCHEMATIC — PARAMETERS ILLUSTRATIVE</span></div>
           </div>
         </div>
       </div>
@@ -481,6 +512,7 @@ fetch('data/sample-data.json')
     reveals.forEach(el => observer.observe(el));
   });
 </script>
-<script src="js/sedi-figure.js?v=5"></script>
+<script src="js/sedi-figure.js?v=6"></script>
+<script src="js/figures.js?v=6"></script>
 </body>
 </html>

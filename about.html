@@ -11,11 +11,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <!-- Stylesheets -->
-<link rel="stylesheet" href="css/design-system.css?v=5">
-<link rel="stylesheet" href="css/components.css?v=5">
-<link rel="stylesheet" href="css/v3.css?v=5">
-<link rel="stylesheet" href="css/v4.css?v=5">
-<link rel="stylesheet" href="css/v5.css?v=5">
+<link rel="stylesheet" href="css/design-system.css?v=6">
+<link rel="stylesheet" href="css/components.css?v=6">
+<link rel="stylesheet" href="css/v3.css?v=6">
+<link rel="stylesheet" href="css/v4.css?v=6">
+<link rel="stylesheet" href="css/v5.css?v=6">
+<link rel="stylesheet" href="css/v6.css?v=6">
 <style>
 /* Navigation */
 header {
@@ -375,6 +376,7 @@ footer .footer-bottom {
         <h2>Principles</h2>
       </div>
       <p class="prose" style="margin-bottom: var(--space-32); color: var(--ink-secondary); max-width: 62ch;">These aren't mottos — each one is here because I got it wrong first. The rule is what I do differently now.</p>
+      <div class="principles-wrap">
       <ol class="principles-list">
         <li class="reveal"><span class="num">01</span><span>Keep the failures in. The regulatory-debt thesis died against the SEC's own data — so that failure, not a salvaged version of the claim, is what the paper reports.</span></li>
         <li class="reveal"><span class="num">02</span><span>Trace every figure to a pipeline. A reviewer once caught illustrative constants standing in for real model output in a fairness audit; now no number reaches a figure unless it re-computes from raw data.</span></li>
@@ -382,6 +384,11 @@ footer .footer-bottom {
         <li class="reveal"><span class="num">04</span><span>Check the proxy against the primary record. Recomputing one SEC-oversight proxy against the regulator's own counts reversed its sign; I now pull the primary series before trusting any proxy.</span></li>
         <li class="reveal"><span class="num">05</span><span>Build the infrastructure to outlive the paper. The five metrics and datasets are released so the next question doesn't rebuild the same scraping and provenance from scratch.</span></li>
       </ol>
+      <figure class="fig-frame reveal" style="margin: 0;">
+        <img src="assets/proc-drafting.png" alt="Patent-style drawing of a drafting table with T-square and compass, compass in violet">
+        <figcaption class="fig-cap"><span class="fig-no">PL. D</span><span>DRAFTING TABLE · GENERATED ILL.</span></figcaption>
+      </figure>
+      </div>
     </div>
   </section>
 
@@ -392,6 +399,10 @@ footer .footer-bottom {
         <span class="mono">05 — Arc</span>
         <h2>Research Timeline</h2>
         <p>How this program's threads opened, from applied ML audits to formal models to shared infrastructure.</p>
+      </div>
+      <div class="fig-frame" style="margin-bottom: var(--space-48);">
+        <canvas id="stripchart-canvas"></canvas>
+        <div class="fig-cap"><span class="fig-no">FIG. T</span><span>EVENT TICKS FROM THE TIMELINE BELOW — POSITIONS APPROXIMATE</span></div>
       </div>
       <div class="timeline" id="timeline-container"></div>
     </div>
@@ -540,6 +551,15 @@ fetch('data/sample-data.json')
     }, { threshold: 0.15 });
 
     reveals.forEach(el => observer.observe(el));
+
+    // strip-chart: map the timeline's fuzzy date labels to approximate
+    // positions (the figure caption on the page says "approximate")
+    const approx = { '2025': '2025-01-15', 'early 2026': '2026-02-01', 'spring 2026': '2026-04-01',
+                     'May–June 2026': '2026-05-15', 'June 2026': '2026-06-10', 'ongoing': '2026-07-01' };
+    window.__timelineDates = data.timeline.map(t => approx[t.date] || '2026-06-15');
+    const figs = document.createElement('script');
+    figs.src = 'js/figures.js?v=6';
+    document.body.appendChild(figs);
   });
 </script>
 </body>

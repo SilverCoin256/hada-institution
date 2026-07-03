@@ -1,0 +1,153 @@
+/* ────────────────────────────────────────────────────────────
+   V6 — INSTRUMENT & PLATE LAYER (loads after v5)
+   Patent-drawing figures, hand-coded motion figures, archival
+   film frames, stamp-in status badges. Bold, but every element
+   is captioned like lab apparatus, not decoration.
+   ──────────────────────────────────────────────────────────── */
+
+/* ── Figure frame: everything visual sits in a captioned frame ─ */
+.fig-frame {
+  border: 1px solid var(--ink);
+  padding: var(--space-8);
+  background: #fff;
+}
+
+.fig-frame img,
+.fig-frame video,
+.fig-frame canvas {
+  width: 100%;
+  display: block;
+}
+
+.fig-frame .fig-cap {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-12);
+  padding: var(--space-8) 2px 0;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.05em;
+  color: var(--ink-secondary);
+  text-transform: uppercase;
+}
+
+.fig-frame .fig-cap .fig-no { color: var(--accent); white-space: nowrap; }
+
+/* ── Result rows gain an instrument column ─────────────────── */
+.result-row.with-fig {
+  grid-template-columns: 200px 1fr 320px;
+}
+
+.result-row .r-fig canvas {
+  width: 100%;
+  height: 190px;
+  display: block;
+}
+
+/* ── Research archive: patent thumbnail per paper ──────────── */
+#papers-grid .paper-card {
+  position: relative;
+  padding-right: 210px !important;
+}
+
+.paper-card .paper-fig {
+  position: absolute;
+  top: var(--space-48);
+  right: 0;
+  width: 168px;
+  margin: 0;
+}
+
+.paper-card .paper-fig .fig-cap { font-size: 0.625rem; }
+
+.paper-card .paper-fig img {
+  filter: contrast(1.02);
+  transition: transform 0.8s var(--ease-snappy);
+}
+
+.paper-card:hover .paper-fig img { transform: scale(1.03); }
+
+/* ── Status badges stamp in ────────────────────────────────── */
+@keyframes stamp-in {
+  0%   { opacity: 0; transform: scale(1.7) rotate(-7deg); }
+  55%  { opacity: 1; transform: scale(0.94) rotate(1.5deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+.reveal.in .status-badge,
+.reveal.in .badge {
+  animation: stamp-in 0.45s var(--ease-snappy) both;
+}
+
+/* ── Section rules draw themselves ─────────────────────────── */
+.sec-head { position: relative; border-top: none !important; }
+.sec-head::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  height: 2px;
+  width: 100%;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.1s var(--ease-snappy);
+}
+.sec-head.in::before { transform: scaleX(1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .sec-head::before { transform: scaleX(1); transition: none; }
+  .reveal.in .status-badge, .reveal.in .badge { animation: none; }
+}
+
+/* ── Films (lab): archival clips in frames ─────────────────── */
+.films-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-32);
+}
+
+/* Plate gallery grows to include the patent series */
+.plates.patent { grid-template-columns: repeat(4, 1fr); }
+.plates.patent .plate img { aspect-ratio: 1 / 1; }
+.plates.patent .plate figcaption { border-top: none; margin-top: 0; }
+
+/* ── Atlas: instrument meters ──────────────────────────────── */
+.metric-card .meter-canvas {
+  width: 120px;
+  height: 68px;
+  display: block;
+  margin-bottom: var(--space-12);
+}
+
+/* ── Notebook pulse strip ──────────────────────────────────── */
+#pulse-canvas { width: 100%; height: 72px; display: block; }
+#stripchart-canvas { width: 100%; height: 170px; display: block; }
+
+/* ── Header plates beside page titles ──────────────────────── */
+.header-with-plate {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: var(--space-64);
+  align-items: end;
+}
+
+/* Principles side plate (About) */
+.principles-wrap {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: var(--space-64);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .result-row.with-fig { grid-template-columns: 1fr; }
+  .result-row .r-fig { max-width: 380px; }
+  #papers-grid .paper-card { padding-right: 0 !important; }
+  .paper-card .paper-fig { position: static; width: 180px; margin: 0 0 var(--space-16); }
+  .films-grid { grid-template-columns: 1fr; }
+  .plates.patent { grid-template-columns: 1fr 1fr; }
+  .header-with-plate { grid-template-columns: 1fr; }
+  .header-with-plate .fig-frame { max-width: 300px; }
+  .principles-wrap { grid-template-columns: 1fr; }
+  .principles-wrap .fig-frame { max-width: 280px; }
+}

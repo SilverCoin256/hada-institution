@@ -11,11 +11,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <!-- Stylesheets -->
-<link rel="stylesheet" href="css/design-system.css?v=5">
-<link rel="stylesheet" href="css/components.css?v=5">
-<link rel="stylesheet" href="css/v3.css?v=5">
-<link rel="stylesheet" href="css/v4.css?v=5">
-<link rel="stylesheet" href="css/v5.css?v=5">
+<link rel="stylesheet" href="css/design-system.css?v=6">
+<link rel="stylesheet" href="css/components.css?v=6">
+<link rel="stylesheet" href="css/v3.css?v=6">
+<link rel="stylesheet" href="css/v4.css?v=6">
+<link rel="stylesheet" href="css/v5.css?v=6">
+<link rel="stylesheet" href="css/v6.css?v=6">
 <style>
 /* Navigation */
 header {
@@ -367,9 +368,21 @@ footer .footer-bottom {
   <!-- Page Header -->
   <section class="page-header">
     <div class="container">
-      <span class="mono">Research journal</span>
-      <h1>Notebook</h1>
-      <p class="subtitle">Dated entries, most recent first. Written for the record, not for an audience. Notes, findings, and failures as they happened.</p>
+      <div class="header-with-plate">
+        <div>
+          <span class="mono">Research journal</span>
+          <h1>Notebook</h1>
+          <p class="subtitle">Dated entries, most recent first. Written for the record, not for an audience. Notes, findings, and failures as they happened.</p>
+        </div>
+        <figure class="fig-frame" style="margin: 0;">
+          <img src="assets/proc-ledger.png" alt="Patent-style drawing of an open ledger book with a fountain pen, nib in violet">
+          <figcaption class="fig-cap"><span class="fig-no">PL. L</span><span>LEDGER · GENERATED ILL.</span></figcaption>
+        </figure>
+      </div>
+      <div class="fig-frame" style="margin-top: var(--space-32);">
+        <canvas id="pulse-canvas"></canvas>
+        <div class="fig-cap"><span class="fig-no">FIG. R</span><span>ENTRY DATES, DRAWN FROM THIS PAGE'S RECORD</span></div>
+      </div>
     </div>
   </section>
 
@@ -611,6 +624,12 @@ fetch('data/sample-data.json')
     buildTagFilters();
     initCategoryFilters();
     renderFeed();
+
+    // pulse strip needs the real entry dates before figures.js runs
+    window.__notebookDates = allEntries.map(e => e.date);
+    const figs = document.createElement('script');
+    figs.src = 'js/figures.js?v=6';
+    document.body.appendChild(figs);
   });
 </script>
 </body>

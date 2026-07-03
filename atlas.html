@@ -11,11 +11,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <!-- Stylesheets -->
-<link rel="stylesheet" href="css/design-system.css?v=5">
-<link rel="stylesheet" href="css/components.css?v=5">
-<link rel="stylesheet" href="css/v3.css?v=5">
-<link rel="stylesheet" href="css/v4.css?v=5">
-<link rel="stylesheet" href="css/v5.css?v=5">
+<link rel="stylesheet" href="css/design-system.css?v=6">
+<link rel="stylesheet" href="css/components.css?v=6">
+<link rel="stylesheet" href="css/v3.css?v=6">
+<link rel="stylesheet" href="css/v4.css?v=6">
+<link rel="stylesheet" href="css/v5.css?v=6">
+<link rel="stylesheet" href="css/v6.css?v=6">
 <style>
 /* Navigation (matches index.html) */
 header {
@@ -324,34 +325,39 @@ footer .footer-bottom {
       <div class="section-header">
         <span class="mono">The five metrics</span>
         <h2>One instrument per research question</h2>
-        <p>Each metric operationalizes a specific paper in this program. None of them claim to fully identify institutional quality or causality on their own — the documentation is explicit about that.</p>
+        <p>Each metric operationalizes a specific paper in this program. None of them claim to fully identify institutional quality or causality on their own — the documentation is explicit about that. The dials are instrument schematics, not live readings.</p>
       </div>
       <div class="metrics-grid">
         <div class="metric-card reveal">
+          <canvas class="meter-canvas"></canvas>
           <span class="metric-id">QAI — Queue Acceleration Index</span>
           <h3>Backlog pressure</h3>
           <p>(Pending<sub>t</sub> − Pending<sub>t-1</sub>) / Completions<sub>t</sub>. A simple, auditable measure of whether an administrative queue is accelerating faster than it's being cleared.</p>
           <span class="metric-paper">Supports a planned submission — no paper yet</span>
         </div>
         <div class="metric-card reveal">
+          <canvas class="meter-canvas"></canvas>
           <span class="metric-id">SEDI — State-Estimation Degradation Index</span>
           <h3>Oversight observability</h3>
           <p>Computable purely from boundary telemetry — timestamps, queue depth, dispute rates — without inspecting the content of the decisions under review.</p>
           <a class="metric-paper" href="research.html#paper-p5">→ Capacity Degradation in Distributed Human-in-the-Loop AI Pipelines</a>
         </div>
         <div class="metric-card reveal">
+          <canvas class="meter-canvas"></canvas>
           <span class="metric-id">Authorization Saturation</span>
           <h3>Substantive vs. ceremonial review</h3>
           <p>A coupled-queue formalization of the point at which institutions substitute fast sign-off for slow, substantive review.</p>
           <a class="metric-paper" href="research.html#paper-p4">→ Modeling Authorization Saturation</a>
         </div>
         <div class="metric-card reveal">
+          <canvas class="meter-canvas"></canvas>
           <span class="metric-id">Procedural Capacity</span>
           <h3>Review, contest, hold accountable</h3>
           <p>An institution's joint capacity to review an AI-influenced decision, let someone contest it, and hold someone accountable for it.</p>
           <a class="metric-paper" href="research.html#paper-p8">→ Simulating AI Governance Failure</a>
         </div>
         <div class="metric-card reveal">
+          <canvas class="meter-canvas"></canvas>
           <span class="metric-id">ASI — Accountability Specificity Index</span>
           <h3>Rhetoric vs. binding authority</h3>
           <p>An 8-dimension coding scheme scoring how specifically a governance document assigns responsibility, versus merely invoking it.</p>
@@ -450,5 +456,6 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.15 });
 reveals.forEach(el => observer.observe(el));
 </script>
+<script src="js/figures.js?v=6"></script>
 </body>
 </html>
