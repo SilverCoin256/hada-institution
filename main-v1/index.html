@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shaurya Gupta — Walk</title>
+<meta name="description" content="Shaurya Gupta — researcher and operator. Walk through the record: research, Oxford, Berkeley, MUN leadership, ventures.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* MAIN V1 — "THE WALK". Design locked; later models edit CONTENT SLOTS only. */
+:root {
+  --bg: #0b0714; --ink: #f4f0ff; --sub: #a99cc6;
+  --accent: #a78bfa; --accent-deep: #7c3aed; --line: #2a2140;
+  --mono: 'Roboto Mono', monospace; --disp: 'Space Grotesk', sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--ink); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+a { color: var(--accent); text-decoration: none; }
+
+/* World stage */
+#stage { position: relative; height: 100vh; min-height: 560px; overflow: hidden; }
+#sky {
+  position: absolute; inset: 0;
+  background: url('../assets/world-sky.png') center/cover no-repeat, var(--bg);
+  filter: saturate(1.1);
+}
+#smoke {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; opacity: 0.5; mix-blend-mode: screen; pointer-events: none;
+}
+#world { position: absolute; inset: 0; }
+
+/* HUD */
+.hud-name {
+  position: absolute; top: 24px; left: 28px; z-index: 5;
+  font-family: var(--disp); font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em;
+}
+.hud-name span { color: var(--accent); }
+.hud-hint {
+  position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); z-index: 5;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--sub);
+  text-transform: uppercase; text-align: center; line-height: 1.9;
+}
+.hud-hint kbd {
+  border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px;
+  padding: 1px 7px; font-family: var(--mono); color: var(--ink); background: #171028;
+}
+.hud-skip {
+  position: absolute; top: 26px; right: 28px; z-index: 5;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; color: var(--sub);
+}
+.hud-skip:hover { color: var(--accent); }
+
+/* Touch controls */
+.touch { position: absolute; bottom: 18px; z-index: 6; display: none; gap: 10px; }
+.touch.left { left: 18px; } .touch.right { right: 18px; }
+.touch button {
+  width: 56px; height: 56px; border-radius: 14px; border: 1px solid var(--line);
+  background: rgba(23,16,40,.8); color: var(--ink); font-size: 20px;
+}
+@media (pointer: coarse) { .touch { display: flex; } .hud-hint { display: none; } }
+
+/* Station panel */
+#panel {
+  position: absolute; z-index: 7; left: 50%; bottom: 120px; transform: translateX(-50%) translateY(16px);
+  width: min(480px, calc(100vw - 40px));
+  background: rgba(14,9,26,0.92); border: 1px solid var(--line);
+  border-top: 2px solid var(--accent);
+  padding: 22px 24px; opacity: 0; pointer-events: none;
+  transition: opacity .35s cubic-bezier(.16,1,.3,1), transform .35s cubic-bezier(.16,1,.3,1);
+  backdrop-filter: blur(8px);
+}
+#panel.show { opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0); }
+#panel .p-kicker { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; }
+#panel h2 { font-family: var(--disp); font-size: 1.35rem; margin-bottom: 8px; letter-spacing: -0.01em; }
+#panel p { font-size: .875rem; line-height: 1.65; color: var(--sub); margin-bottom: 10px; }
+#panel .p-link { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; }
+
+/* Ledger below the world (accessible mirror of every station) */
+.ledger { max-width: 880px; margin: 0 auto; padding: 96px 24px 64px; }
+.ledger h2 { font-family: var(--disp); font-size: clamp(1.6rem, 4vw, 2.6rem); margin-bottom: 12px; }
+.ledger .sub { color: var(--sub); font-size: .95rem; margin-bottom: 48px; max-width: 60ch; }
+.row { border-top: 1px solid var(--line); padding: 26px 0; display: grid; grid-template-columns: 150px 1fr; gap: 22px; }
+.row .tag { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: .1em; text-transform: uppercase; }
+.row h3 { font-family: var(--disp); font-size: 1.1rem; margin-bottom: 6px; }
+.row p { font-size: .9rem; color: var(--sub); line-height: 1.65; }
+.row .num { color: var(--ink); font-weight: 600; }
+@media (max-width: 640px) { .row { grid-template-columns: 1fr; gap: 6px; } }
+footer { border-top: 1px solid var(--line); padding: 40px 24px; text-align: center; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; color: var(--sub); }
+</style>
+</head>
+<body>
+
+<section id="stage">
+  <div id="sky"></div>
+  <video id="smoke" autoplay muted loop playsinline>
+    <source src="../assets/film-smoke.mp4" type="video/mp4">
+  </video>
+  <canvas id="world"></canvas>
+
+  <div class="hud-name">SHAURYA <span>GUPTA</span></div>
+  <a class="hud-skip" href="#ledger">SKIP THE WALK ↓</a>
+  <div class="hud-hint">
+    <kbd>←</kbd> <kbd>→</kbd> walk &nbsp; <kbd>space</kbd> jump &nbsp; <kbd>E</kbd> enter a station<br>
+    walk right — the record is laid out in order
+  </div>
+  <div class="touch left"><button id="t-left">◀</button><button id="t-right">▶</button></div>
+  <div class="touch right"><button id="t-jump">⤒</button><button id="t-use">E</button></div>
+
+  <div id="panel">
+    <div class="p-kicker" id="p-kicker"></div>
+    <h2 id="p-title"></h2>
+    <p id="p-body"></p>
+    <a class="p-link" id="p-link" href="#" target="_blank" rel="noopener"></a>
+  </div>
+</section>
+
+<!-- Accessible mirror — CONTENT SLOTS below; design locked -->
+<section class="ledger" id="ledger">
+  <h2>The record, in plain text</h2>
+  <p class="sub">Everything in the walk, without the walk. Real numbers; each line links out where a link exists.</p>
+  <div id="rows"></div>
+</section>
+
+<footer>© 2026 SHAURYA GUPTA · BACKGROUNDS GENERATED · WORLD HAND-CODED</footer>
+
+<script src="../js/sound.js?v=1"></script>
+<script>
+/* ============ CONTENT SLOT: stations (edit text/links only) ============ */
+const STATIONS = [
+  { x: 900,  icon: 'lab',    kicker: 'Research', title: 'The Research Program',
+    body: 'Sole-author studies on AI, institutions, labor markets and oversight — one accepted (ADCAIJ 2026), the rest documented honestly as they move. Original metrics, open-sourced code, a public failure log.',
+    link: 'https://silvercoin256.github.io/hada-institution/', linkText: 'ENTER THE RESEARCH SITE →' },
+  { x: 1550, icon: 'oxford', kicker: 'Research Assistant', title: 'Oxford — Saïd Business School',
+    body: 'Qualitative literature review on public vs private markets and corporate delisting: 30+ papers analysed, a structured table of 400+ delisted companies, findings synthesised for regulatory application and submitted to the Financial Reporting Council. Under faculty guidance.',
+    link: 'https://silvercoin256.github.io/hada-institution/about.html', linkText: 'CONTEXT →' },
+  { x: 2200, icon: 'podium', kicker: 'Finance', title: 'Ascend Berkeley — Grand Finalist',
+    body: 'Grand Finalist (top 5 of 55+ teams) and India champion at the Ascend Berkeley Stock Pitch. Led the team’s fintech stock analysis — Monte Carlo simulation and financial modelling.',
+    link: null, linkText: '' },
+  { x: 2850, icon: 'stage',  kicker: 'Leadership', title: 'The MUN Years',
+    body: '33 conferences: 19 as delegate (awards in 15), 13 chairing. Senior secretariat across 9 conferences and 1,100+ delegates — Deputy Secretary-General ×3, partnerships with UNHCR, G20 and NITI Aayog engagements, ₹10.9L revenue managed.',
+    link: null, linkText: '' },
+  { x: 3500, icon: 'market', kicker: 'Operator', title: 'Ventures',
+    body: 'CFO of a MUN-logistics venture serving 16 conferences — ₹7,00,000 revenue at ~24% margin, vendor and fulfilment systems, advance-payment protocols after a contract failure. Plus: first high-school intern at a U.S. recruiting firm; 75+ candidates sourced, 5 advanced to leadership.',
+    link: null, linkText: '' },
+  { x: 4150, icon: 'garden', kicker: 'Service', title: 'YouthInSeva & I2I',
+    body: 'Co-founded a nutrition initiative funded from MUN profits — protein supplements to 30+ government-school students, built as a replicable low-cost model. Separately, redesigned an NGO’s recruiting pipeline with AI transcription: time-per-hire down 50%, 26+ interns recruited.',
+    link: null, linkText: '' },
+  { x: 4800, icon: 'desk',   kicker: 'Contact', title: 'Say hello',
+    body: 'Open to research collaborations, internships, and hard questions about anything on this site.',
+    link: 'mailto:shauryaguptaa8@gmail.com', linkText: 'EMAIL →' },
+];
+const WORLD_LEN = 5300;
+/* ======================= END CONTENT SLOT ======================= */
+
+const cv = document.getElementById('world'), ctx = cv.getContext('2d');
+let W, H, GY;
+function resize() {
+  const dpr = Math.min(devicePixelRatio || 1, 2);
+  W = cv.clientWidth = innerWidth; H = cv.clientHeight = document.getElementById('stage').clientHeight;
+  cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  GY = H - 96;
+}
+resize(); addEventListener('resize', resize);
+
+/* player */
+const P = { x: 260, vx: 0, y: 0, vy: 0, onGround: true, face: 1, step: 0 };
+let cam = 0, near = -1, panelFor = -1;
+const keys = {};
+addEventListener('keydown', e => {
+  if (['ArrowLeft','ArrowRight','ArrowUp',' '].includes(e.key)) e.preventDefault();
+  keys[e.key.toLowerCase()] = true;
+  if ((e.key === ' ' || e.key === 'ArrowUp' || e.key.toLowerCase() === 'w') && P.onGround) { P.vy = -13.5; P.onGround = false; SND.jump(); }
+  if (e.key.toLowerCase() === 'e' && near >= 0) togglePanel(near);
+});
+addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
+const hold = (id, k) => {
+  const el = document.getElementById(id);
+  ['touchstart','mousedown'].forEach(ev => el.addEventListener(ev, e => { e.preventDefault(); keys[k] = true; }));
+  ['touchend','mouseup','mouseleave'].forEach(ev => el.addEventListener(ev, () => keys[k] = false));
+};
+hold('t-left','arrowleft'); hold('t-right','arrowright');
+document.getElementById('t-jump').addEventListener('touchstart', e => { e.preventDefault(); if (P.onGround) { P.vy = -13.5; P.onGround = false; SND.jump(); } });
+document.getElementById('t-use').addEventListener('touchstart', e => { e.preventDefault(); if (near >= 0) togglePanel(near); });
+
+function togglePanel(i) {
+  const pn = document.getElementById('panel');
+  if (panelFor === i && pn.classList.contains('show')) { pn.classList.remove('show'); return; }
+  panelFor = i;
+  const s = STATIONS[i];
+  document.getElementById('p-kicker').textContent = s.kicker;
+  document.getElementById('p-title').textContent = s.title;
+  document.getElementById('p-body').textContent = s.body;
+  const L = document.getElementById('p-link');
+  if (s.link) { L.style.display = 'inline'; L.href = s.link; L.textContent = s.linkText; }
+  else L.style.display = 'none';
+  pn.classList.add('show'); SND.open();
+}
+
+/* drawing helpers */
+function sign(x, y, label, active) {
+  ctx.strokeStyle = active ? '#a78bfa' : '#4a3d70'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y - 66); ctx.stroke();
+  ctx.fillStyle = active ? '#a78bfa' : '#241a3e';
+  ctx.strokeRect(x - 62, y - 108, 124, 44); ctx.fillRect(x - 62, y - 108, 124, 44);
+  ctx.fillStyle = active ? '#0b0714' : '#a99cc6';
+  ctx.font = '600 10px "Roboto Mono", monospace'; ctx.textAlign = 'center';
+  label.split('\n').forEach((ln, k) => ctx.fillText(ln, x, y - 108 + 18 + k * 14));
+}
+function walker(x, y) {
+  const bob = P.onGround && Math.abs(P.vx) > 0.4 ? Math.sin(P.step) * 2.5 : 0;
+  ctx.save(); ctx.translate(x, y + bob);
+  /* legs */
+  const sw = P.onGround && Math.abs(P.vx) > 0.4 ? Math.sin(P.step) * 7 : 0;
+  ctx.strokeStyle = '#e9e2ff'; ctx.lineWidth = 4; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(0, -18); ctx.lineTo(-4 - sw, 0); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0, -18); ctx.lineTo(4 + sw, 0); ctx.stroke();
+  /* body */
+  ctx.fillStyle = '#7c3aed';
+  ctx.beginPath(); ctx.roundRect(-9, -44, 18, 28, 6); ctx.fill();
+  /* head */
+  ctx.fillStyle = '#e9e2ff';
+  ctx.beginPath(); ctx.arc(0, -52, 8, 0, Math.PI * 2); ctx.fill();
+  /* visor */
+  ctx.fillStyle = '#0b0714';
+  ctx.beginPath(); ctx.arc(P.face * 3, -52, 3.2, 0, Math.PI * 2); ctx.fill();
+  ctx.restore();
+}
+
+let last = 0;
+function tick(ts) {
+  const dt = Math.min((ts - last) / 16.7, 2.2); last = ts;
+  /* physics */
+  const ax = (keys['arrowleft'] || keys['a'] ? -1 : 0) + (keys['arrowright'] || keys['d'] ? 1 : 0);
+  P.vx += ax * 0.9 * dt; P.vx *= 0.86;
+  if (Math.abs(P.vx) > 0.3) { P.face = P.vx > 0 ? 1 : -1; P.step += 0.28 * dt; }
+  P.x = Math.max(80, Math.min(WORLD_LEN - 80, P.x + P.vx * dt * 3.2));
+  if (!P.onGround) { P.vy += 0.8 * dt; P.y += P.vy * dt; if (P.y >= 0) { P.y = 0; P.vy = 0; P.onGround = true; } }
+  cam += ((P.x - W * 0.42) - cam) * 0.08 * dt; cam = Math.max(0, Math.min(WORLD_LEN - W, cam));
+
+  /* nearest station */
+  near = -1;
+  STATIONS.forEach((s, i) => { if (Math.abs(s.x - P.x) < 90) near = i; });
+  if (near === -1 && panelFor >= 0) { document.getElementById('panel').classList.remove('show'); panelFor = -1; }
+
+  /* draw */
+  ctx.clearRect(0, 0, W, H);
+  /* far hills (parallax) */
+  ctx.fillStyle = '#150d26';
+  ctx.beginPath(); ctx.moveTo(0, GY - 40);
+  for (let x = 0; x <= W; x += 8) ctx.lineTo(x, GY - 46 - Math.sin((x + cam * 0.3) * 0.004) * 26 - Math.sin((x + cam * 0.3) * 0.013) * 8);
+  ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.fill();
+  /* ground */
+  ctx.fillStyle = '#191030'; ctx.fillRect(0, GY, W, H - GY);
+  ctx.strokeStyle = '#7c3aed'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(0, GY); ctx.lineTo(W, GY); ctx.stroke();
+  /* km markers */
+  ctx.fillStyle = '#3a2d5e'; ctx.font = '10px "Roboto Mono", monospace'; ctx.textAlign = 'center';
+  for (let m = 0; m < WORLD_LEN; m += 250) {
+    const sx = m - cam; if (sx < -20 || sx > W + 20) continue;
+    ctx.fillRect(sx, GY + 8, 1, 8);
+  }
+  /* stations */
+  STATIONS.forEach((s, i) => {
+    const sx = s.x - cam; if (sx < -140 || sx > W + 140) return;
+    sign(sx, GY, s.title.length > 18 ? s.kicker.toUpperCase() : s.title.toUpperCase(), i === near);
+    if (i === near) {
+      ctx.fillStyle = '#a78bfa'; ctx.font = '10px "Roboto Mono", monospace';
+      ctx.fillText('[ E ]', sx, GY - 122);
+    }
+  });
+  walker(P.x - cam, GY + P.y);
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+
+/* ledger mirror */
+document.getElementById('rows').innerHTML = STATIONS.map(s => `
+  <div class="row">
+    <span class="tag">${s.kicker}</span>
+    <div><h3>${s.title}</h3><p>${s.body}</p>${s.link ? `<p><a href="${s.link}">${s.linkText}</a></p>` : ''}</div>
+  </div>`).join('');
+
+SND.attach();
+document.getElementById('smoke').addEventListener('error', () => document.getElementById('smoke').remove());
+</script>
+</body>
+</html>

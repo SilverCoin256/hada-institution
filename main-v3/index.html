@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shaurya Gupta</title>
+<meta name="description" content="Shaurya Gupta — researcher and operator. Research on AI and institutions, markets work at Oxford Saïd, and an operator's record.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* MAIN V3 — "EDITORIAL". Design locked; later models edit CONTENT SLOTS only. */
+:root {
+  --bg: #ffffff; --ink: #0f0f0f; --sub: #666; --accent: #7c3aed;
+  --soft: #f4effd; --line: #e5e7eb;
+  --mono: 'Roboto Mono', monospace; --disp: 'Space Grotesk', sans-serif;
+  --ease: cubic-bezier(.16,1,.3,1);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--ink); font-family: 'Inter', sans-serif; }
+a { color: var(--accent); text-decoration: none; }
+::selection { background: var(--accent); color: #fff; }
+
+header {
+  position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,.85);
+  backdrop-filter: blur(10px); border-bottom: 1px solid var(--line);
+  display: flex; justify-content: space-between; align-items: center; padding: 16px 28px;
+}
+header .brand { font-family: var(--disp); font-weight: 700; }
+header nav { display: flex; gap: 24px; font-size: .875rem; }
+header nav a { color: var(--sub); } header nav a:hover { color: var(--accent); }
+
+/* Hero — the purple smoke, subtle but bold */
+.hero { position: relative; overflow: hidden; padding: 130px 0 120px; }
+.hero video {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  opacity: .5; pointer-events: none;
+}
+.hero::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to bottom, rgba(255,255,255,.25), rgba(255,255,255,1) 96%),
+              radial-gradient(ellipse 80% 70% at 30% 40%, rgba(255,255,255,.9), rgba(255,255,255,.1));
+}
+.hero .wrap { position: relative; z-index: 2; max-width: 1180px; margin: 0 auto; padding: 0 28px; }
+.hero .id { font-family: var(--mono); font-size: 12px; letter-spacing: .12em; color: var(--sub); margin-bottom: 20px; }
+.hero h1 {
+  font-family: var(--disp); font-weight: 700; letter-spacing: -0.03em; line-height: 1.02;
+  font-size: clamp(2.4rem, 7vw, 5.4rem); max-width: 16ch; margin-bottom: 28px;
+}
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero .lede { color: var(--sub); font-size: 1.125rem; max-width: 54ch; line-height: 1.65; margin-bottom: 34px; }
+.btn {
+  display: inline-block; font-family: var(--disp); font-size: 1.05rem; color: var(--ink);
+  border-bottom: 2px solid var(--accent); padding: 6px 2px; margin-right: 26px;
+}
+.btn::after { content: ' →'; color: var(--accent); transition: padding-left .4s var(--ease); }
+.btn:hover::after { padding-left: 8px; }
+.btn.quiet { border-bottom-color: var(--line); }
+
+/* Stats strip */
+.stats { border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line); }
+.stats .wrap { max-width: 1180px; margin: 0 auto; padding: 26px 28px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+.stat .v { font-family: var(--disp); font-size: 1.7rem; font-weight: 700; color: var(--accent); }
+.stat .l { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; color: var(--sub); text-transform: uppercase; }
+
+/* Section head */
+.sec { max-width: 1180px; margin: 0 auto; padding: 96px 28px 0; }
+.sec-head { border-top: 2px solid var(--ink); padding-top: 20px; margin-bottom: 42px; display: grid; grid-template-columns: 170px 1fr; gap: 28px; align-items: baseline; }
+.sec-head .n { font-family: var(--mono); font-size: 12px; letter-spacing: .12em; color: var(--accent); }
+.sec-head h2 { font-family: var(--disp); font-size: clamp(1.5rem, 3.4vw, 2.5rem); letter-spacing: -0.02em; }
+.sec-head p { color: var(--sub); margin-top: 8px; max-width: 60ch; }
+
+/* Horizontal rail (samsy-lite: ← → traversal) */
+.rail-zone { position: relative; }
+.rail {
+  display: flex; gap: 0; overflow-x: auto; scroll-snap-type: x mandatory;
+  scrollbar-width: none; border-top: 1px solid var(--line);
+}
+.rail::-webkit-scrollbar { display: none; }
+.rcard {
+  min-width: min(430px, 86vw); scroll-snap-align: start; padding: 34px 34px 40px 0;
+  border-right: 1px solid var(--line); margin-right: 34px; flex-shrink: 0;
+  transition: transform .5s var(--ease);
+}
+.rcard:hover { transform: translateY(-6px); }
+.rcard .k { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; color: var(--accent); text-transform: uppercase; }
+.rcard h3 { font-family: var(--disp); font-size: 1.3rem; margin: 10px 0; letter-spacing: -0.01em; }
+.rcard p { font-size: .9rem; color: var(--sub); line-height: 1.65; }
+.rcard .num { color: var(--ink); font-weight: 600; }
+.rail-nav { display: flex; gap: 10px; justify-content: flex-end; padding: 18px 0 0; }
+.rail-nav button {
+  width: 44px; height: 44px; border: 1px solid var(--line); background: #fff; color: var(--ink);
+  font-size: 16px; cursor: pointer; transition: all .3s var(--ease);
+}
+.rail-nav button:hover { border-color: var(--accent); color: var(--accent); }
+.rail-hint { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; color: var(--sub); padding-top: 24px; }
+.rail-hint kbd { border: 1px solid var(--line); border-radius: 4px; padding: 1px 6px; }
+
+/* Awards ledger */
+.aw { border-top: 1px solid var(--line); padding: 24px 0; display: grid; grid-template-columns: 120px 1fr 240px; gap: 24px; align-items: baseline; transition: transform .4s var(--ease); }
+.aw:hover { transform: translateX(10px); }
+.aw .lvl { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; color: var(--accent); text-transform: uppercase; }
+.aw h3 { font-family: var(--disp); font-size: 1.1rem; }
+.aw p { font-size: .875rem; color: var(--sub); margin-top: 4px; }
+.aw .pct { font-family: var(--mono); font-size: 12px; color: var(--ink); text-align: right; }
+@media (max-width: 760px) { .aw { grid-template-columns: 1fr; gap: 6px; } .aw .pct { text-align: left; } .stats .wrap { grid-template-columns: 1fr 1fr; } .sec-head { grid-template-columns: 1fr; gap: 8px; } }
+
+/* Research portal */
+.portal { max-width: 1180px; margin: 0 auto; padding: 96px 28px; }
+.portal .band { border: 1px solid var(--ink); padding: 8px; }
+.portal .inner { position: relative; overflow: hidden; padding: 64px 48px; }
+.portal video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .35; }
+.portal .inner::after { content:''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(255,255,255,.92) 30%, rgba(255,255,255,.4)); }
+.portal .txt { position: relative; z-index: 2; max-width: 520px; }
+.portal .cap { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 10px; letter-spacing: .1em; color: var(--sub); padding: 8px 2px 0; text-transform: uppercase; }
+.portal h2 { font-family: var(--disp); font-size: clamp(1.5rem, 3.4vw, 2.4rem); letter-spacing: -0.02em; margin-bottom: 12px; }
+.portal p { color: var(--sub); margin-bottom: 20px; max-width: 46ch; }
+
+footer { border-top: 1px solid var(--ink); }
+footer .wrap { max-width: 1180px; margin: 0 auto; padding: 42px 28px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; color: var(--sub); }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="brand">Shaurya Gupta</span>
+  <nav>
+    <a href="#work">Work</a>
+    <a href="#awards">Awards</a>
+    <a href="https://silvercoin256.github.io/hada-institution/">Research ↗</a>
+    <a href="mailto:shauryaguptaa8@gmail.com">Contact</a>
+  </nav>
+</header>
+
+<!-- CONTENT SLOT: hero copy -->
+<section class="hero">
+  <video autoplay muted loop playsinline><source src="../assets/hero-ink.mp4" type="video/mp4"></video>
+  <div class="wrap">
+    <p class="id">SHAURYA GUPTA · RESEARCHER &amp; OPERATOR</p>
+    <h1>Serious questions.<br><em>Working</em> systems.</h1>
+    <p class="lede">I research how AI changes institutions and markets — one peer-reviewed paper, an Oxford Saïd research assistantship, and a public failure log. The other half of the record is operational: conferences, ventures, and teams that ran because the systems held.</p>
+    <a class="btn" href="https://silvercoin256.github.io/hada-institution/">Enter the research site</a>
+    <a class="btn quiet" href="#work">The operator record</a>
+  </div>
+</section>
+
+<!-- CONTENT SLOT: stats -->
+<div class="stats"><div class="wrap">
+  <div class="stat"><div class="v">1</div><div class="l">Peer-reviewed acceptance</div></div>
+  <div class="stat"><div class="v">33</div><div class="l">MUN conferences</div></div>
+  <div class="stat"><div class="v">₹17.9L</div><div class="l">Revenue managed</div></div>
+  <div class="stat"><div class="v">Top 5</div><div class="l">Ascend Berkeley, of 55+</div></div>
+</div></div>
+
+<!-- Work rail -->
+<section class="sec" id="work">
+  <div class="sec-head">
+    <span class="n">01 — THE RECORD</span>
+    <div><h2>Ten lines of work</h2><p>Traverse with the arrows — keyboard or buttons. Every number is real.</p></div>
+  </div>
+  <div class="rail-zone">
+    <div class="rail" id="rail">
+      <!-- CONTENT SLOT: rail cards -->
+      <div class="rcard"><span class="k">Research</span><h3>Independent researcher</h3><p>Sole-author studies on AI, labor markets and institutional decision-making. Original governance indices, open-sourced code, <span class="num">1 accepted paper</span> (ADCAIJ 2026), acceptance to Krea RSFE Finance Track.</p></div>
+      <div class="rcard"><span class="k">Research</span><h3>Oxford Saïd — RA</h3><p>Delisting literature review under faculty guidance: <span class="num">30+ papers</span>, a structured table of <span class="num">400+ companies</span>, findings submitted to the Financial Reporting Council.</p></div>
+      <div class="rcard"><span class="k">Industry</span><h3>AI recruiting intern</h3><p>First high-school intern at a U.S. recruiting firm. <span class="num">75+ candidates</span> sourced and screened, <span class="num">5 finalists</span> to leadership, AI workflows introduced.</p></div>
+      <div class="rcard"><span class="k">Venture</span><h3>CFO — MUN logistics</h3><p>Conference-supply venture serving <span class="num">16 MUNs</span>: <span class="num">₹7,00,000</span> revenue at ~24% margin; procurement, budgeting, client acquisition; advance-payment protocols after a contract failure.</p></div>
+      <div class="rcard"><span class="k">Leadership</span><h3>MUN secretariat ×9</h3><p><span class="num">1,100+ delegates</span>, 80+ member teams. DSG ×3, Head of Outreach, Financial Advisor. Hiring SOPs cut recruitment time <span class="num">33%</span>; ₹10.9L revenue, ₹3.16L profit.</p></div>
+      <div class="rcard"><span class="k">Governance</span><h3>Integrity verification</h3><p>International Affairs Coordinator for credential verification across <span class="num">50 conferences</span>; led 6 country heads; centralized-database workflows against fraudulent applications.</p></div>
+      <div class="rcard"><span class="k">Service</span><h3>HR intern — I2I</h3><p>Mental-health NGO: <span class="num">35+ interviews</span>, AI-transcription pipeline redesign, time-per-hire down <span class="num">50%</span>, 26+ interns recruited.</p></div>
+      <div class="rcard"><span class="k">Competition</span><h3>Delegate &amp; chair</h3><p><span class="num">33 conferences</span> — awards in 15 of 19 as delegate, incl. Oxford and Harvard MUN; 13 chair/vice-chair roles; high-level committees alongside university students in 7.</p></div>
+      <div class="rcard"><span class="k">Adjudication</span><h3>IPDC 2026</h3><p>Selected paid adjudicator for the 7th International Parliamentary Debate Competition — evaluated competitive rounds and research motions.</p></div>
+      <div class="rcard"><span class="k">Founder</span><h3>YouthInSeva</h3><p>Nutrition initiative funded from MUN profits: protein supplements to <span class="num">30+ students</span> in government schools; replicable low-cost model.</p></div>
+    </div>
+    <div class="rail-nav">
+      <button id="r-prev" aria-label="previous">←</button>
+      <button id="r-next" aria-label="next">→</button>
+    </div>
+    <p class="rail-hint"><kbd>←</kbd> <kbd>→</kbd> ALSO WORK ANYWHERE ON THE PAGE</p>
+  </div>
+</section>
+
+<!-- Awards -->
+<section class="sec" id="awards">
+  <div class="sec-head">
+    <span class="n">02 — AWARDS</span>
+    <div><h2>Four that survived selection</h2></div>
+  </div>
+  <!-- CONTENT SLOT: awards -->
+  <div class="aw"><span class="lvl">International</span><div><h3>Ascend Berkeley Stock Pitch — Grand Finalist &amp; India Champion</h3><p>Fintech stock analysis: Monte Carlo simulation, financial modelling.</p></div><span class="pct">TOP 5 / 55+ · 8.93%</span></div>
+  <div class="aw"><span class="lvl">International</span><div><h3>DMUN USA — Grand Delegate &amp; Best Delegate</h3><p>WTO committee, representing South Sudan; highest overall distinction.</p></div><span class="pct">1 / 1,200+ · 0.08%</span></div>
+  <div class="aw"><span class="lvl">National</span><div><h3>National Economics Olympiad — Finalist (SRCC)</h3><p>Self-studied from competition resources, no prior background.</p></div><span class="pct">127 / 2,600+ · 4.88%</span></div>
+  <div class="aw"><span class="lvl">International</span><div><h3>SASMO — Gold Award</h3><p>Global rank 25 · national rank 10 (Grade 11) · school rank 1.</p></div><span class="pct">TOP 8%</span></div>
+</section>
+
+<!-- Research portal -->
+<section class="portal">
+  <div class="band">
+    <div class="inner">
+      <video autoplay muted loop playsinline><source src="../assets/hero-ink.mp4" type="video/mp4"></video>
+      <div class="txt">
+        <span style="font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--accent);">THE OTHER BUILDING</span>
+        <h2>The research program lives on its own site.</h2>
+        <p>Six standing questions, thirteen papers with honest status labels, a public failure log, and instruments built to be reused.</p>
+        <a class="btn" href="https://silvercoin256.github.io/hada-institution/">Enter</a>
+      </div>
+    </div>
+    <div class="cap"><span>PORTAL — INK, GENERATED</span><span>RESEARCH.SHAURYAGUPTA</span></div>
+  </div>
+</section>
+
+<footer><div class="wrap">
+  <span>© 2026 SHAURYA GUPTA</span>
+  <span><a href="mailto:shauryaguptaa8@gmail.com">EMAIL</a> · <a href="https://github.com/SilverCoin256">GITHUB</a> · <a href="https://orcid.org/0009-0001-7642-9247">ORCID</a></span>
+</div></footer>
+
+<script src="../js/sound.js?v=1"></script>
+<script>
+const rail = document.getElementById('rail');
+const step = () => Math.min(464, innerWidth * 0.86);
+document.getElementById('r-next').addEventListener('click', () => rail.scrollBy({ left: step(), behavior: 'smooth' }));
+document.getElementById('r-prev').addEventListener('click', () => rail.scrollBy({ left: -step(), behavior: 'smooth' }));
+addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') { rail.scrollBy({ left: step(), behavior: 'smooth' }); SND.key(); }
+  if (e.key === 'ArrowLeft') { rail.scrollBy({ left: -step(), behavior: 'smooth' }); SND.key(); }
+});
+SND.attach();
+</script>
+</body>
+</html>
