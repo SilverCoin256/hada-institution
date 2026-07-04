@@ -7,128 +7,17 @@
 <meta name="description" content="Shaurya Gupta — researcher and operator. Research on AI and institutions, markets work at Oxford Saïd, and an operator's record.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-/* MAIN V3 — "EDITORIAL". Design locked; later models edit CONTENT SLOTS only. */
-:root {
-  --bg: #ffffff; --ink: #0f0f0f; --sub: #666; --accent: #7c3aed;
-  --soft: #f4effd; --line: #e5e7eb;
-  --mono: 'Roboto Mono', monospace; --disp: 'Space Grotesk', sans-serif;
-  --ease: cubic-bezier(.16,1,.3,1);
-}
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body { background: var(--bg); color: var(--ink); font-family: 'Inter', sans-serif; }
-a { color: var(--accent); text-decoration: none; }
-::selection { background: var(--accent); color: #fff; }
-
-header {
-  position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,.85);
-  backdrop-filter: blur(10px); border-bottom: 1px solid var(--line);
-  display: flex; justify-content: space-between; align-items: center; padding: 16px 28px;
-}
-header .brand { font-family: var(--disp); font-weight: 700; }
-header nav { display: flex; gap: 24px; font-size: .875rem; }
-header nav a { color: var(--sub); } header nav a:hover { color: var(--accent); }
-
-/* Hero — the purple smoke, subtle but bold */
-.hero { position: relative; overflow: hidden; padding: 130px 0 120px; }
-.hero video {
-  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
-  opacity: .5; pointer-events: none;
-}
-.hero::after {
-  content: ''; position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(to bottom, rgba(255,255,255,.25), rgba(255,255,255,1) 96%),
-              radial-gradient(ellipse 80% 70% at 30% 40%, rgba(255,255,255,.9), rgba(255,255,255,.1));
-}
-.hero .wrap { position: relative; z-index: 2; max-width: 1180px; margin: 0 auto; padding: 0 28px; }
-.hero .id { font-family: var(--mono); font-size: 12px; letter-spacing: .12em; color: var(--sub); margin-bottom: 20px; }
-.hero h1 {
-  font-family: var(--disp); font-weight: 700; letter-spacing: -0.03em; line-height: 1.02;
-  font-size: clamp(2.4rem, 7vw, 5.4rem); max-width: 16ch; margin-bottom: 28px;
-}
-.hero h1 em { font-style: normal; color: var(--accent); }
-.hero .lede { color: var(--sub); font-size: 1.125rem; max-width: 54ch; line-height: 1.65; margin-bottom: 34px; }
-.btn {
-  display: inline-block; font-family: var(--disp); font-size: 1.05rem; color: var(--ink);
-  border-bottom: 2px solid var(--accent); padding: 6px 2px; margin-right: 26px;
-}
-.btn::after { content: ' →'; color: var(--accent); transition: padding-left .4s var(--ease); }
-.btn:hover::after { padding-left: 8px; }
-.btn.quiet { border-bottom-color: var(--line); }
-
-/* Stats strip */
-.stats { border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line); }
-.stats .wrap { max-width: 1180px; margin: 0 auto; padding: 26px 28px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
-.stat .v { font-family: var(--disp); font-size: 1.7rem; font-weight: 700; color: var(--accent); }
-.stat .l { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; color: var(--sub); text-transform: uppercase; }
-
-/* Section head */
-.sec { max-width: 1180px; margin: 0 auto; padding: 96px 28px 0; }
-.sec-head { border-top: 2px solid var(--ink); padding-top: 20px; margin-bottom: 42px; display: grid; grid-template-columns: 170px 1fr; gap: 28px; align-items: baseline; }
-.sec-head .n { font-family: var(--mono); font-size: 12px; letter-spacing: .12em; color: var(--accent); }
-.sec-head h2 { font-family: var(--disp); font-size: clamp(1.5rem, 3.4vw, 2.5rem); letter-spacing: -0.02em; }
-.sec-head p { color: var(--sub); margin-top: 8px; max-width: 60ch; }
-
-/* Horizontal rail (samsy-lite: ← → traversal) */
-.rail-zone { position: relative; }
-.rail {
-  display: flex; gap: 0; overflow-x: auto; scroll-snap-type: x mandatory;
-  scrollbar-width: none; border-top: 1px solid var(--line);
-}
-.rail::-webkit-scrollbar { display: none; }
-.rcard {
-  min-width: min(430px, 86vw); scroll-snap-align: start; padding: 34px 34px 40px 0;
-  border-right: 1px solid var(--line); margin-right: 34px; flex-shrink: 0;
-  transition: transform .5s var(--ease);
-}
-.rcard:hover { transform: translateY(-6px); }
-.rcard .k { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; color: var(--accent); text-transform: uppercase; }
-.rcard h3 { font-family: var(--disp); font-size: 1.3rem; margin: 10px 0; letter-spacing: -0.01em; }
-.rcard p { font-size: .9rem; color: var(--sub); line-height: 1.65; }
-.rcard .num { color: var(--ink); font-weight: 600; }
-.rail-nav { display: flex; gap: 10px; justify-content: flex-end; padding: 18px 0 0; }
-.rail-nav button {
-  width: 44px; height: 44px; border: 1px solid var(--line); background: #fff; color: var(--ink);
-  font-size: 16px; cursor: pointer; transition: all .3s var(--ease);
-}
-.rail-nav button:hover { border-color: var(--accent); color: var(--accent); }
-.rail-hint { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; color: var(--sub); padding-top: 24px; }
-.rail-hint kbd { border: 1px solid var(--line); border-radius: 4px; padding: 1px 6px; }
-
-/* Awards ledger */
-.aw { border-top: 1px solid var(--line); padding: 24px 0; display: grid; grid-template-columns: 120px 1fr 240px; gap: 24px; align-items: baseline; transition: transform .4s var(--ease); }
-.aw:hover { transform: translateX(10px); }
-.aw .lvl { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; color: var(--accent); text-transform: uppercase; }
-.aw h3 { font-family: var(--disp); font-size: 1.1rem; }
-.aw p { font-size: .875rem; color: var(--sub); margin-top: 4px; }
-.aw .pct { font-family: var(--mono); font-size: 12px; color: var(--ink); text-align: right; }
-@media (max-width: 760px) { .aw { grid-template-columns: 1fr; gap: 6px; } .aw .pct { text-align: left; } .stats .wrap { grid-template-columns: 1fr 1fr; } .sec-head { grid-template-columns: 1fr; gap: 8px; } }
-
-/* Research portal */
-.portal { max-width: 1180px; margin: 0 auto; padding: 96px 28px; }
-.portal .band { border: 1px solid var(--ink); padding: 8px; }
-.portal .inner { position: relative; overflow: hidden; padding: 64px 48px; }
-.portal video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .35; }
-.portal .inner::after { content:''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(255,255,255,.92) 30%, rgba(255,255,255,.4)); }
-.portal .txt { position: relative; z-index: 2; max-width: 520px; }
-.portal .cap { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 10px; letter-spacing: .1em; color: var(--sub); padding: 8px 2px 0; text-transform: uppercase; }
-.portal h2 { font-family: var(--disp); font-size: clamp(1.5rem, 3.4vw, 2.4rem); letter-spacing: -0.02em; margin-bottom: 12px; }
-.portal p { color: var(--sub); margin-bottom: 20px; max-width: 46ch; }
-
-footer { border-top: 1px solid var(--ink); }
-footer .wrap { max-width: 1180px; margin: 0 auto; padding: 42px 28px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; color: var(--sub); }
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
   <span class="brand">Shaurya Gupta</span>
   <nav>
-    <a href="#work">Work</a>
-    <a href="#awards">Awards</a>
+    <a href="work.html">Work</a>
+    <a href="awards.html">Awards</a>
     <a href="https://silvercoin256.github.io/hada-institution/">Research ↗</a>
-    <a href="mailto:shauryaguptaa8@gmail.com">Contact</a>
+    <a href="about.html">About</a>
   </nav>
 </header>
 
@@ -140,7 +29,7 @@ footer .wrap { max-width: 1180px; margin: 0 auto; padding: 42px 28px; display: f
     <h1>Serious questions.<br><em>Working</em> systems.</h1>
     <p class="lede">I research how AI changes institutions and markets — one peer-reviewed paper, an Oxford Saïd research assistantship, and a public failure log. The other half of the record is operational: conferences, ventures, and teams that ran because the systems held.</p>
     <a class="btn" href="https://silvercoin256.github.io/hada-institution/">Enter the research site</a>
-    <a class="btn quiet" href="#work">The operator record</a>
+    <a class="btn quiet" href="work.html">The operator record</a>
   </div>
 </section>
 

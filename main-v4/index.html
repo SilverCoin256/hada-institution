@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shaurya Gupta — Walk &amp; Spiral</title>
+<meta name="description" content="Walk in, then travel the spiral — the full record of research, markets and operating work.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* MAIN V4 — "WALK & SPIRAL" (merged). Design locked; CONTENT SLOTS editable. */
+:root {
+  --bg: #0b0714; --ink: #f4f0ff; --sub: #a99cc6; --accent: #a78bfa;
+  --deep: #7c3aed; --line: #2a2140;
+  --mono: 'Roboto Mono', monospace; --disp: 'Space Grotesk', sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+a { color: var(--accent); text-decoration: none; }
+
+/* ── ACT I: the walk ── */
+#stage { position: relative; height: 100vh; min-height: 560px; overflow: hidden; }
+#sky { position: absolute; inset: 0; background: url('../assets/world-sky.png') center/cover no-repeat, var(--bg); }
+#smoke { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .5; mix-blend-mode: screen; pointer-events: none; }
+#world { position: absolute; inset: 0; }
+.hud-name { position: absolute; top: 24px; left: 28px; z-index: 5; font-family: var(--disp); font-weight: 700; }
+.hud-name span { color: var(--accent); }
+.hud-hint { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); z-index: 5;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em; color: var(--sub); text-transform: uppercase; text-align: center; line-height: 1.9; }
+.hud-hint kbd { border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; padding: 1px 7px; color: var(--ink); background: #171028; }
+.hud-skip { position: absolute; top: 26px; right: 28px; z-index: 5; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; color: var(--sub); }
+.touch { position: absolute; bottom: 18px; z-index: 6; display: none; gap: 10px; }
+.touch.left { left: 18px; } .touch.right { right: 18px; }
+.touch button { width: 56px; height: 56px; border-radius: 14px; border: 1px solid var(--line); background: rgba(23,16,40,.8); color: var(--ink); font-size: 20px; }
+@media (pointer: coarse) { .touch { display: flex; } .hud-hint { display: none; } }
+#panel { position: absolute; z-index: 7; left: 50%; bottom: 120px; transform: translateX(-50%) translateY(16px);
+  width: min(480px, calc(100vw - 40px)); background: rgba(14,9,26,.92); border: 1px solid var(--line); border-top: 2px solid var(--accent);
+  padding: 22px 24px; opacity: 0; pointer-events: none; transition: all .35s cubic-bezier(.16,1,.3,1); backdrop-filter: blur(8px); }
+#panel.show { opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0); }
+#panel .p-kicker { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; }
+#panel h2 { font-family: var(--disp); font-size: 1.35rem; margin-bottom: 8px; }
+#panel p { font-size: .875rem; line-height: 1.65; color: var(--sub); margin-bottom: 10px; }
+#panel .p-link { font-family: var(--mono); font-size: 12px; }
+
+/* ── ACT II: the spiral (helix of cards) ── */
+#spiral-track { position: relative; height: 560vh; }
+#spiral-view { position: sticky; top: 0; height: 100vh; overflow: hidden;
+  background: radial-gradient(ellipse 90% 70% at 50% 40%, #140d26 0%, var(--bg) 70%); }
+#spiral-view::before { content: ''; position: absolute; inset: 0; opacity: .12;
+  background: linear-gradient(#2a2140 1px, transparent 1px), linear-gradient(90deg, #2a2140 1px, transparent 1px);
+  background-size: 72px 72px; }
+#helix-cam { position: absolute; inset: 0; perspective: 1150px; }
+#helix { position: absolute; left: 50%; top: 50%; transform-style: preserve-3d; }
+.hcard { position: absolute; left: -160px; top: -110px; width: 320px; transform-style: preserve-3d;
+  border-radius: 14px; overflow: hidden; background: #171028; border: 1px solid var(--line);
+  box-shadow: 0 30px 80px rgba(0,0,0,.55); }
+.hcard img, .hcard video { width: 100%; height: 190px; object-fit: cover; display: block; filter: saturate(1.05); }
+.hcard .hc-cap { display: flex; justify-content: space-between; gap: 8px; padding: 10px 13px;
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: .1em; color: var(--sub); text-transform: uppercase; }
+.hcard .hc-cap b { color: var(--ink); font-weight: 500; }
+.spiral-title { position: absolute; top: 7vh; left: 50%; transform: translateX(-50%); text-align: center; z-index: 3; pointer-events: none; }
+.spiral-title .k { font-family: var(--mono); font-size: 11px; letter-spacing: .18em; color: var(--accent); text-transform: uppercase; }
+.spiral-title h2 { font-family: var(--disp); font-size: clamp(1.6rem, 4vw, 2.8rem); letter-spacing: -0.02em; margin-top: 8px; }
+#focus { position: absolute; left: 50%; transform: translateX(-50%); bottom: 6vh; z-index: 4;
+  width: min(560px, calc(100vw - 40px)); text-align: center; }
+#focus .f-i { font-family: var(--mono); font-size: 10px; letter-spacing: .16em; color: var(--accent); }
+#focus h3 { font-family: var(--disp); font-size: 1.3rem; margin: 6px 0; }
+#focus p { font-size: .85rem; color: var(--sub); line-height: 1.6; }
+.s-hint { position: absolute; bottom: 1.6vh; left: 50%; transform: translateX(-50%);
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: .16em; color: #5c4f85; text-transform: uppercase; }
+
+/* ── outro ── */
+.outro { padding: 120px 24px 90px; text-align: center; }
+.outro h2 { font-family: var(--disp); font-size: clamp(1.7rem, 4.6vw, 3rem); letter-spacing: -0.02em; margin-bottom: 14px; }
+.outro p { color: var(--sub); max-width: 52ch; margin: 0 auto 30px; }
+.outro a.big { font-family: var(--disp); font-size: 1.15rem; color: var(--ink); border-bottom: 2px solid var(--accent); padding-bottom: 5px; }
+.outro a.big:hover { color: var(--accent); }
+footer { border-top: 1px solid var(--line); padding: 36px 24px; text-align: center; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; color: var(--sub); }
+</style>
+</head>
+<body>
+
+<!-- ACT I — THE WALK -->
+<section id="stage">
+  <div id="sky"></div>
+  <video id="smoke" autoplay muted loop playsinline><source src="../assets/film-smoke.mp4" type="video/mp4"></video>
+  <canvas id="world"></canvas>
+  <div class="hud-name">SHAURYA <span>GUPTA</span></div>
+  <a class="hud-skip" href="#spiral-track">SKIP TO THE SPIRAL ↓</a>
+  <div class="hud-hint"><kbd>←</kbd> <kbd>→</kbd> walk &nbsp; <kbd>space</kbd> jump &nbsp; <kbd>E</kbd> enter — then keep walking right, the spiral is at the end</div>
+  <div class="touch left"><button id="t-left">◀</button><button id="t-right">▶</button></div>
+  <div class="touch right"><button id="t-jump">⤒</button><button id="t-use">E</button></div>
+  <div id="panel">
+    <div class="p-kicker" id="p-kicker"></div><h2 id="p-title"></h2><p id="p-body"></p>
+    <a class="p-link" id="p-link" href="#" target="_blank" rel="noopener"></a>
+  </div>
+</section>
+
+<!-- ACT II — THE SPIRAL -->
+<div id="spiral-track">
+  <div id="spiral-view">
+    <div class="spiral-title">
+      <span class="k">Act II — The record, wound</span>
+      <h2>Fourteen entries. Oldest first.</h2>
+    </div>
+    <div id="helix-cam"><div id="helix"></div></div>
+    <div id="focus"><div class="f-i" id="f-i"></div><h3 id="f-t"></h3><p id="f-b"></p></div>
+    <div class="s-hint">SCROLL — THE HELIX TURNS · IMAGERY IS PLACEHOLDER, GENERATED</div>
+  </div>
+</div>
+
+<!-- OUTRO -->
+<section class="outro">
+  <h2>The research has its own building.</h2>
+  <p>Formal models, one peer-reviewed paper, open instruments, and a public failure log — at full depth on the research site.</p>
+  <a class="big" href="https://silvercoin256.github.io/hada-institution/">Enter the research site →</a>
+</section>
+<footer>© 2026 SHAURYA GUPTA · WORLD &amp; HELIX HAND-CODED · BACKDROPS GENERATED</footer>
+
+<script src="../js/sound.js?v=1"></script>
+<script>
+/* ============ CONTENT SLOT: walk stations ============ */
+const STATIONS = [
+  { x: 950,  kicker: 'Research', title: 'The Research Program',
+    body: 'Sole-author studies on AI, institutions and labor markets — one accepted (ADCAIJ 2026), the rest documented honestly. Original metrics, open code, a public failure log.',
+    link: 'https://silvercoin256.github.io/hada-institution/', linkText: 'ENTER THE RESEARCH SITE →' },
+  { x: 1750, kicker: 'Research Assistant', title: 'Oxford — Saïd Business School',
+    body: '30+ papers analysed on public vs private markets and delisting; a structured table of 400+ companies; findings submitted to the Financial Reporting Council. Under faculty guidance.',
+    link: null, linkText: '' },
+  { x: 2550, kicker: 'Finance', title: 'Ascend Berkeley — Grand Finalist',
+    body: 'Top 5 of 55+ teams, India champion. Led fintech stock analysis — Monte Carlo simulation and financial modelling.',
+    link: null, linkText: '' },
+  { x: 3350, kicker: 'Leadership', title: 'The MUN Years',
+    body: '33 conferences, awards in 15 of 19 as delegate. Senior secretariat across 9 conferences, 1,100+ delegates, ₹10.9L revenue managed.',
+    link: null, linkText: '' },
+  { x: 4150, kicker: 'Keep walking →', title: 'The spiral is ahead',
+    body: 'The full record — all fourteen entries in order — is wound on the spiral just past the edge of this world. Walk off the right edge, or scroll.',
+    link: null, linkText: '' },
+];
+const WORLD_LEN = 4600;
+/* ============ CONTENT SLOT: helix entries (oldest FIRST) ============ */
+const H = [
+  { img: '../assets/plate-measurement.png', tag: 'SASMO', t: 'SASMO — Gold, global rank 25', b: 'Gold (top 8%), global 25, national 10, school 1 — Grade 11.' },
+  { img: '../assets/plate-governance.png', tag: 'MUN', t: '33 conferences', b: '19 delegate (awards in 15, incl. Oxford & Harvard MUN), 13 chairing. Grand Delegate at DMUN USA — 1 of 1,200+.' },
+  { img: '../assets/proc-queue.png', tag: 'LEADERSHIP', t: 'Secretariat ×9', b: 'DSG ×3 · 1,100+ delegates · 80+ member teams · hiring SOPs cut recruitment time 33%.' },
+  { img: '../assets/proc-ledger.png', tag: 'VENTURE', t: 'MUN logistics — CFO', b: '₹7,00,000 revenue at ~24% margin across 16 conferences; advance-payment protocols after a contract failure.' },
+  { img: '../assets/proc-cabinet.png', tag: 'GOVERNANCE', t: 'Integrity verification', b: 'Credential verification across 50 conferences; 6 country heads; centralized-database workflows.' },
+  { img: '../assets/plate-labor.png', tag: 'SERVICE', t: 'YouthInSeva — co-founder', b: 'Nutrition initiative funded from MUN profits; supplements to 30+ government-school students.' },
+  { img: '../assets/proc-microfilm.png', tag: 'SERVICE', t: 'I2I — HR intern', b: '35+ interviews; AI-transcription pipeline; time-per-hire down 50%; 26+ interns recruited.' },
+  { img: '../assets/proc-punchcard.png', tag: 'INDUSTRY', t: 'AI recruiting intern', b: 'First high-school intern at a U.S. recruiting firm; 75+ candidates; 5 finalists to leadership.' },
+  { img: '../assets/plate-anchoring.png', tag: 'ECONOMICS', t: 'NEO — finalist (SRCC)', b: '127 of 2,600+, self-studied with no prior background.' },
+  { img: '../assets/plate-institutions.png', tag: 'RESEARCH', t: 'Independent research begins', b: 'Sole-author studies; original indices; open code; Krea RSFE Finance Track acceptance.' },
+  { img: '../assets/plate-oversight.png', tag: 'FINANCE', t: 'Ascend Berkeley — Grand Finalist', b: 'Top 5 / 55+ and India champion; Monte Carlo + financial modelling.' },
+  { img: '../assets/proc-drafting.png', tag: 'DEBATE', t: 'IPDC 2026 — paid adjudicator', b: 'Selected adjudicator, 7th International Parliamentary Debate Competition.' },
+  { img: '../assets/proc-stripchart.png', tag: 'OXFORD', t: 'Saïd Business School — RA', b: '30+ papers; 400+ company delisting table; submitted to the Financial Reporting Council.' },
+  { img: '../assets/fig-p5.png', tag: 'PEER REVIEW', t: 'ADCAIJ — accepted', b: 'First peer-reviewed acceptance (Vol. 15, 2026). The rest of the program stays documented, failures included.' },
+];
+/* ======================= END CONTENT SLOTS ======================= */
+
+/* ---- ACT I engine (walk) ---- */
+const cv = document.getElementById('world'), ctx = cv.getContext('2d');
+let W, Hh, GY;
+function resize() {
+  const dpr = Math.min(devicePixelRatio || 1, 2);
+  W = innerWidth; Hh = document.getElementById('stage').clientHeight;
+  cv.width = W * dpr; cv.height = Hh * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  GY = Hh - 96;
+}
+resize(); addEventListener('resize', resize);
+const P = { x: 240, vx: 0, y: 0, vy: 0, onGround: true, face: 1, step: 0 };
+let cam = 0, near = -1, panelFor = -1;
+const keys = {};
+addEventListener('keydown', e => {
+  const inSpiral = scrollY > Hh * .5;
+  if (!inSpiral && ['ArrowLeft','ArrowRight','ArrowUp',' '].includes(e.key)) e.preventDefault();
+  keys[e.key.toLowerCase()] = true;
+  if (!inSpiral && (e.key === ' ' || e.key === 'ArrowUp' || e.key.toLowerCase() === 'w') && P.onGround) { P.vy = -13.5; P.onGround = false; SND.jump(); }
+  if (e.key.toLowerCase() === 'e' && near >= 0) togglePanel(near);
+});
+addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
+const hold = (id, k) => { const el = document.getElementById(id);
+  ['touchstart','mousedown'].forEach(ev => el.addEventListener(ev, e => { e.preventDefault(); keys[k] = true; }));
+  ['touchend','mouseup','mouseleave'].forEach(ev => el.addEventListener(ev, () => keys[k] = false)); };
+hold('t-left','arrowleft'); hold('t-right','arrowright');
+document.getElementById('t-jump').addEventListener('touchstart', e => { e.preventDefault(); if (P.onGround) { P.vy = -13.5; P.onGround = false; SND.jump(); } });
+document.getElementById('t-use').addEventListener('touchstart', e => { e.preventDefault(); if (near >= 0) togglePanel(near); });
+function togglePanel(i) {
+  const pn = document.getElementById('panel');
+  if (panelFor === i && pn.classList.contains('show')) { pn.classList.remove('show'); return; }
+  panelFor = i; const s = STATIONS[i];
+  document.getElementById('p-kicker').textContent = s.kicker;
+  document.getElementById('p-title').textContent = s.title;
+  document.getElementById('p-body').textContent = s.body;
+  const L = document.getElementById('p-link');
+  if (s.link) { L.style.display = 'inline'; L.href = s.link; L.textContent = s.linkText; } else L.style.display = 'none';
+  pn.classList.add('show'); SND.open();
+}
+function sign(x, y, label, active) {
+  ctx.strokeStyle = active ? '#a78bfa' : '#4a3d70'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y - 66); ctx.stroke();
+  ctx.fillStyle = active ? '#a78bfa' : '#241a3e';
+  ctx.fillRect(x - 62, y - 108, 124, 44); ctx.strokeRect(x - 62, y - 108, 124, 44);
+  ctx.fillStyle = active ? '#0b0714' : '#a99cc6';
+  ctx.font = '600 10px "Roboto Mono", monospace'; ctx.textAlign = 'center';
+  ctx.fillText(label, x, y - 108 + 26);
+}
+function walker(x, y) {
+  const bob = P.onGround && Math.abs(P.vx) > .4 ? Math.sin(P.step) * 2.5 : 0;
+  ctx.save(); ctx.translate(x, y + bob);
+  const sw = P.onGround && Math.abs(P.vx) > .4 ? Math.sin(P.step) * 7 : 0;
+  ctx.strokeStyle = '#e9e2ff'; ctx.lineWidth = 4; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(0, -18); ctx.lineTo(-4 - sw, 0); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0, -18); ctx.lineTo(4 + sw, 0); ctx.stroke();
+  ctx.fillStyle = '#7c3aed'; ctx.beginPath(); ctx.roundRect(-9, -44, 18, 28, 6); ctx.fill();
+  ctx.fillStyle = '#e9e2ff'; ctx.beginPath(); ctx.arc(0, -52, 8, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#0b0714'; ctx.beginPath(); ctx.arc(P.face * 3, -52, 3.2, 0, Math.PI * 2); ctx.fill();
+  ctx.restore();
+}
+let last = 0, walkedOff = false;
+function tick(ts) {
+  const dt = Math.min((ts - last) / 16.7, 2.2); last = ts;
+  const ax = (keys['arrowleft'] || keys['a'] ? -1 : 0) + (keys['arrowright'] || keys['d'] ? 1 : 0);
+  P.vx += ax * .9 * dt; P.vx *= .86;
+  if (Math.abs(P.vx) > .3) { P.face = P.vx > 0 ? 1 : -1; P.step += .28 * dt; }
+  P.x = Math.max(80, Math.min(WORLD_LEN, P.x + P.vx * dt * 3.2));
+  /* walking off the right edge scrolls you into the spiral */
+  if (P.x >= WORLD_LEN - 4 && !walkedOff) { walkedOff = true; SND.open();
+    document.getElementById('spiral-track').scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => { walkedOff = false; P.x = WORLD_LEN - 120; }, 2500); }
+  if (!P.onGround) { P.vy += .8 * dt; P.y += P.vy * dt; if (P.y >= 0) { P.y = 0; P.vy = 0; P.onGround = true; } }
+  cam += ((P.x - W * .42) - cam) * .08 * dt; cam = Math.max(0, Math.min(WORLD_LEN - W, cam));
+  near = -1; STATIONS.forEach((s, i) => { if (Math.abs(s.x - P.x) < 90) near = i; });
+  if (near === -1 && panelFor >= 0) { document.getElementById('panel').classList.remove('show'); panelFor = -1; }
+
+  ctx.clearRect(0, 0, W, Hh);
+  /* giant name in the world (parallax typography) */
+  ctx.save();
+  ctx.font = `700 ${Math.min(190, W * .16)}px "Space Grotesk", sans-serif`;
+  ctx.textAlign = 'left'; ctx.lineWidth = 1.5;
+  ctx.strokeStyle = 'rgba(167,139,250,.16)'; ctx.fillStyle = 'rgba(124,58,237,.05)';
+  const nx = 420 - cam * .55;
+  ctx.fillText('SHAURYA', nx, Hh * .38); ctx.strokeText('SHAURYA', nx, Hh * .38);
+  ctx.fillText('GUPTA', nx + W * .12, Hh * .38 + Math.min(190, W * .16) * .92);
+  ctx.strokeText('GUPTA', nx + W * .12, Hh * .38 + Math.min(190, W * .16) * .92);
+  ctx.restore();
+  /* hills, ground */
+  ctx.fillStyle = '#150d26'; ctx.beginPath(); ctx.moveTo(0, GY - 40);
+  for (let x = 0; x <= W; x += 8) ctx.lineTo(x, GY - 46 - Math.sin((x + cam * .3) * .004) * 26 - Math.sin((x + cam * .3) * .013) * 8);
+  ctx.lineTo(W, Hh); ctx.lineTo(0, Hh); ctx.fill();
+  ctx.fillStyle = '#191030'; ctx.fillRect(0, GY, W, Hh - GY);
+  ctx.strokeStyle = '#7c3aed'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(0, GY); ctx.lineTo(W, GY); ctx.stroke();
+  STATIONS.forEach((s, i) => {
+    const sx = s.x - cam; if (sx < -140 || sx > W + 140) return;
+    sign(sx, GY, s.kicker.toUpperCase(), i === near);
+    if (i === near) { ctx.fillStyle = '#a78bfa'; ctx.font = '10px "Roboto Mono", monospace'; ctx.textAlign = 'center'; ctx.fillText('[ E ]', sx, GY - 122); }
+  });
+  walker(P.x - cam, GY + P.y);
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+
+/* ---- ACT II engine (helix, Pacôme-studied) ----
+   Cards on a 3D helix, whole assembly tilted; scroll = travel.
+   STARTS AT THE FIRST (oldest) ENTRY. */
+const helix = document.getElementById('helix');
+const STEPA = 34;           /* degrees between cards around the axis */
+const RISE = 132;           /* vertical rise per card */
+const RADIUS = 520;
+H.forEach((h, i) => {
+  const el = document.createElement('div');
+  el.className = 'hcard'; el.id = 'hc' + i;
+  el.innerHTML = `<img src="${h.img}" alt="" loading="lazy">
+    <div class="hc-cap"><b>${String(i + 1).padStart(2, '0')} — ${h.tag}</b><span>GEN. PLACEHOLDER</span></div>`;
+  helix.appendChild(el);
+});
+let prog = 0, target = 0, lastIdx = -1;
+function layout() {
+  H.forEach((h, i) => {
+    const a = (i - prog) * STEPA;               /* focused card at angle 0 (front) */
+    const rad = a * Math.PI / 180;
+    const el = document.getElementById('hc' + i);
+    const z = Math.cos(rad) * RADIUS - RADIUS * .55;
+    const x = Math.sin(rad) * RADIUS;
+    const y = (i - prog) * -RISE;
+    const op = Math.max(0, Math.min(1, (z + RADIUS) / RADIUS * .9));
+    el.style.transform = `translate3d(${x}px, ${y}px, ${z}px) rotateY(${-a}deg) rotateZ(${Math.sin(rad) * -7}deg)`;
+    el.style.opacity = op.toFixed(2);
+    el.style.zIndex = Math.round(z + 2000);
+  });
+  helix.style.transform = `translate(-50%, -34%) rotateX(12deg) rotateZ(-7deg)`;
+  const idx = Math.max(0, Math.min(H.length - 1, Math.round(prog)));
+  if (idx !== lastIdx) {
+    lastIdx = idx; SND.key();
+    document.getElementById('f-i').textContent = String(idx + 1).padStart(2, '0') + ' / ' + H.length + ' — ' + H[idx].tag;
+    document.getElementById('f-t').textContent = H[idx].t;
+    document.getElementById('f-b').textContent = H[idx].b;
+  }
+}
+function spiralScroll() {
+  const track = document.getElementById('spiral-track');
+  const r = track.getBoundingClientRect();
+  const total = track.offsetHeight - innerHeight;
+  const p = Math.max(0, Math.min(1, -r.top / total));
+  target = p * (H.length - 1);                 /* p=0 → FIRST entry */
+}
+addEventListener('scroll', spiralScroll, { passive: true });
+(function anim() { prog += (target - prog) * .08; layout(); requestAnimationFrame(anim); })();
+spiralScroll(); layout();
+
+SND.attach();
+document.getElementById('smoke').addEventListener('error', () => document.getElementById('smoke').remove());
+</script>
+</body>
+</html>

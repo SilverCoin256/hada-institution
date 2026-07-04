@@ -187,7 +187,7 @@ resize(); addEventListener('resize', resize);
 
 /* spiral params: node i sits at angle a0 + i*step; focus rotates spiral */
 const TURNS = 3.1, STEP = (Math.PI * 2 * TURNS) / (NODES.length + 3);
-let focus = NODES.length - 1, smooth = focus;
+let focus = 0, smooth = 0; /* start from the FIRST entry, oldest outward */
 const ANCHOR = -0.25; /* angle where the focused node rests (upper right) */
 
 function nodePos(i, rot) {

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Shaurya Gupta</title>
+<meta name="description" content="Who this is, how the work gets done, and how to reach me.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.abpage { max-width: 900px; margin: 0 auto; padding: 90px 28px 40px; }
+.abpage h1 { font-family: var(--disp); font-size: clamp(2rem, 5.4vw, 3.8rem); letter-spacing: -0.03em; margin-bottom: 30px; }
+.abpage p.body { font-size: 1.05rem; line-height: 1.8; margin-bottom: 22px; max-width: 68ch; }
+.abpage p.body .num { font-weight: 600; }
+.hr { border-top: 2px solid var(--ink); margin: 56px 0 26px; padding-top: 18px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .14em; color: var(--accent); text-transform: uppercase; }
+.cgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.cbox { border: 1px solid var(--line); padding: 22px; transition: all .3s var(--ease); }
+.cbox:hover { border-color: var(--accent); transform: translateY(-4px); }
+.cbox .l { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; color: var(--sub); text-transform: uppercase; margin-bottom: 8px; }
+.cbox a { font-family: var(--disp); font-size: 1rem; color: var(--ink); word-break: break-all; }
+.cbox a:hover { color: var(--accent); }
+@media (max-width: 700px) { .cgrid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="brand"><a href="index.html" style="color:var(--ink)">Shaurya Gupta</a></span>
+  <nav>
+    <a href="work.html">Work</a>
+    <a href="awards.html">Awards</a>
+    <a href="https://silvercoin256.github.io/hada-institution/">Research ↗</a>
+    <a href="about.html" style="color:var(--ink)">About</a>
+  </nav>
+</header>
+
+<!-- CONTENT SLOT: about copy -->
+<main class="abpage">
+  <h1>About.</h1>
+  <p class="body">Two threads run through everything here. The first is research: what happens to institutions — regulators, labor markets, review systems — when their decisions start routing through AI. That work has <span class="num">one peer-reviewed acceptance</span>, an Oxford Saïd research assistantship behind it, and a public failure log, all documented on the <a href="https://silvercoin256.github.io/hada-institution/">research site</a>.</p>
+  <p class="body">The second is operating. Nine conference secretariats, a logistics venture run as CFO, recruiting pipelines rebuilt with AI at two organizations — <span class="num">₹17.9L</span> of revenue managed across them. The operating work is where the research questions come from: every oversight-saturation model started as watching a real queue back up.</p>
+  <p class="body">The rule connecting both: numbers you can check, failures kept on the record, systems that outlive the event they were built for.</p>
+
+  <div class="hr">Reach me</div>
+  <div class="cgrid">
+    <div class="cbox"><div class="l">Email</div><a href="mailto:shauryaguptaa8@gmail.com">shauryaguptaa8@gmail.com</a></div>
+    <div class="cbox"><div class="l">GitHub</div><a href="https://github.com/SilverCoin256" target="_blank" rel="noopener">SilverCoin256</a></div>
+    <div class="cbox"><div class="l">ORCID</div><a href="https://orcid.org/0009-0001-7642-9247" target="_blank" rel="noopener">0009-0001-7642-9247</a></div>
+  </div>
+</main>
+
+<footer><div class="wrap">
+  <span>© 2026 SHAURYA GUPTA</span>
+  <span><a href="mailto:shauryaguptaa8@gmail.com">EMAIL</a> · <a href="https://github.com/SilverCoin256">GITHUB</a> · <a href="https://orcid.org/0009-0001-7642-9247">ORCID</a></span>
+</div></footer>
+
+<script src="../js/sound.js?v=1"></script>
+<script>SND.attach();</script>
+</body>
+</html>

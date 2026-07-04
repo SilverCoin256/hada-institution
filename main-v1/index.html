@@ -247,6 +247,16 @@ function tick(ts) {
 
   /* draw */
   ctx.clearRect(0, 0, W, H);
+  /* giant name — typography lives inside the world, parallax layer */
+  ctx.save();
+  ctx.font = `700 ${Math.min(190, W * .16)}px "Space Grotesk", sans-serif`;
+  ctx.textAlign = 'left'; ctx.lineWidth = 1.5;
+  ctx.strokeStyle = 'rgba(167,139,250,.16)'; ctx.fillStyle = 'rgba(124,58,237,.05)';
+  const nx = 420 - cam * .55;
+  ctx.fillText('SHAURYA', nx, H * .38); ctx.strokeText('SHAURYA', nx, H * .38);
+  ctx.fillText('GUPTA', nx + W * .12, H * .38 + Math.min(190, W * .16) * .92);
+  ctx.strokeText('GUPTA', nx + W * .12, H * .38 + Math.min(190, W * .16) * .92);
+  ctx.restore();
   /* far hills (parallax) */
   ctx.fillStyle = '#150d26';
   ctx.beginPath(); ctx.moveTo(0, GY - 40);
