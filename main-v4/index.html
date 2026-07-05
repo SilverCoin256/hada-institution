@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Shaurya Gupta — Walk &amp; Spiral</title>
-<meta name="description" content="Walk in, then travel the spiral — the full record of research, markets and operating work.">
+<meta name="description" content="Walk in, then travel the spiral — the full record of research, markets and operating work. Every entry opens as a case study.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* MAIN V4 — "WALK & SPIRAL" (merged). Design locked; CONTENT SLOTS editable. */
+/* MAIN V4.1 — "WALK & SPIRAL", now a real site: intro, reversed helix, case-study routes. */
 :root {
   --bg: #0b0714; --ink: #f4f0ff; --sub: #a99cc6; --accent: #a78bfa;
   --deep: #7c3aed; --line: #2a2140;
@@ -17,6 +17,8 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { background: var(--bg); color: var(--ink); font-family: 'Inter', sans-serif; overflow-x: hidden; }
 a { color: var(--accent); text-decoration: none; }
+body.case-open { overflow: hidden; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
 /* ── ACT I: the walk ── */
 #stage { position: relative; height: 100vh; min-height: 560px; overflow: hidden; }
@@ -29,6 +31,14 @@ a { color: var(--accent); text-decoration: none; }
   font-family: var(--mono); font-size: 11px; letter-spacing: .12em; color: var(--sub); text-transform: uppercase; text-align: center; line-height: 1.9; }
 .hud-hint kbd { border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; padding: 1px 7px; color: var(--ink); background: #171028; }
 .hud-skip { position: absolute; top: 26px; right: 28px; z-index: 5; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; color: var(--sub); }
+/* intro choreography: HUD hides until the auto-intro hands over */
+.hud-name, .hud-hint, .hud-skip { opacity: 0; transition: opacity .9s ease .15s; }
+body.intro-done .hud-name, body.intro-done .hud-hint, body.intro-done .hud-skip { opacity: 1; }
+#skip-intro { position: absolute; top: 26px; right: 28px; z-index: 6; font-family: var(--mono); font-size: 11px;
+  letter-spacing: .14em; color: var(--sub); text-transform: uppercase; background: rgba(23,16,40,.7);
+  border: 1px solid var(--line); border-radius: 6px; padding: 8px 14px; cursor: pointer; transition: all .3s ease; }
+#skip-intro:hover { color: var(--ink); border-color: var(--accent); }
+body.intro-done #skip-intro { opacity: 0; pointer-events: none; }
 .touch { position: absolute; bottom: 18px; z-index: 6; display: none; gap: 10px; }
 .touch.left { left: 18px; } .touch.right { right: 18px; }
 .touch button { width: 56px; height: 56px; border-radius: 14px; border: 1px solid var(--line); background: rgba(23,16,40,.8); color: var(--ink); font-size: 20px; }
@@ -42,10 +52,10 @@ a { color: var(--accent); text-decoration: none; }
 #panel p { font-size: .875rem; line-height: 1.65; color: var(--sub); margin-bottom: 10px; }
 #panel .p-link { font-family: var(--mono); font-size: 12px; }
 
-/* ── ACT II: the spiral (helix of cards) ── */
+/* ── ACT II: the spiral (helix of cards, top-left → bottom-right) ── */
 #spiral-track { position: relative; height: 560vh; }
 #spiral-view { position: sticky; top: 0; height: 100vh; overflow: hidden;
-  background: radial-gradient(ellipse 90% 70% at 50% 40%, #140d26 0%, var(--bg) 70%); }
+  background: radial-gradient(ellipse 90% 70% at 42% 34%, #140d26 0%, var(--bg) 70%); }
 #spiral-view::before { content: ''; position: absolute; inset: 0; opacity: .12;
   background: linear-gradient(#2a2140 1px, transparent 1px), linear-gradient(90deg, #2a2140 1px, transparent 1px);
   background-size: 72px 72px; }
@@ -53,21 +63,80 @@ a { color: var(--accent); text-decoration: none; }
 #helix { position: absolute; left: 50%; top: 50%; transform-style: preserve-3d; }
 .hcard { position: absolute; left: -160px; top: -110px; width: 320px; transform-style: preserve-3d;
   border-radius: 14px; overflow: hidden; background: #171028; border: 1px solid var(--line);
-  box-shadow: 0 30px 80px rgba(0,0,0,.55); }
-.hcard img, .hcard video { width: 100%; height: 190px; object-fit: cover; display: block; filter: saturate(1.05); }
+  box-shadow: 0 30px 80px rgba(0,0,0,.55); cursor: pointer; }
+.hcard:hover { border-color: var(--accent); }
+.hcard img, .hcard video { width: 100%; height: 190px; object-fit: cover; display: block; filter: saturate(1.05); pointer-events: none; }
 .hcard .hc-cap { display: flex; justify-content: space-between; gap: 8px; padding: 10px 13px;
   font-family: var(--mono); font-size: 9.5px; letter-spacing: .1em; color: var(--sub); text-transform: uppercase; }
 .hcard .hc-cap b { color: var(--ink); font-weight: 500; }
+.hcard .hc-cap span { color: var(--accent); }
 .spiral-title { position: absolute; top: 7vh; left: 50%; transform: translateX(-50%); text-align: center; z-index: 3; pointer-events: none; }
 .spiral-title .k { font-family: var(--mono); font-size: 11px; letter-spacing: .18em; color: var(--accent); text-transform: uppercase; }
 .spiral-title h2 { font-family: var(--disp); font-size: clamp(1.6rem, 4vw, 2.8rem); letter-spacing: -0.02em; margin-top: 8px; }
 #focus { position: absolute; left: 50%; transform: translateX(-50%); bottom: 6vh; z-index: 4;
-  width: min(560px, calc(100vw - 40px)); text-align: center; }
+  width: min(560px, calc(100vw - 40px)); text-align: center; pointer-events: none; }
 #focus .f-i { font-family: var(--mono); font-size: 10px; letter-spacing: .16em; color: var(--accent); }
 #focus h3 { font-family: var(--disp); font-size: 1.3rem; margin: 6px 0; }
 #focus p { font-size: .85rem; color: var(--sub); line-height: 1.6; }
+#focus .f-open { pointer-events: auto; display: inline-block; margin-top: 10px; font-family: var(--mono); font-size: 10.5px;
+  letter-spacing: .14em; color: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 7px 14px;
+  background: rgba(23,16,40,.7); cursor: pointer; transition: all .25s ease; }
+#focus .f-open:hover { border-color: var(--accent); color: var(--accent); }
 .s-hint { position: absolute; bottom: 1.6vh; left: 50%; transform: translateX(-50%);
   font-family: var(--mono); font-size: 9.5px; letter-spacing: .16em; color: #5c4f85; text-transform: uppercase; }
+
+/* ── CASE STUDY overlay (routed via #case/ec-NN) ── */
+#case { position: fixed; inset: 0; z-index: 40; background: var(--bg); }
+#case .case-glow { position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 80% 55% at 30% 8%, rgba(124,58,237,.18) 0%, transparent 60%); }
+#case .case-scroll { position: absolute; inset: 0; overflow-y: auto; overscroll-behavior: contain; }
+#case .case-inner { opacity: 0; transform: translateY(26px) scale(.985); transition: opacity .6s ease .28s, transform .7s cubic-bezier(.16,1,.3,1) .28s; }
+#case.in .case-inner { opacity: 1; transform: none; }
+#case.out .case-inner { opacity: 0; transform: translateY(14px); transition: all .3s ease; }
+/* violet wipe: two blades cover, then retract left→right */
+#case .case-wipe { position: absolute; inset: 0; z-index: 8; pointer-events: none; }
+#case .case-wipe i { position: absolute; inset: 0; display: block; transform: scaleX(1); transform-origin: 100% 50%;
+  transition: transform .62s cubic-bezier(.7,0,.2,1); }
+#case .case-wipe i:nth-child(1) { background: var(--deep); transition-delay: .06s; }
+#case .case-wipe i:nth-child(2) { background: #170f2c; transition-delay: 0s; }
+#case.in .case-wipe i { transform: scaleX(0); }
+#case.out .case-wipe i { transform-origin: 0 50%; transform: scaleX(1); transition-duration: .34s; }
+.case-hero { position: relative; height: 52vh; min-height: 340px; overflow: hidden;
+  background: linear-gradient(160deg, #1b1232 0%, #0e0920 70%); border-bottom: 1px solid var(--line); }
+.case-hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  opacity: .82; animation: kenburns 16s ease-in-out infinite alternate; }
+@keyframes kenburns { from { transform: scale(1.06) translate(0, 0); } to { transform: scale(1.2) translate(-2.4%, -2%); } }
+.case-hero .h-grad { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11,7,20,.25) 0%, rgba(11,7,20,0) 40%, rgba(11,7,20,.92) 96%); }
+.case-hero .c-ghost { position: absolute; right: 2vw; bottom: -6vh; font-family: var(--disp); font-weight: 700;
+  font-size: clamp(140px, 32vh, 300px); line-height: 1; color: transparent;
+  -webkit-text-stroke: 1.5px rgba(167,139,250,.22); pointer-events: none; }
+.case-head { position: absolute; left: clamp(20px, 6vw, 84px); right: clamp(20px, 6vw, 84px); bottom: 4vh; }
+.case-head .c-kicker { font-family: var(--mono); font-size: 11px; letter-spacing: .2em; color: var(--accent); text-transform: uppercase; margin-bottom: 12px; }
+.case-head h1 { font-family: var(--disp); font-size: clamp(1.9rem, 4.6vw, 3.4rem); letter-spacing: -0.02em; line-height: 1.06; }
+.case-body { padding: 44px clamp(20px, 6vw, 84px) 90px; max-width: 1060px; }
+.case-body > * { opacity: 0; transform: translateY(18px); transition: opacity .55s ease, transform .6s cubic-bezier(.16,1,.3,1); }
+#case.in .case-body > * { opacity: 1; transform: none; }
+.c-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 18px; margin-bottom: 40px; }
+.c-stat { border-top: 2px solid var(--line); padding-top: 14px; }
+.c-stat .c-n { font-family: var(--disp); font-weight: 700; font-size: clamp(1.7rem, 3.4vw, 2.6rem); letter-spacing: -0.02em; }
+.c-stat .c-n em { font-style: normal; color: var(--accent); }
+.c-stat .c-l { font-family: var(--mono); font-size: 10px; letter-spacing: .16em; color: var(--sub); text-transform: uppercase; margin-top: 6px; }
+.c-narrative { font-size: 1.02rem; line-height: 1.85; color: var(--sub); max-width: 62ch; margin-bottom: 34px; }
+.c-narrative strong { color: var(--ink); font-weight: 600; }
+.c-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 34px; }
+.c-tags span { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--sub); border: 1px solid var(--line); border-radius: 999px; padding: 6px 13px; }
+.c-actions { display: flex; flex-wrap: wrap; gap: 22px; align-items: center; }
+.c-actions .c-ext { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; border-bottom: 1px solid var(--accent); padding-bottom: 3px; }
+.c-actions .c-back { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; color: var(--sub);
+  background: none; border: 1px solid var(--line); border-radius: 6px; padding: 9px 16px; cursor: pointer; transition: all .25s ease; }
+.c-actions .c-back:hover { color: var(--ink); border-color: var(--accent); }
+.case-close { position: fixed; top: 20px; right: 24px; z-index: 45; font-family: var(--mono); font-size: 11px;
+  letter-spacing: .14em; color: var(--sub); text-transform: uppercase; background: rgba(23,16,40,.8);
+  border: 1px solid var(--line); border-radius: 6px; padding: 9px 15px; cursor: pointer;
+  backdrop-filter: blur(6px); transition: all .25s ease; opacity: 0; }
+#case.in .case-close { opacity: 1; transition-delay: .5s; }
+.case-close:hover { color: var(--ink); border-color: var(--accent); }
 
 /* ── outro ── */
 .outro { padding: 120px 24px 90px; text-align: center; }
@@ -86,8 +155,9 @@ footer { border-top: 1px solid var(--line); padding: 36px 24px; text-align: cent
   <video id="smoke" autoplay muted loop playsinline><source src="../assets/film-smoke.mp4" type="video/mp4"></video>
   <canvas id="world"></canvas>
   <div class="hud-name">SHAURYA <span>GUPTA</span></div>
+  <button id="skip-intro">SKIP INTRO →</button>
   <a class="hud-skip" href="#spiral-track">SKIP TO THE SPIRAL ↓</a>
-  <div class="hud-hint"><kbd>←</kbd> <kbd>→</kbd> walk &nbsp; <kbd>space</kbd> jump &nbsp; <kbd>E</kbd> enter — then keep walking right, the spiral is at the end</div>
+  <div class="hud-hint"><kbd>←</kbd> <kbd>→</kbd> walk &nbsp; <kbd>space</kbd> jump &nbsp; <kbd>E</kbd> open a case — then keep walking right, the spiral is at the end</div>
   <div class="touch left"><button id="t-left">◀</button><button id="t-right">▶</button></div>
   <div class="touch right"><button id="t-jump">⤒</button><button id="t-use">E</button></div>
   <div id="panel">
@@ -104,8 +174,11 @@ footer { border-top: 1px solid var(--line); padding: 36px 24px; text-align: cent
       <h2>Fourteen entries. Oldest first.</h2>
     </div>
     <div id="helix-cam"><div id="helix"></div></div>
-    <div id="focus"><div class="f-i" id="f-i"></div><h3 id="f-t"></h3><p id="f-b"></p></div>
-    <div class="s-hint">SCROLL — THE HELIX TURNS · IMAGERY IS PLACEHOLDER, GENERATED</div>
+    <div id="focus">
+      <div class="f-i" id="f-i"></div><h3 id="f-t"></h3><p id="f-b"></p>
+      <button class="f-open" id="f-open">OPEN CASE STUDY →</button>
+    </div>
+    <div class="s-hint">SCROLL — THE HELIX TURNS · CLICK ANY CARD TO OPEN ITS CASE STUDY</div>
   </div>
 </div>
 
@@ -115,45 +188,142 @@ footer { border-top: 1px solid var(--line); padding: 36px 24px; text-align: cent
   <p>Formal models, one peer-reviewed paper, open instruments, and a public failure log — at full depth on the research site.</p>
   <a class="big" href="https://silvercoin256.github.io/hada-institution/">Enter the research site →</a>
 </section>
+
+<!-- accessible plain-text mirror of the record -->
+<section class="sr-only" aria-label="Plain text record">
+  <h2>The record, plain text — oldest first</h2>
+  <ol>
+    <li>SASMO — Gold (top 8%), global rank 25, national 10, school 1.</li>
+    <li>MUN — 33 conferences; awards in 15 of 19 as delegate; 13 chair roles; Grand + Best Delegate at DMUN USA.</li>
+    <li>Secretariat leadership — 9 conferences, 1,100+ delegates, hiring time down 33%.</li>
+    <li>MUN logistics CFO — ₹7,00,000 revenue at ~24% margin across 16 conferences.</li>
+    <li>Integrity verification — 50 conferences, 6 country heads.</li>
+    <li>YouthInSeva — nutrition for 30+ students, self-funded from MUN profits.</li>
+    <li>I2I HR intern — 35+ interviews, time per hire down 50%, 26+ recruited.</li>
+    <li>AI recruiting intern — 75+ screened, 5 finalists.</li>
+    <li>National Economics Olympiad — 127 of 2,600+ (top 4.88%).</li>
+    <li>Independent research — 4+ studies, 1 accepted, code open.</li>
+    <li>Ascend Berkeley — Top 5 of 55+, 8.93%, India champion.</li>
+    <li>IPDC 2026 — selected paid adjudicator, 7th edition.</li>
+    <li>Oxford Saïd RA — 30+ papers, 400+ companies, FRC submission.</li>
+    <li>ADCAIJ — first peer-reviewed acceptance, Vol. 15, 2026.</li>
+  </ol>
+  <p><a href="https://silvercoin256.github.io/hada-institution/">Research site</a></p>
+</section>
 <footer>© 2026 SHAURYA GUPTA · WORLD &amp; HELIX HAND-CODED · BACKDROPS GENERATED</footer>
 
-<script src="../js/sound.js?v=1"></script>
+<script src="../js/sound.js?v=2"></script>
 <script>
 /* ============ CONTENT SLOT: walk stations ============ */
 const STATIONS = [
-  { x: 950,  kicker: 'Research', title: 'The Research Program',
+  { x: 950,  kicker: 'Research', title: 'The Research Program', caseId: 'ec-10',
     body: 'Sole-author studies on AI, institutions and labor markets — one accepted (ADCAIJ 2026), the rest documented honestly. Original metrics, open code, a public failure log.',
     link: 'https://silvercoin256.github.io/hada-institution/', linkText: 'ENTER THE RESEARCH SITE →' },
-  { x: 1750, kicker: 'Research Assistant', title: 'Oxford — Saïd Business School',
+  { x: 1750, kicker: 'Research Assistant', title: 'Oxford — Saïd Business School', caseId: 'ec-13',
     body: '30+ papers analysed on public vs private markets and delisting; a structured table of 400+ companies; findings submitted to the Financial Reporting Council. Under faculty guidance.',
     link: null, linkText: '' },
-  { x: 2550, kicker: 'Finance', title: 'Ascend Berkeley — Grand Finalist',
+  { x: 2550, kicker: 'Finance', title: 'Ascend Berkeley — Grand Finalist', caseId: 'ec-11',
     body: 'Top 5 of 55+ teams, India champion. Led fintech stock analysis — Monte Carlo simulation and financial modelling.',
     link: null, linkText: '' },
-  { x: 3350, kicker: 'Leadership', title: 'The MUN Years',
+  { x: 3350, kicker: 'Leadership', title: 'The MUN Years', caseId: 'ec-02',
     body: '33 conferences, awards in 15 of 19 as delegate. Senior secretariat across 9 conferences, 1,100+ delegates, ₹10.9L revenue managed.',
     link: null, linkText: '' },
-  { x: 4150, kicker: 'Keep walking →', title: 'The spiral is ahead',
+  { x: 4150, kicker: 'Keep walking →', title: 'The spiral is ahead', caseId: null,
     body: 'The full record — all fourteen entries in order — is wound on the spiral just past the edge of this world. Walk off the right edge, or scroll.',
     link: null, linkText: '' },
 ];
 const WORLD_LEN = 4600;
-/* ============ CONTENT SLOT: helix entries (oldest FIRST) ============ */
+/* ============ CONTENT SLOT: helix entries (oldest FIRST) + per-item case-study stats ============
+   stats: { n: number → animated counter (pre/suf wrap it, dec = decimals) } or { raw: string }.
+   img ec-NN.png maps 1:1 to entry N. */
 const H = [
-  { img: '../assets/plate-measurement.png', tag: 'SASMO', t: 'SASMO — Gold, global rank 25', b: 'Gold (top 8%), global 25, national 10, school 1 — Grade 11.' },
-  { img: '../assets/plate-governance.png', tag: 'MUN', t: '33 conferences', b: '19 delegate (awards in 15, incl. Oxford & Harvard MUN), 13 chairing. Grand Delegate at DMUN USA — 1 of 1,200+.' },
-  { img: '../assets/proc-queue.png', tag: 'LEADERSHIP', t: 'Secretariat ×9', b: 'DSG ×3 · 1,100+ delegates · 80+ member teams · hiring SOPs cut recruitment time 33%.' },
-  { img: '../assets/proc-ledger.png', tag: 'VENTURE', t: 'MUN logistics — CFO', b: '₹7,00,000 revenue at ~24% margin across 16 conferences; advance-payment protocols after a contract failure.' },
-  { img: '../assets/proc-cabinet.png', tag: 'GOVERNANCE', t: 'Integrity verification', b: 'Credential verification across 50 conferences; 6 country heads; centralized-database workflows.' },
-  { img: '../assets/plate-labor.png', tag: 'SERVICE', t: 'YouthInSeva — co-founder', b: 'Nutrition initiative funded from MUN profits; supplements to 30+ government-school students.' },
-  { img: '../assets/proc-microfilm.png', tag: 'SERVICE', t: 'I2I — HR intern', b: '35+ interviews; AI-transcription pipeline; time-per-hire down 50%; 26+ interns recruited.' },
-  { img: '../assets/proc-punchcard.png', tag: 'INDUSTRY', t: 'AI recruiting intern', b: 'First high-school intern at a U.S. recruiting firm; 75+ candidates; 5 finalists to leadership.' },
-  { img: '../assets/plate-anchoring.png', tag: 'ECONOMICS', t: 'NEO — finalist (SRCC)', b: '127 of 2,600+, self-studied with no prior background.' },
-  { img: '../assets/plate-institutions.png', tag: 'RESEARCH', t: 'Independent research begins', b: 'Sole-author studies; original indices; open code; Krea RSFE Finance Track acceptance.' },
-  { img: '../assets/plate-oversight.png', tag: 'FINANCE', t: 'Ascend Berkeley — Grand Finalist', b: 'Top 5 / 55+ and India champion; Monte Carlo + financial modelling.' },
-  { img: '../assets/proc-drafting.png', tag: 'DEBATE', t: 'IPDC 2026 — paid adjudicator', b: 'Selected adjudicator, 7th International Parliamentary Debate Competition.' },
-  { img: '../assets/proc-stripchart.png', tag: 'OXFORD', t: 'Saïd Business School — RA', b: '30+ papers; 400+ company delisting table; submitted to the Financial Reporting Council.' },
-  { img: '../assets/fig-p5.png', tag: 'PEER REVIEW', t: 'ADCAIJ — accepted', b: 'First peer-reviewed acceptance (Vol. 15, 2026). The rest of the program stays documented, failures included.' },
+  { id: 'ec-01', img: '../assets/ec-01.png', tag: 'SASMO', t: 'SASMO — Gold, global rank 25',
+    b: 'Gold (top 8%), global 25, national 10, school 1 — Grade 11.',
+    kicker: 'Mathematics · Olympiad',
+    body: 'Singapore & Asian Schools Math Olympiad, Grade 11. Gold medal in the top 8% worldwide — global rank 25, national rank 10, school rank 1.',
+    stats: [ { n: 25, label: 'Global rank' }, { n: 10, label: 'National rank' }, { n: 8, pre: 'Top ', suf: '%', label: 'Gold band' } ],
+    tags: ['Olympiad', 'Mathematics', 'Grade 11'], link: null, linkText: '' },
+  { id: 'ec-02', img: '../assets/ec-02.png', tag: 'MUN', t: '33 conferences',
+    b: '19 delegate (awards in 15, incl. Oxford & Harvard MUN), 13 chairing. Grand Delegate at DMUN USA — 1 of 1,200+.',
+    kicker: 'Model United Nations',
+    body: 'Model United Nations across 33 conferences — 19 as delegate with awards in 15, including Oxford MUN and Harvard MUN, and 13 chairing. Grand Delegate and Best Delegate at DMUN USA — 1 of 1,200+.',
+    stats: [ { n: 33, label: 'Conferences' }, { n: 15, suf: ' / 19', label: 'Awards as delegate' }, { n: 13, label: 'Chair roles' } ],
+    tags: ['MUN', 'Oxford MUN', 'Harvard MUN', 'DMUN USA'], link: null, linkText: '' },
+  { id: 'ec-03', img: '../assets/ec-03.png', tag: 'LEADERSHIP', t: 'Secretariat ×9',
+    b: 'DSG ×3 · 1,100+ delegates · 80+ member teams · hiring SOPs cut recruitment time 33%.',
+    kicker: 'Leadership · Secretariat',
+    body: 'Senior secretariat across 9 conferences — Deputy Secretary-General ×3, Head of Outreach, Financial Advisor — leading 80+ member secretariats and 1,100+ delegates through UNHCR, G20 and NITI Aayog simulations. ₹10.9L revenue, ₹3.16L profit; hiring SOPs cut recruitment time 33%.',
+    stats: [ { n: 9, label: 'Conferences led' }, { n: 1100, suf: '+', label: 'Delegates' }, { n: 33, pre: '−', suf: '%', label: 'Hiring time' } ],
+    tags: ['DSG ×3', 'Outreach', 'Finance', '₹10.9L revenue'], link: null, linkText: '' },
+  { id: 'ec-04', img: '../assets/ec-04.png', tag: 'VENTURE', t: 'MUN logistics — CFO',
+    b: '₹7,00,000 revenue at ~24% margin across 16 conferences; advance-payment protocols after a contract failure.',
+    kicker: 'Venture · Operations',
+    body: 'CFO of a MUN logistics venture — procurement, budgeting and client acquisition across 16 conferences. ₹7,00,000 revenue at roughly 24% margin; advance-payment protocols introduced after a contract failure.',
+    stats: [ { n: 700000, pre: '₹', label: 'Revenue' }, { n: 24, pre: '~', suf: '%', label: 'Margin' }, { n: 16, label: 'Conferences' } ],
+    tags: ['CFO', 'Procurement', 'Budgeting'], link: null, linkText: '' },
+  { id: 'ec-05', img: '../assets/ec-05.png', tag: 'GOVERNANCE', t: 'Integrity verification',
+    b: 'Credential verification across 50 conferences; 6 country heads; centralized-database workflows.',
+    kicker: 'Governance · Integrity',
+    body: 'International Affairs Coordinator for an integrity-verification organisation — centralized-database verification workflows against fraudulent applications, across 50 conferences with 6 country heads.',
+    stats: [ { n: 50, label: 'Conferences covered' }, { n: 6, label: 'Country heads' } ],
+    tags: ['Verification', 'International affairs'], link: null, linkText: '' },
+  { id: 'ec-06', img: '../assets/ec-06.png', tag: 'SERVICE', t: 'YouthInSeva — co-founder',
+    b: 'Nutrition initiative funded from MUN profits; supplements to 30+ government-school students.',
+    kicker: 'Service · Co-founder',
+    body: 'Co-founded YouthInSeva, a nutrition initiative funded from MUN profits — supplements for 30+ government-school students on a replicable low-cost model.',
+    stats: [ { n: 30, suf: '+', label: 'Students supported' }, { raw: 'Self-funded', label: 'From MUN profits' } ],
+    tags: ['Nutrition', 'Co-founder', 'Low-cost model'], link: null, linkText: '' },
+  { id: 'ec-07', img: '../assets/ec-07.png', tag: 'SERVICE', t: 'I2I — HR intern',
+    b: '35+ interviews; AI-transcription pipeline; time-per-hire down 50%; 26+ interns recruited.',
+    kicker: 'Industry · HR',
+    body: 'HR intern at I2I, a mental-health NGO. Conducted 35+ interviews and redesigned the hiring pipeline around AI transcription — time per hire down 50%, 26+ interns recruited.',
+    stats: [ { n: 35, suf: '+', label: 'Interviews' }, { n: 50, pre: '−', suf: '%', label: 'Time per hire' }, { n: 26, suf: '+', label: 'Recruited' } ],
+    tags: ['Mental health NGO', 'AI transcription'], link: null, linkText: '' },
+  { id: 'ec-08', img: '../assets/ec-08.png', tag: 'INDUSTRY', t: 'AI recruiting intern',
+    b: 'First high-school intern at a U.S. recruiting firm; 75+ candidates; 5 finalists to leadership.',
+    kicker: 'Industry · Recruiting',
+    body: 'First high-school intern at a U.S. recruiting firm. Screened 75+ candidates, placed 5 finalists in front of leadership, and introduced AI workflows to the firm’s process.',
+    stats: [ { n: 75, suf: '+', label: 'Candidates screened' }, { n: 5, label: 'Finalists' } ],
+    tags: ['U.S. firm', 'AI workflows', 'First high-schooler'], link: null, linkText: '' },
+  { id: 'ec-09', img: '../assets/ec-09.png', tag: 'ECONOMICS', t: 'NEO — finalist (SRCC)',
+    b: '127 of 2,600+, self-studied with no prior background.',
+    kicker: 'Economics · Olympiad',
+    body: 'National Economics Olympiad (SRCC) finalist — ranked 127 of 2,600+, top 4.88%, self-studied with no prior economics background.',
+    stats: [ { n: 127, suf: ' / 2,600+', label: 'National rank' }, { n: 4.88, dec: 2, suf: '%', label: 'Percentile' } ],
+    tags: ['SRCC', 'Self-studied'], link: null, linkText: '' },
+  { id: 'ec-10', img: '../assets/ec-10.png', tag: 'RESEARCH', t: 'Independent research begins',
+    b: 'Sole-author studies; original indices; open code; Krea RSFE Finance Track acceptance.',
+    kicker: 'Research · Program',
+    body: 'Independent research begins — sole-author studies on AI, institutions and labor markets. Original indices, open code, a public failure log, and a Krea RSFE Finance Track acceptance.',
+    stats: [ { n: 4, suf: '+', label: 'Studies' }, { n: 1, label: 'Accepted' }, { raw: 'Open', label: 'Code' } ],
+    tags: ['Sole author', 'Original indices', 'Krea RSFE'],
+    link: 'https://silvercoin256.github.io/hada-institution/', linkText: 'ENTER THE RESEARCH SITE →' },
+  { id: 'ec-11', img: '../assets/ec-11.png', tag: 'FINANCE', t: 'Ascend Berkeley — Grand Finalist',
+    b: 'Top 5 / 55+ and India champion; Monte Carlo + financial modelling.',
+    kicker: 'Finance · Competition',
+    body: 'Ascend Berkeley Stock Pitch — Grand Finalist (top 5 of 55+ teams, the top 8.93%) and India champion. Led the team’s fintech stock analysis with Monte Carlo simulation and financial modelling.',
+    stats: [ { n: 5, pre: 'Top ', suf: ' / 55+', label: 'Grand finalist' }, { n: 8.93, dec: 2, suf: '%', label: 'Selection — top of field' }, { raw: 'India', label: 'Champion' } ],
+    tags: ['Stock pitch', 'Monte Carlo', 'Financial modelling'], link: null, linkText: '' },
+  { id: 'ec-12', img: '../assets/ec-12.png', tag: 'DEBATE', t: 'IPDC 2026 — paid adjudicator',
+    b: 'Selected adjudicator, 7th International Parliamentary Debate Competition.',
+    kicker: 'Debate · Adjudication',
+    body: 'Selected adjudicator at the 7th International Parliamentary Debate Competition (2026) — evaluated competitive rounds and research motions, paid per round.',
+    stats: [ { n: 7, suf: 'th', label: 'Edition' }, { raw: 'Paid', label: 'Per round' } ],
+    tags: ['Adjudication', 'Parliamentary debate'], link: null, linkText: '' },
+  /* NOTE: exact Oxford role title and dates should be confirmed by the user before publishing. */
+  { id: 'ec-13', img: '../assets/ec-13.png', tag: 'OXFORD', t: 'Saïd Business School — RA',
+    b: '30+ papers; 400+ company delisting table; submitted to the Financial Reporting Council.',
+    kicker: 'Research Assistant · Oxford',
+    body: 'Research assistant at Saïd Business School, University of Oxford — 30+ papers analysed on public vs private markets and delisting, a structured table of 400+ companies, findings submitted to the Financial Reporting Council. Under faculty guidance.',
+    stats: [ { n: 30, suf: '+', label: 'Papers analysed' }, { n: 400, suf: '+', label: 'Companies tabled' }, { raw: 'FRC', label: 'Submission' } ],
+    tags: ['Oxford', 'Delisting', 'Literature review'], link: null, linkText: '' },
+  { id: 'ec-14', img: '../assets/ec-14.png', tag: 'PEER REVIEW', t: 'ADCAIJ — accepted',
+    b: 'First peer-reviewed acceptance (Vol. 15, 2026). The rest of the program stays documented, failures included.',
+    kicker: 'Peer Review · ADCAIJ',
+    body: 'First peer-reviewed acceptance — ADCAIJ, Universidad de Salamanca, Vol. 15, 2026. The rest of the program stays documented, failures included.',
+    stats: [ { n: 1, label: 'Paper accepted' }, { raw: 'Vol. 15 · 2026', label: 'ADCAIJ' }, { raw: 'Peer-reviewed', label: 'U. de Salamanca' } ],
+    tags: ['Peer review', 'ADCAIJ', 'Salamanca'],
+    link: 'https://silvercoin256.github.io/hada-institution/research.html', linkText: 'READ ON THE RESEARCH SITE →' },
 ];
 /* ======================= END CONTENT SLOTS ======================= */
 
@@ -167,23 +337,45 @@ function resize() {
   GY = Hh - 96;
 }
 resize(); addEventListener('resize', resize);
-const P = { x: 240, vx: 0, y: 0, vy: 0, onGround: true, face: 1, step: 0 };
+const P = { x: -70, vx: 0, y: 0, vy: 0, onGround: true, face: 1, step: 0 };
 let cam = 0, near = -1, panelFor = -1;
+
+/* ---- AUTO-INTRO: walker walks in, wordmark presents itself, camera pans, then hands over ---- */
+const INTRO = { on: true, t0: null, dur: 4500, k: 0 };
+function easeIO(t) { t = Math.max(0, Math.min(1, t)); return t * t * (3 - 2 * t); }
+function introEndX() { return Math.min(W * .42 + 280, 900); }
+function finishIntro() {
+  if (!INTRO.on) return;
+  INTRO.on = false; INTRO.k = 1;
+  P.x = introEndX(); P.vx = 0;
+  cam = Math.max(0, P.x - W * .42);
+  document.body.classList.add('intro-done');
+}
+document.getElementById('skip-intro').addEventListener('click', finishIntro);
+
 const keys = {};
 addEventListener('keydown', e => {
+  if (caseEl) { if (e.key === 'Escape') closeCase(); return; }   /* case overlay owns the keyboard */
+  if (INTRO.on && ['ArrowLeft', 'ArrowRight', 'ArrowUp', ' ', 'Enter', 'Escape'].includes(e.key)) { finishIntro(); return; }
   const inSpiral = scrollY > Hh * .5;
   if (!inSpiral && ['ArrowLeft','ArrowRight','ArrowUp',' '].includes(e.key)) e.preventDefault();
   keys[e.key.toLowerCase()] = true;
   if (!inSpiral && (e.key === ' ' || e.key === 'ArrowUp' || e.key.toLowerCase() === 'w') && P.onGround) { P.vy = -13.5; P.onGround = false; SND.jump(); }
-  if (e.key.toLowerCase() === 'e' && near >= 0) togglePanel(near);
+  if (e.key.toLowerCase() === 'e' && near >= 0) useStation(near);
 });
 addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
 const hold = (id, k) => { const el = document.getElementById(id);
-  ['touchstart','mousedown'].forEach(ev => el.addEventListener(ev, e => { e.preventDefault(); keys[k] = true; }));
+  ['touchstart','mousedown'].forEach(ev => el.addEventListener(ev, e => { e.preventDefault(); if (INTRO.on) finishIntro(); keys[k] = true; }));
   ['touchend','mouseup','mouseleave'].forEach(ev => el.addEventListener(ev, () => keys[k] = false)); };
 hold('t-left','arrowleft'); hold('t-right','arrowright');
 document.getElementById('t-jump').addEventListener('touchstart', e => { e.preventDefault(); if (P.onGround) { P.vy = -13.5; P.onGround = false; SND.jump(); } });
-document.getElementById('t-use').addEventListener('touchstart', e => { e.preventDefault(); if (near >= 0) togglePanel(near); });
+document.getElementById('t-use').addEventListener('touchstart', e => { e.preventDefault(); if (near >= 0) useStation(near); });
+
+function useStation(i) {
+  const s = STATIONS[i];
+  if (s.caseId) { openCase(s.caseId); return; }   /* stations with a case open the full case study */
+  togglePanel(i);
+}
 function togglePanel(i) {
   const pn = document.getElementById('panel');
   if (panelFor === i && pn.classList.contains('show')) { pn.classList.remove('show'); return; }
@@ -216,33 +408,64 @@ function walker(x, y) {
   ctx.fillStyle = '#0b0714'; ctx.beginPath(); ctx.arc(P.face * 3, -52, 3.2, 0, Math.PI * 2); ctx.fill();
   ctx.restore();
 }
+function lerp(a, b, t) { return a + (b - a) * t; }
+function drawName() {
+  /* the wordmark: intro centerpiece, then recedes into the parallax background */
+  const k = INTRO.k;
+  const fadeIn = INTRO.on ? easeIO(k / .3) : 1;
+  const recede = INTRO.on ? easeIO((k - .72) / .28) : 1;
+  const settle = INTRO.on ? easeIO(k / .6) : 1;
+  const size = Math.min(190, W * .16);
+  const nx = 420 - cam * .55;
+  const y1 = Hh * .38, y2 = y1 + size * .92;
+  ctx.save();
+  const cx = nx + size * 1.7, cy = (y1 + y2) / 2;
+  const s = lerp(1.09, 1, settle);
+  ctx.translate(cx, cy); ctx.scale(s, s); ctx.translate(-cx, -cy);
+  ctx.font = `700 ${size}px "Space Grotesk", sans-serif`;
+  ctx.textAlign = 'left'; ctx.lineWidth = 1.5;
+  try { ctx.letterSpacing = `${(1 - settle) * 16}px`; } catch (err) {}
+  const fr = lerp(244, 124, recede), fg = lerp(240, 58, recede), fb = lerp(255, 237, recede);
+  ctx.fillStyle = `rgba(${fr|0},${fg|0},${fb|0},${(lerp(.95, .05, recede) * fadeIn).toFixed(3)})`;
+  ctx.strokeStyle = `rgba(167,139,250,${(lerp(.55, .16, recede) * fadeIn).toFixed(3)})`;
+  ctx.shadowColor = 'rgba(124,58,237,.55)'; ctx.shadowBlur = 46 * (1 - recede) * fadeIn;
+  ctx.fillText('SHAURYA', nx, y1); ctx.strokeText('SHAURYA', nx, y1);
+  ctx.fillText('GUPTA', nx + W * .12, y2); ctx.strokeText('GUPTA', nx + W * .12, y2);
+  try { ctx.letterSpacing = '0px'; } catch (err) {}
+  ctx.restore();
+}
 let last = 0, walkedOff = false;
 function tick(ts) {
   const dt = Math.min((ts - last) / 16.7, 2.2); last = ts;
-  const ax = (keys['arrowleft'] || keys['a'] ? -1 : 0) + (keys['arrowright'] || keys['d'] ? 1 : 0);
-  P.vx += ax * .9 * dt; P.vx *= .86;
-  if (Math.abs(P.vx) > .3) { P.face = P.vx > 0 ? 1 : -1; P.step += .28 * dt; }
-  P.x = Math.max(80, Math.min(WORLD_LEN, P.x + P.vx * dt * 3.2));
-  /* walking off the right edge scrolls you into the spiral */
-  if (P.x >= WORLD_LEN - 4 && !walkedOff) { walkedOff = true; SND.open();
-    document.getElementById('spiral-track').scrollIntoView({ behavior: 'smooth' });
-    setTimeout(() => { walkedOff = false; P.x = WORLD_LEN - 120; }, 2500); }
-  if (!P.onGround) { P.vy += .8 * dt; P.y += P.vy * dt; if (P.y >= 0) { P.y = 0; P.vy = 0; P.onGround = true; } }
-  cam += ((P.x - W * .42) - cam) * .08 * dt; cam = Math.max(0, Math.min(WORLD_LEN - W, cam));
+  if (INTRO.on) {
+    /* scripted entrance: walk in from the left, camera pans right, wordmark presents */
+    if (INTRO.t0 === null) INTRO.t0 = ts;
+    INTRO.k = (ts - INTRO.t0) / INTRO.dur;
+    if (INTRO.k >= 1) finishIntro();
+    else {
+      const e = easeIO(INTRO.k);
+      P.x = lerp(-70, introEndX(), e);
+      cam = Math.max(0, introEndX() - W * .42) * easeIO((INTRO.k - .3) / .7);
+      P.vx = 3; P.face = 1; P.step += .30 * dt;
+    }
+  } else {
+    const ax = (keys['arrowleft'] || keys['a'] ? -1 : 0) + (keys['arrowright'] || keys['d'] ? 1 : 0);
+    P.vx += ax * .9 * dt; P.vx *= .86;
+    if (Math.abs(P.vx) > .3) { P.face = P.vx > 0 ? 1 : -1; P.step += .28 * dt; }
+    P.x = Math.max(80, Math.min(WORLD_LEN, P.x + P.vx * dt * 3.2));
+    /* walking off the right edge scrolls you into the spiral */
+    if (P.x >= WORLD_LEN - 4 && !walkedOff) { walkedOff = true; SND.open();
+      document.getElementById('spiral-track').scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => { walkedOff = false; P.x = WORLD_LEN - 120; }, 2500); }
+    if (!P.onGround) { P.vy += .8 * dt; P.y += P.vy * dt;
+      if (P.y >= 0) { P.y = 0; P.vy = 0; P.onGround = true; SND.land(); } }
+    cam += ((P.x - W * .42) - cam) * .08 * dt; cam = Math.max(0, Math.min(WORLD_LEN - W, cam));
+  }
   near = -1; STATIONS.forEach((s, i) => { if (Math.abs(s.x - P.x) < 90) near = i; });
   if (near === -1 && panelFor >= 0) { document.getElementById('panel').classList.remove('show'); panelFor = -1; }
 
   ctx.clearRect(0, 0, W, Hh);
-  /* giant name in the world (parallax typography) */
-  ctx.save();
-  ctx.font = `700 ${Math.min(190, W * .16)}px "Space Grotesk", sans-serif`;
-  ctx.textAlign = 'left'; ctx.lineWidth = 1.5;
-  ctx.strokeStyle = 'rgba(167,139,250,.16)'; ctx.fillStyle = 'rgba(124,58,237,.05)';
-  const nx = 420 - cam * .55;
-  ctx.fillText('SHAURYA', nx, Hh * .38); ctx.strokeText('SHAURYA', nx, Hh * .38);
-  ctx.fillText('GUPTA', nx + W * .12, Hh * .38 + Math.min(190, W * .16) * .92);
-  ctx.strokeText('GUPTA', nx + W * .12, Hh * .38 + Math.min(190, W * .16) * .92);
-  ctx.restore();
+  drawName();
   /* hills, ground */
   ctx.fillStyle = '#150d26'; ctx.beginPath(); ctx.moveTo(0, GY - 40);
   for (let x = 0; x <= W; x += 8) ctx.lineTo(x, GY - 46 - Math.sin((x + cam * .3) * .004) * 26 - Math.sin((x + cam * .3) * .013) * 8);
@@ -260,42 +483,49 @@ function tick(ts) {
 requestAnimationFrame(tick);
 
 /* ---- ACT II engine (helix, Pacôme-studied) ----
-   Cards on a 3D helix, whole assembly tilted; scroll = travel.
-   STARTS AT THE FIRST (oldest) ENTRY. */
+   Cards on a 3D helix that DESCENDS from top-left to bottom-right;
+   scroll = travel. STARTS AT THE FIRST (oldest) ENTRY. */
 const helix = document.getElementById('helix');
 const STEPA = 34;           /* degrees between cards around the axis */
-const RISE = 132;           /* vertical rise per card */
+const RISE = 122;           /* vertical drop per card (descending) */
+const DRIFT = 84;           /* lateral drift per card — the axis leans right as it falls */
 const RADIUS = 520;
 H.forEach((h, i) => {
   const el = document.createElement('div');
   el.className = 'hcard'; el.id = 'hc' + i;
-  el.innerHTML = `<img src="${h.img}" alt="" loading="lazy">
-    <div class="hc-cap"><b>${String(i + 1).padStart(2, '0')} — ${h.tag}</b><span>GEN. PLACEHOLDER</span></div>`;
+  el.innerHTML = `<img src="${h.img}" alt="" loading="lazy" onerror="this.style.display='none'">
+    <div class="hc-cap"><b>${String(i + 1).padStart(2, '0')} — ${h.tag}</b><span>OPEN →</span></div>`;
+  el.addEventListener('click', () => openCase(h.id));
   helix.appendChild(el);
 });
 let prog = 0, target = 0, lastIdx = -1;
 function layout() {
   H.forEach((h, i) => {
-    const a = (i - prog) * STEPA;               /* focused card at angle 0 (front) */
+    const d = i - prog;                          /* future entries: d > 0 → lower-right */
+    const a = d * STEPA;                         /* focused card at angle 0 (front) */
     const rad = a * Math.PI / 180;
     const el = document.getElementById('hc' + i);
     const z = Math.cos(rad) * RADIUS - RADIUS * .55;
-    const x = Math.sin(rad) * RADIUS;
-    const y = (i - prog) * -RISE;
+    const x = Math.sin(rad) * RADIUS + d * DRIFT;
+    const y = d * RISE;                          /* descends: later = lower */
     const op = Math.max(0, Math.min(1, (z + RADIUS) / RADIUS * .9));
-    el.style.transform = `translate3d(${x}px, ${y}px, ${z}px) rotateY(${-a}deg) rotateZ(${Math.sin(rad) * -7}deg)`;
+    el.style.transform = `translate3d(${x}px, ${y}px, ${z}px) rotateY(${-a}deg) rotateZ(${Math.sin(rad) * 8}deg)`;
     el.style.opacity = op.toFixed(2);
     el.style.zIndex = Math.round(z + 2000);
   });
-  helix.style.transform = `translate(-50%, -34%) rotateX(12deg) rotateZ(-7deg)`;
+  /* whole assembly banked and tilted so the run reads top-left → bottom-right */
+  helix.style.transform = `translate(-50%, -46%) rotateX(9deg) rotateZ(-10deg)`;
   const idx = Math.max(0, Math.min(H.length - 1, Math.round(prog)));
   if (idx !== lastIdx) {
-    lastIdx = idx; SND.key();
+    lastIdx = idx; SND.travel();
     document.getElementById('f-i').textContent = String(idx + 1).padStart(2, '0') + ' / ' + H.length + ' — ' + H[idx].tag;
     document.getElementById('f-t').textContent = H[idx].t;
     document.getElementById('f-b').textContent = H[idx].b;
   }
 }
+document.getElementById('f-open').addEventListener('click', () => {
+  if (lastIdx >= 0) openCase(H[lastIdx].id);
+});
 function spiralScroll() {
   const track = document.getElementById('spiral-track');
   const r = track.getBoundingClientRect();
@@ -306,6 +536,107 @@ function spiralScroll() {
 addEventListener('scroll', spiralScroll, { passive: true });
 (function anim() { prog += (target - prog) * .08; layout(); requestAnimationFrame(anim); })();
 spiralScroll(); layout();
+
+/* ---- CASE STUDIES: one reusable, routed detail view (#case/ec-NN) ---- */
+let caseEl = null, casePushed = false, caseTimers = [];
+function fmtStat(s, v) {
+  const dec = s.dec || 0;
+  const num = v.toLocaleString('en-IN', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+  return (s.pre || '') + num + (s.suf ? `<em>${s.suf}</em>` : '');
+}
+function countUp(el, s) {
+  const t0 = performance.now(), dur = 1300;
+  function step(now) {
+    const t = Math.min(1, (now - t0) / dur);
+    const e = 1 - Math.pow(1 - t, 3);
+    el.innerHTML = fmtStat(s, s.n * e);
+    if (t < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+function renderDetail(item) {
+  const idx = H.indexOf(item);
+  const el = document.createElement('div');
+  el.id = 'case';
+  el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true');
+  const statCells = (item.stats || []).map(s => `
+    <div class="c-stat"><div class="c-n" data-stat>${s.n != null ? fmtStat(s, 0) : (s.raw || '')}</div>
+    <div class="c-l">${s.label || ''}</div></div>`).join('');
+  const tags = (item.tags || []).map(t => `<span>${t}</span>`).join('');
+  el.innerHTML = `
+    <div class="case-glow"></div>
+    <div class="case-scroll"><div class="case-inner">
+      <div class="case-hero">
+        <img src="${item.img}" alt="" onerror="this.style.display='none'">
+        <div class="h-grad"></div>
+        <div class="c-ghost">${String(idx + 1).padStart(2, '0')}</div>
+        <div class="case-head">
+          <div class="c-kicker">${String(idx + 1).padStart(2, '0')} / ${H.length} — ${item.kicker}</div>
+          <h1>${item.t}</h1>
+        </div>
+      </div>
+      <div class="case-body">
+        <div class="c-stats">${statCells}</div>
+        <p class="c-narrative">${item.body}</p>
+        <div class="c-tags">${tags}</div>
+        <div class="c-actions">
+          ${item.link ? `<a class="c-ext" href="${item.link}" target="_blank" rel="noopener">${item.linkText}</a>` : ''}
+          <button class="c-back">← BACK TO THE WORLD</button>
+        </div>
+      </div>
+    </div></div>
+    <div class="case-wipe"><i></i><i></i></div>
+    <button class="case-close">ESC ✕ CLOSE</button>`;
+  /* stagger the body blocks */
+  el.querySelectorAll('.case-body > *').forEach((n, i) => { n.style.transitionDelay = (.42 + i * .12) + 's'; });
+  el.querySelector('.case-close').addEventListener('click', closeCase);
+  el.querySelector('.c-back').addEventListener('click', closeCase);
+  document.body.appendChild(el);
+  document.body.classList.add('case-open');
+  SND.whoosh();
+  void el.offsetWidth;                          /* commit initial state, then animate */
+  el.classList.add('in');
+  caseTimers.push(setTimeout(() => {            /* counters roll once the wipe clears */
+    const stats = item.stats || [];
+    el.querySelectorAll('[data-stat]').forEach((n, i) => { if (stats[i] && stats[i].n != null) countUp(n, stats[i]); });
+  }, 480));
+  caseTimers.push(setTimeout(() => { if (caseEl === el) SND.confirm(); }, 780));
+  return el;
+}
+function openCaseNow(id) {
+  const item = H.find(h => h.id === id);
+  if (!item) return;
+  closeCaseNow(true);                            /* replace instantly if another is open */
+  caseEl = renderDetail(item);
+}
+function closeCaseNow(instant) {
+  caseTimers.forEach(clearTimeout); caseTimers = [];
+  if (!caseEl) return;
+  const el = caseEl; caseEl = null;
+  document.body.classList.remove('case-open');
+  if (instant) { el.remove(); return; }
+  SND.whoosh('up');
+  el.classList.remove('in'); el.classList.add('out');
+  setTimeout(() => el.remove(), 440);
+}
+function caseFromHash() {
+  const m = location.hash.match(/^#case\/(ec-\d{2})$/);
+  return m ? m[1] : null;
+}
+function openCase(id) {
+  if (caseFromHash() === id) { openCaseNow(id); return; }
+  casePushed = true;
+  location.hash = '#case/' + id;                 /* hashchange does the rendering — linkable + back-button */
+}
+function closeCase() {
+  if (caseFromHash()) { if (casePushed) history.back(); else location.hash = ''; }
+  else closeCaseNow();
+}
+addEventListener('hashchange', () => {
+  const id = caseFromHash();
+  if (id) openCaseNow(id); else closeCaseNow();
+});
+if (caseFromHash()) { casePushed = false; openCaseNow(caseFromHash()); }
 
 SND.attach();
 document.getElementById('smoke').addEventListener('error', () => document.getElementById('smoke').remove());
