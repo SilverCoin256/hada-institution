@@ -53,7 +53,7 @@ body.intro-done #skip-intro { opacity: 0; pointer-events: none; }
 #panel .p-link { font-family: var(--mono); font-size: 12px; }
 
 /* ── ACT II: the spiral (helix of cards, top-left → bottom-right) ── */
-#spiral-track { position: relative; height: 560vh; }
+#spiral-track { position: relative; height: 480vh; }
 #spiral-view { position: sticky; top: 0; height: 100vh; overflow: hidden;
   background: radial-gradient(ellipse 90% 70% at 42% 34%, #140d26 0%, var(--bg) 70%); }
 #spiral-view::before { content: ''; position: absolute; inset: 0; opacity: .12;
@@ -63,7 +63,10 @@ body.intro-done #skip-intro { opacity: 0; pointer-events: none; }
 #helix { position: absolute; left: 50%; top: 50%; transform-style: preserve-3d; }
 .hcard { position: absolute; left: -160px; top: -110px; width: 320px; transform-style: preserve-3d;
   border-radius: 14px; overflow: hidden; background: #171028; border: 1px solid var(--line);
-  box-shadow: 0 30px 80px rgba(0,0,0,.55); cursor: pointer; }
+  box-shadow: 0 30px 80px rgba(0,0,0,.55); cursor: pointer;
+  will-change: transform, opacity; backface-visibility: hidden; }
+#spiral-view { cursor: grab; }
+#spiral-view:active { cursor: grabbing; }
 .hcard:hover { border-color: var(--accent); }
 .hcard img, .hcard video { width: 100%; height: 190px; object-fit: cover; display: block; filter: saturate(1.05); pointer-events: none; }
 .hcard .hc-cap { display: flex; justify-content: space-between; gap: 8px; padding: 10px 13px;
@@ -409,29 +412,46 @@ function walker(x, y) {
   ctx.restore();
 }
 function lerp(a, b, t) { return a + (b - a) * t; }
-function drawName() {
-  /* the wordmark: intro centerpiece, then recedes into the parallax background */
-  const k = INTRO.k;
-  const fadeIn = INTRO.on ? easeIO(k / .3) : 1;
-  const recede = INTRO.on ? easeIO((k - .72) / .28) : 1;
-  const settle = INTRO.on ? easeIO(k / .6) : 1;
+const mod = (a, b) => ((a % b) + b) % b;
+/* the wordmark slides in with the intro, then drifts across the sky on a
+   perpetual slow loop — always moving, never gone */
+let loopAnchor = null;
+function drawName(ts) {
   const size = Math.min(190, W * .16);
-  const nx = 420 - cam * .55;
-  const y1 = Hh * .38, y2 = y1 + size * .92;
-  ctx.save();
-  const cx = nx + size * 1.7, cy = (y1 + y2) / 2;
-  const s = lerp(1.09, 1, settle);
-  ctx.translate(cx, cy); ctx.scale(s, s); ctx.translate(-cx, -cy);
   ctx.font = `700 ${size}px "Space Grotesk", sans-serif`;
+  const nameW = Math.max(ctx.measureText('SHAURYA').width,
+                         ctx.measureText('GUPTA').width + W * .12);
+  const centerX = W * .5 - nameW * .5;
+  const cycle = W + nameW + 320;                 /* off-right → off-left span */
+  const SPEED = .028;                            /* px per ms — slow, calm */
+  let nx, fillA, strokeA, glow, bright;
+
+  if (INTRO.on) {
+    const k = INTRO.k;
+    const slide = easeIO(Math.min(1, k / .55));  /* the whole name slides in */
+    nx = lerp(W + 160, centerX, slide);
+    const fade = easeIO(Math.min(1, k / .25));
+    const dim = easeIO((k - .8) / .2);           /* hand into scenery at the end */
+    fillA = lerp(.95, .10, dim) * fade;
+    strokeA = lerp(.55, .18, dim) * fade;
+    glow = 46 * (1 - dim) * fade;
+    loopAnchor = null;
+  } else {
+    /* pick up the loop exactly where the intro left the name */
+    if (loopAnchor === null) loopAnchor = ts - (W + 160 - centerX) / SPEED;
+    const travelled = (ts - loopAnchor) * SPEED;
+    nx = W + 160 - mod(travelled, cycle);
+    fillA = .10; strokeA = .18; glow = 0;
+  }
+
+  const y1 = Hh * .36, y2 = y1 + size * .92;
+  ctx.save();
   ctx.textAlign = 'left'; ctx.lineWidth = 1.5;
-  try { ctx.letterSpacing = `${(1 - settle) * 16}px`; } catch (err) {}
-  const fr = lerp(244, 124, recede), fg = lerp(240, 58, recede), fb = lerp(255, 237, recede);
-  ctx.fillStyle = `rgba(${fr|0},${fg|0},${fb|0},${(lerp(.95, .05, recede) * fadeIn).toFixed(3)})`;
-  ctx.strokeStyle = `rgba(167,139,250,${(lerp(.55, .16, recede) * fadeIn).toFixed(3)})`;
-  ctx.shadowColor = 'rgba(124,58,237,.55)'; ctx.shadowBlur = 46 * (1 - recede) * fadeIn;
+  ctx.fillStyle = `rgba(200,182,255,${fillA.toFixed(3)})`;
+  ctx.strokeStyle = `rgba(167,139,250,${strokeA.toFixed(3)})`;
+  if (glow > 0) { ctx.shadowColor = 'rgba(124,58,237,.55)'; ctx.shadowBlur = glow; }
   ctx.fillText('SHAURYA', nx, y1); ctx.strokeText('SHAURYA', nx, y1);
   ctx.fillText('GUPTA', nx + W * .12, y2); ctx.strokeText('GUPTA', nx + W * .12, y2);
-  try { ctx.letterSpacing = '0px'; } catch (err) {}
   ctx.restore();
 }
 let last = 0, walkedOff = false;
@@ -465,7 +485,7 @@ function tick(ts) {
   if (near === -1 && panelFor >= 0) { document.getElementById('panel').classList.remove('show'); panelFor = -1; }
 
   ctx.clearRect(0, 0, W, Hh);
-  drawName();
+  drawName(ts);
   /* hills, ground */
   ctx.fillStyle = '#150d26'; ctx.beginPath(); ctx.moveTo(0, GY - 40);
   for (let x = 0; x <= W; x += 8) ctx.lineTo(x, GY - 46 - Math.sin((x + cam * .3) * .004) * 26 - Math.sin((x + cam * .3) * .013) * 8);
@@ -526,15 +546,74 @@ function layout() {
 document.getElementById('f-open').addEventListener('click', () => {
   if (lastIdx >= 0) openCase(H[lastIdx].id);
 });
+/* ---- seamless travel: one scroll pipeline, damped + idle-snap ---- */
+let lastScrollT = 0, lastFrameT = 0;
+const track = document.getElementById('spiral-track');
 function spiralScroll() {
-  const track = document.getElementById('spiral-track');
   const r = track.getBoundingClientRect();
   const total = track.offsetHeight - innerHeight;
   const p = Math.max(0, Math.min(1, -r.top / total));
   target = p * (H.length - 1);                 /* p=0 → FIRST entry */
+  lastScrollT = performance.now();
 }
 addEventListener('scroll', spiralScroll, { passive: true });
-(function anim() { prog += (target - prog) * .08; layout(); requestAnimationFrame(anim); })();
+
+function spiralInView() {
+  const r = track.getBoundingClientRect();
+  return r.top < innerHeight * .35 && r.bottom > innerHeight * .65;
+}
+function scrollToIndex(i) {
+  const clamped = Math.max(0, Math.min(H.length - 1, i));
+  const total = track.offsetHeight - innerHeight;
+  window.scrollTo({ top: track.offsetTop + (clamped / (H.length - 1)) * total, behavior: 'smooth' });
+}
+
+/* drag the helix directly (mouse or touch) — it just drives the scroll */
+const view = document.getElementById('spiral-view');
+let sDrag = null, sVel = 0, momentumId = 0;
+view.addEventListener('pointerdown', e => {
+  if (e.target.closest('a, button, .f-open')) return;
+  sDrag = { y: e.clientY, x: e.clientX, t: performance.now() }; sVel = 0;
+  cancelAnimationFrame(momentumId);
+});
+addEventListener('pointermove', e => {
+  if (!sDrag) return;
+  const dy = sDrag.y - e.clientY, dx = sDrag.x - e.clientX;
+  const d = dy + dx * .6;                       /* diagonal gesture works too */
+  const now = performance.now();
+  sVel = d / Math.max(now - sDrag.t, 1) * 16;
+  sDrag = { y: e.clientY, x: e.clientX, t: now };
+  window.scrollBy(0, d * 1.9);
+});
+addEventListener('pointerup', () => {
+  if (!sDrag) return; sDrag = null;
+  (function coast() {
+    if (Math.abs(sVel) < .4) return;
+    window.scrollBy(0, sVel * 1.9); sVel *= .93;
+    momentumId = requestAnimationFrame(coast);
+  })();
+});
+
+/* arrow keys step card-by-card while the spiral is on screen */
+addEventListener('keydown', e => {
+  if (!spiralInView() || document.body.classList.contains('case-open')) return;
+  if (['ArrowRight', 'ArrowDown', 'PageDown'].includes(e.key)) { e.preventDefault(); scrollToIndex(Math.round(target) + 1); SND.travel(); }
+  if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); scrollToIndex(Math.round(target) - 1); SND.travel(); }
+  if (e.key === 'Enter' && lastIdx >= 0) { e.preventDefault(); openCase(H[lastIdx].id); }
+});
+
+(function anim(ts) {
+  const dt = lastFrameT ? Math.min((ts - lastFrameT) / 1000, .05) : .016;
+  lastFrameT = ts;
+  /* after a beat of stillness, settle gently onto the nearest card */
+  if (performance.now() - lastScrollT > 320 && !sDrag) {
+    target += (Math.round(target) - target) * (1 - Math.exp(-dt * 4.5));
+  }
+  /* frame-rate-independent damping — the seamless feel */
+  prog += (target - prog) * (1 - Math.exp(-dt * 9));
+  layout();
+  requestAnimationFrame(anim);
+})(performance.now());
 spiralScroll(); layout();
 
 /* ---- CASE STUDIES: one reusable, routed detail view (#case/ec-NN) ---- */

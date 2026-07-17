@@ -43,10 +43,26 @@ body { background: #0a0718; overflow: hidden; font-family: 'IBM Plex Mono', mono
   border-radius: 4px; transition: background .15s, color .15s; }
 #enter-btn:hover { background: #b9a6f5; color: #14093a; }
 
-#back { position: fixed; top: 20px; left: 20px; z-index: 55; border: 1.5px solid #b9a6f5;
-  color: #cdbcff; background: rgba(10, 6, 26, .78); font-family: inherit; font-size: 12px;
-  letter-spacing: .12em; padding: 9px 15px; cursor: pointer; display: none; border-radius: 4px; }
+#back { border: 1.5px solid #b9a6f5; color: #cdbcff; background: rgba(124,58,237,.12);
+  font-family: inherit; font-size: 12px; letter-spacing: .12em; padding: 8px 14px; cursor: pointer;
+  border-radius: 5px; flex-shrink: 0; transition: all .15s; }
 #back:hover { background: #b9a6f5; color: #14093a; }
+
+/* controls hint (room mode) */
+#hint { position: fixed; top: 22px; left: 50%; transform: translateX(-50%); z-index: 44;
+  color: #8f7fc4; background: rgba(10, 6, 26, .6); border: 1px solid #35296159; font-size: 10.5px;
+  letter-spacing: .14em; padding: 8px 16px; border-radius: 4px; white-space: nowrap;
+  opacity: 0; transition: opacity .6s; pointer-events: none; }
+#hint.show { opacity: .9; }
+@media (max-width: 760px) { #hint { display: none; } }
+
+/* screen-mode tabs inside the chrome bar */
+#os-tabs { display: flex; gap: 6px; margin: 0 auto; }
+#os-tabs button { border: 1.5px solid #43336b; color: #8f7fc4; background: rgba(10, 6, 26, .82);
+  font-family: inherit; font-size: 11px; letter-spacing: .12em; padding: 8px 14px; cursor: pointer;
+  border-radius: 5px; transition: all .15s; }
+#os-tabs button.active { border-color: #b9a6f5; color: #14093a; background: #b9a6f5; }
+#os-tabs button:hover:not(.active) { color: #cdbcff; }
 
 /* ── the OS revealed after the zoom: iframe inside CRT bezel ─ */
 #os-shell { position: fixed; inset: 0; z-index: 50; display: none; background: #05030d; }
@@ -54,8 +70,14 @@ body { background: #0a0718; overflow: hidden; font-family: 'IBM Plex Mono', mono
 #os-shell .bezel { position: absolute; inset: 0; pointer-events: none; z-index: 53; border-radius: 22px;
   box-shadow: inset 0 0 0 15px #1a1230, inset 0 0 0 17px #43336b, inset 0 0 0 18px #0c0820,
     inset 0 0 130px rgba(0, 0, 0, .8); }
-#os-frame { position: absolute; inset: 16px; width: calc(100% - 32px); height: calc(100% - 32px);
-  border: 0; border-radius: 10px; background: #05030d; }
+/* a slim OS chrome bar holds the controls so they never collide with
+   the loaded site's own header */
+#os-chrome { position: absolute; top: 16px; left: 16px; right: 16px; height: 46px; z-index: 54;
+  background: linear-gradient(#0f0a22, #0a0718); border-bottom: 1px solid #2a1f4a;
+  border-radius: 10px 10px 0 0; display: flex; align-items: center; padding: 0 12px; gap: 10px; }
+#os-frame { position: absolute; top: 62px; left: 16px; right: 16px; bottom: 16px;
+  width: calc(100% - 32px); height: calc(100% - 78px);
+  border: 0; border-radius: 0 0 10px 10px; background: #fff; }
 #os-shell .glass { position: absolute; inset: 16px; pointer-events: none; z-index: 52; border-radius: 10px;
   background:
     repeating-linear-gradient(0deg, rgba(0,0,0,.10) 0 1px, transparent 1px 4px),
@@ -90,8 +112,8 @@ body { background: #0a0718; overflow: hidden; font-family: 'IBM Plex Mono', mono
 </div>
 
 <div id="tip">▶ CLICK TO ENTER</div>
+<div id="hint">DRAG TO LOOK · SCROLL TO MOVE CLOSER · WASD TO SLIDE · CLICK THE MONITOR TO SIT DOWN</div>
 <button id="enter-btn">▶ ENTER THE TERMINAL</button>
-<button id="back">◂ STAND UP</button>
 <div id="fade"></div>
 
 <div id="nogl">
@@ -104,8 +126,15 @@ body { background: #0a0718; overflow: hidden; font-family: 'IBM Plex Mono', mono
 
 <div id="os-shell">
   <div class="bezel"></div>
+  <div id="os-chrome">
+    <button id="back">◂ STAND UP</button>
+    <div id="os-tabs">
+      <button id="tab-modern" class="active">MODERN SITE</button>
+      <button id="tab-retro">RETRO OS</button>
+    </div>
+  </div>
   <div class="glass"></div>
-  <iframe id="os-frame" title="ShauryaOS"></iframe>
+  <iframe id="os-frame" title="The research site, on the machine"></iframe>
 </div>
 
 <script src="../js/sound.js?v=2"></script>
@@ -148,7 +177,7 @@ try {
 if (renderer) { try { main(); } catch (e) { console.warn('[v3] scene failed:', e); fatal(); } }
 
 function main() {
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5)); /* perf: cap DPR */
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.35;
 
@@ -230,11 +259,14 @@ function main() {
   /* power LED */
   box(.05, .03, .02, std(0x7c3aed, .4, { emissive: 0x7c3aed, emissiveIntensity: 2 }), .55, .245, .49, crt);
 
-  /* the screen: CanvasTexture running a live idle terminal */
-  const scv = document.createElement('canvas'); scv.width = 640; scv.height = 480;
+  /* the screen: low-res CanvasTexture (chunky retro pixels, Heffernan-sized) */
+  const scv = document.createElement('canvas'); scv.width = 320; scv.height = 240;
   const sctx = scv.getContext('2d');
   const stex = new THREE.CanvasTexture(scv);
   stex.colorSpace = THREE.SRGBColorSpace;
+  stex.magFilter = THREE.NearestFilter;      /* hard pixels on the glass */
+  stex.generateMipmaps = false;
+  stex.minFilter = THREE.LinearFilter;
   const screenMat = new THREE.MeshBasicMaterial({ map: stex, toneMapped: false });
   const screen = new THREE.Mesh(new THREE.PlaneGeometry(1.06, .78), screenMat);
   screen.position.set(0, .70, .43); crt.add(screen);   /* recessed behind bezel front (.49) */
@@ -374,43 +406,91 @@ function main() {
 
   /* ══ IDLE TERMINAL DRAWING ══════════════════════════════════ */
   const IDLE = window.IDLE_LINES || ['SHAURYA GUPTA — RESEARCH TERMINAL', '', '  > click to sit down_'];
+  let lastScreenDraw = -1e9;
   function drawScreen(t) {
-    sctx.fillStyle = '#150b31'; sctx.fillRect(0, 0, 640, 480);
-    sctx.font = '600 21px "IBM Plex Mono", monospace';
+    /* perf: the texture upload is expensive — refresh the glass at ~9fps */
+    if (t - lastScreenDraw < 110) return;
+    lastScreenDraw = t;
+    sctx.fillStyle = '#150b31'; sctx.fillRect(0, 0, 320, 240);
+    sctx.font = '600 11px "IBM Plex Mono", monospace';
     IDLE.forEach((ln, i) => {
       let s = ln;
       if (i === IDLE.length - 1 && s.includes('_'))
         s = (Math.floor(t / 480) % 2) ? s : s.replace('_', ' ');
       sctx.fillStyle = i === 0 ? '#ffd9a0' : '#cdbcff';
-      sctx.fillText(s, 36, 70 + i * 44);
+      sctx.fillText(s, 18, 36 + i * 22);
     });
     /* travelling scan band */
-    const y = (t / 13) % 570 - 45;
-    const g = sctx.createLinearGradient(0, y - 30, 0, y + 30);
+    const y = (t / 13) % 290 - 25;
+    const g = sctx.createLinearGradient(0, y - 16, 0, y + 16);
     g.addColorStop(0, 'rgba(255,255,255,0)');
     g.addColorStop(.5, 'rgba(205,188,255,.09)');
     g.addColorStop(1, 'rgba(255,255,255,0)');
-    sctx.fillStyle = g; sctx.fillRect(0, y - 30, 640, 60);
+    sctx.fillStyle = g; sctx.fillRect(0, y - 16, 320, 32);
     /* scanlines + corner vignette */
     sctx.fillStyle = 'rgba(0,0,0,.15)';
-    for (let yy = 0; yy < 480; yy += 4) sctx.fillRect(0, yy, 640, 1);
-    const v = sctx.createRadialGradient(320, 240, 190, 320, 240, 420);
+    for (let yy = 0; yy < 240; yy += 2) sctx.fillRect(0, yy, 320, 1);
+    const v = sctx.createRadialGradient(160, 120, 95, 160, 120, 210);
     v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.5)');
-    sctx.fillStyle = v; sctx.fillRect(0, 0, 640, 480);
+    sctx.fillStyle = v; sctx.fillRect(0, 0, 320, 240);
     stex.needsUpdate = true;
   }
 
-  /* ══ STATE MACHINE: gate → room → zoom → os → unzoom ═══════ */
+  /* ══ EXPLORATION CONTROLS — damped orbit + slide, Heffernan-style
+        (drag to look, wheel to move closer, WASD to slide) ═══════ */
+  const ORBIT = {
+    yaw: .32, pitch: .14, radius: 6.9,          /* start far — the room breathes */
+    sYaw: .32, sPitch: .14, sRadius: 6.9,
+    tx: 0, ty: 1.35, tz: -.2, sTx: 0, sTy: 1.35, sTz: -.2,
+    lastInput: 0,
+  };
+  const CLAMP = { yawMin: -1.15, yawMax: 1.15, pitchMin: -.04, pitchMax: .52,
+                  rMin: 2.5, rMax: 7.3, xMin: -3.1, xMax: 3.1, zMin: -.9, zMax: 2.6 };
+
   let mode = 'gate';
   let zoomStart = 0;
-  const ZOOM_MS = 900, UNZOOM_MS = 820;
-  const mouse = { x: 0, y: 0 }, sm = { x: 0, y: 0 };
+  const ZOOM_MS = 950, UNZOOM_MS = 850;
+  const zoomFromPos = new THREE.Vector3(), zoomFromLook = new THREE.Vector3();
+  const mouse = { x: 0, y: 0 };
   let lastHoverSnd = 0, hovering = false;
 
   addEventListener('mousemove', e => {
     mouse.x = e.clientX / innerWidth - .5;
     mouse.y = e.clientY / innerHeight - .5;
   });
+
+  /* drag-to-look (mouse + touch), with click-vs-drag discrimination */
+  let dragging = false, dragDist = 0, px = 0, py = 0;
+  const startDrag = (x, y) => { dragging = true; dragDist = 0; px = x; py = y; };
+  const moveDrag = (x, y) => {
+    if (!dragging) return;
+    const dx = x - px, dy = y - py; px = x; py = y;
+    dragDist += Math.abs(dx) + Math.abs(dy);
+    ORBIT.yaw = Math.min(CLAMP.yawMax, Math.max(CLAMP.yawMin, ORBIT.yaw - dx * .0034));
+    ORBIT.pitch = Math.min(CLAMP.pitchMax, Math.max(CLAMP.pitchMin, ORBIT.pitch + dy * .0026));
+    ORBIT.lastInput = performance.now();
+  };
+  $('gl').addEventListener('pointerdown', e => { if (mode === 'room' || mode === 'gate') { startDrag(e.clientX, e.clientY); $('gl').setPointerCapture(e.pointerId); } });
+  $('gl').addEventListener('pointermove', e => moveDrag(e.clientX, e.clientY));
+  $('gl').addEventListener('pointerup', e => {
+    const wasClick = dragging && dragDist < 7;
+    dragging = false;
+    if (wasClick && mode === 'room' && monitorHit()) startZoom();
+  });
+  $('gl').addEventListener('pointercancel', () => dragging = false);
+
+  /* wheel = dolly (move closer / farther) */
+  addEventListener('wheel', e => {
+    if (mode !== 'room' && mode !== 'gate') return;
+    e.preventDefault();
+    ORBIT.radius = Math.min(CLAMP.rMax, Math.max(CLAMP.rMin, ORBIT.radius * (1 + e.deltaY * .0009)));
+    ORBIT.lastInput = performance.now();
+  }, { passive: false });
+
+  /* WASD / arrows = slide the focal point along the room */
+  const held = {};
+  addEventListener('keydown', e => { held[e.key.toLowerCase()] = true; });
+  addEventListener('keyup', e => { held[e.key.toLowerCase()] = false; });
 
   const ray = new THREE.Raycaster();
   const ndc = new THREE.Vector2();
@@ -425,7 +505,7 @@ function main() {
     hovering = h;
     outline.visible = h;
     screenMat.color.setScalar(h ? 1.35 : 1);
-    $('gl').style.cursor = h ? 'pointer' : 'default';
+    $('gl').style.cursor = h ? 'pointer' : 'grab';
     $('tip').classList.toggle('show', h);
     if (h && t - lastHoverSnd > 280) { snd('hover'); lastHoverSnd = t; }
   }
@@ -440,28 +520,42 @@ function main() {
   function startZoom() {
     if (mode !== 'room') return;
     mode = 'zoom'; zoomStart = performance.now();
+    zoomFromPos.copy(cam.position);
+    zoomFromLook.copy(curLook);
     snd('whoosh', 'down');
     setHover(false, 0);
     $('enter-btn').style.display = 'none';
+    $('hint').classList.remove('show');
   }
 
   $('start-btn').addEventListener('click', () => {
     snd('boot');
     $('gate').style.display = 'none';
     $('enter-btn').style.display = 'block';
+    $('hint').classList.add('show');
     mode = 'room';
   });
-
-  /* clicking the monitor enters; clicking anywhere on the canvas also
-     enters (deliberate fallback so the room can never feel broken) */
-  $('gl').addEventListener('click', () => { if (mode === 'room') startZoom(); });
   $('enter-btn').addEventListener('click', startZoom);
+
+  /* the screen carries the MODERN research site by default; the retro
+     OS stays one tab away */
+  const SRC = { modern: '../', retro: '../research-v2/' };
+  let osTab = 'modern';
+  function setTab(which) {
+    osTab = which;
+    $('os-frame').src = SRC[which];
+    $('tab-modern').classList.toggle('active', which === 'modern');
+    $('tab-retro').classList.toggle('active', which === 'retro');
+    snd('select');
+  }
+  $('tab-modern').addEventListener('click', () => setTab('modern'));
+  $('tab-retro').addEventListener('click', () => setTab('retro'));
 
   function enterOS() {
     $('fade').style.opacity = '1';
     setTimeout(() => {
       const fr = $('os-frame');
-      if (!fr.getAttribute('src')) fr.src = '../research-v2/';
+      if (!fr.getAttribute('src')) fr.src = SRC[osTab];
       $('os-shell').classList.add('on');
       $('back').style.display = 'block';
       mode = 'os';
@@ -479,6 +573,7 @@ function main() {
       $('os-frame').removeAttribute('src');
       $('back').style.display = 'none';
       $('enter-btn').style.display = 'block';
+      $('hint').classList.add('show');
       mode = 'unzoom'; zoomStart = performance.now();
       snd('whoosh', 'up');
       $('fade').style.opacity = '0';
@@ -488,33 +583,75 @@ function main() {
   addEventListener('keydown', e => { if (e.key === 'Escape') standUp(); });
 
   /* ══ MAIN LOOP ══════════════════════════════════════════════ */
-  const curLook = HOME_LOOK.clone();
+  const curLook = new THREE.Vector3(0, 1.35, -.2);
   const easeOut = p => 1 - Math.pow(1 - p, 3);
+  const easeIO = p => p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+  let rafOn = true, lastT = 0;
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) rafOn = false;
+    else if (!rafOn) { rafOn = true; lastT = 0; requestAnimationFrame(tick); }
+  });
+
+  function orbitApply(dt, t) {
+    /* keyboard slide */
+    const sp = 2.2 * dt;
+    const fwdX = -Math.sin(ORBIT.yaw), fwdZ = -Math.cos(ORBIT.yaw);
+    let mx = 0, mz = 0;
+    if (held['w'] || held['arrowup'])    { mx += fwdX * sp; mz += fwdZ * sp; }
+    if (held['s'] || held['arrowdown'])  { mx -= fwdX * sp; mz -= fwdZ * sp; }
+    if (held['a'] || held['arrowleft'])  { mx += fwdZ * sp; mz -= fwdX * sp; }
+    if (held['d'] || held['arrowright']) { mx -= fwdZ * sp; mz += fwdX * sp; }
+    if (mx || mz) {
+      ORBIT.tx = Math.min(CLAMP.xMax, Math.max(CLAMP.xMin, ORBIT.tx + mx));
+      ORBIT.tz = Math.min(CLAMP.zMax, Math.max(CLAMP.zMin, ORBIT.tz + mz));
+      ORBIT.lastInput = t;
+    }
+    /* gentle idle sway when hands-off */
+    const idle = t - ORBIT.lastInput > 3200 ? 1 : 0;
+    const swayY = idle * Math.sin(t / 4100) * .05;
+    const swayP = idle * Math.cos(t / 5300) * .02;
+    /* damped smoothing (time-based, frame-rate independent) */
+    const k = 1 - Math.exp(-dt * 7);
+    ORBIT.sYaw += (ORBIT.yaw + swayY - ORBIT.sYaw) * k;
+    ORBIT.sPitch += (ORBIT.pitch + swayP - ORBIT.sPitch) * k;
+    ORBIT.sRadius += (ORBIT.radius - ORBIT.sRadius) * k;
+    ORBIT.sTx += (ORBIT.tx - ORBIT.sTx) * k;
+    ORBIT.sTy += (ORBIT.ty - ORBIT.sTy) * k;
+    ORBIT.sTz += (ORBIT.tz - ORBIT.sTz) * k;
+    const cy = Math.cos(ORBIT.sPitch), syp = Math.sin(ORBIT.sPitch);
+    cam.position.set(
+      ORBIT.sTx + Math.sin(ORBIT.sYaw) * cy * ORBIT.sRadius,
+      ORBIT.sTy + syp * ORBIT.sRadius + .35,
+      ORBIT.sTz + Math.cos(ORBIT.sYaw) * cy * ORBIT.sRadius
+    );
+    curLook.set(ORBIT.sTx, ORBIT.sTy, ORBIT.sTz);
+    cam.lookAt(curLook);
+  }
 
   function tick(t) {
-    drawScreen(t);
-    dust.rotation.y = t / 65000;
-    screenGlow.intensity = 10 + Math.sin(t / 300) * 1.4;
-    sm.x += (mouse.x - sm.x) * .06;
-    sm.y += (mouse.y - sm.y) * .06;
+    if (!rafOn) return;
+    const dt = lastT ? Math.min((t - lastT) / 1000, .05) : .016;
+    lastT = t;
+
+    if (mode !== 'os') {
+      drawScreen(t);
+      dust.rotation.y = t / 65000;
+      screenGlow.intensity = 10 + Math.sin(t / 300) * 1.4;
+    }
 
     if (mode === 'gate' || mode === 'room') {
-      cam.position.x = HOME_POS.x + Math.sin(t / 3400) * .1 + sm.x * .5;
-      cam.position.y = HOME_POS.y + Math.cos(t / 4300) * .05 - sm.y * .28;
-      cam.position.z = HOME_POS.z;
-      curLook.copy(HOME_LOOK);
-      cam.lookAt(curLook);
-      if (mode === 'room') { setHover(monitorHit(), t); placeTip(); }
+      orbitApply(dt, t);
+      if (mode === 'room') { if (!dragging) setHover(monitorHit(), t); placeTip(); }
     } else if (mode === 'zoom') {
-      const p = Math.min(1, (t - zoomStart) / ZOOM_MS), e = easeOut(p);
-      cam.position.lerpVectors(HOME_POS, SCREEN_POS, e);
-      curLook.lerpVectors(HOME_LOOK, SCREEN_LOOK, e);
+      const p = Math.min(1, (t - zoomStart) / ZOOM_MS), e = easeIO(p);
+      cam.position.lerpVectors(zoomFromPos, SCREEN_POS, e);
+      curLook.lerpVectors(zoomFromLook, SCREEN_LOOK, e);
       cam.lookAt(curLook);
       if (p >= 1) { mode = 'os-wait'; enterOS(); }
     } else if (mode === 'unzoom') {
       const p = Math.min(1, (t - zoomStart) / UNZOOM_MS), e = easeOut(p);
-      cam.position.lerpVectors(SCREEN_POS, HOME_POS, e);
-      curLook.lerpVectors(SCREEN_LOOK, HOME_LOOK, e);
+      cam.position.lerpVectors(SCREEN_POS, zoomFromPos, e);
+      curLook.lerpVectors(SCREEN_LOOK, zoomFromLook, e);
       cam.lookAt(curLook);
       if (p >= 1) mode = 'room';
     } else {

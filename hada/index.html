@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Human-AI Decision Atlas — a map of what we know about how AI changes human decisions</title>
+<meta name="description" content="A living evidence cartography: the research literature on AI and human decision-making, structured into graded, contestable, citable claims — with the unknowns given equal standing.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="hada.css?v=1">
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header class="site-head">
+  <div class="wrap">
+    <a class="wordmark" href="#top">
+      <span class="sigil">HADA</span>
+      <span class="name">Human-AI Decision Atlas</span>
+    </a>
+    <nav class="site-nav" aria-label="Sections">
+      <a href="#atlas">The Atlas</a>
+      <a href="#dossier">Worked Dossier</a>
+      <a href="#framework">Confidence</a>
+      <a href="#gaps">Gap Register</a>
+      <a href="#method">Methodology</a>
+      <a href="#cite">Cite</a>
+    </nav>
+    <span class="release-tag"><b>v0.1</b> · FOUNDING RELEASE</span>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap">
+    <p class="kicker"><span class="no">HADA</span><span>A living evidence cartography</span></p>
+    <h1>A map of what we <em>actually know</em> about how AI changes human decisions.</h1>
+    <p class="lede">AI systems now advise, screen, rank, and decide alongside people in hospitals, courts, firms, and classrooms. The evidence about what that does to human judgment is scattered across a dozen fields that rarely read one another. The Atlas structures that evidence into graded, contestable, citable claims — and gives what we <em>don't</em> know equal standing.</p>
+    <div class="hero-actions">
+      <a class="action" href="#dossier">Read the worked dossier <span class="arr">→</span></a>
+      <a class="action quiet" href="#method">How claims are graded <span class="arr">→</span></a>
+    </div>
+
+    <div class="status-strip" aria-label="Current state of the Atlas">
+      <div class="status-cell"><div class="n">01</div><div class="lbl">Domain under curation</div></div>
+      <div class="status-cell"><div class="n">06</div><div class="lbl">Claims mapped</div></div>
+      <div class="status-cell"><div class="n">01</div><div class="lbl">Full worked dossier</div></div>
+      <div class="status-cell"><div class="n">07</div><div class="lbl">Studies cited on this page</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FLAGSHIP PLATE ============ -->
+<section class="plate-band" id="atlas">
+  <div class="wrap">
+    <figure>
+      <div class="plate reveal">
+        <svg viewBox="0 0 1160 620" role="img" aria-label="Evidence map of Domain 01, AI-assisted judgment at work: six claim nodes graded by confidence, with an uncharted region marking absent evidence.">
+          <defs>
+            <pattern id="hatch" width="9" height="9" patternTransform="rotate(-45)" patternUnits="userSpaceOnUse">
+              <rect width="9" height="9" fill="#F4EFE4"/>
+              <line x1="0" y1="0" x2="0" y2="9" stroke="#131C26" stroke-opacity="0.10" stroke-width="1.4"/>
+            </pattern>
+          </defs>
+
+          <!-- graticule -->
+          <g stroke="#131C26" stroke-opacity="0.055" stroke-width="1">
+            <line x1="0" y1="88"  x2="1160" y2="88"/>  <line x1="0" y1="176" x2="1160" y2="176"/>
+            <line x1="0" y1="264" x2="1160" y2="264"/> <line x1="0" y1="352" x2="1160" y2="352"/>
+            <line x1="0" y1="440" x2="1160" y2="440"/> <line x1="0" y1="528" x2="1160" y2="528"/>
+            <line x1="116" y1="0" x2="116" y2="620"/>  <line x1="232" y1="0" x2="232" y2="620"/>
+            <line x1="348" y1="0" x2="348" y2="620"/>  <line x1="464" y1="0" x2="464" y2="620"/>
+            <line x1="580" y1="0" x2="580" y2="620"/>  <line x1="696" y1="0" x2="696" y2="620"/>
+            <line x1="812" y1="0" x2="812" y2="620"/>  <line x1="928" y1="0" x2="928" y2="620"/>
+            <line x1="1044" y1="0" x2="1044" y2="620"/>
+          </g>
+
+          <!-- uncharted region -->
+          <path d="M 838 0 L 1160 0 L 1160 620 L 716 620 L 782 452 L 812 262 L 838 0 Z" fill="url(#hatch)"/>
+          <path d="M 838 0 L 812 262 L 782 452 L 716 620" fill="none" stroke="#5E6B77" stroke-width="1.4" stroke-dasharray="7 5"/>
+          <text x="806" y="86" transform="rotate(83 806 86)" font-family="IBM Plex Mono, monospace" font-size="10.5" letter-spacing="3.5" fill="#5E6B77">EVIDENCE FRONTIER</text>
+          <text x="985" y="72"  font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="2.5" fill="#5E6B77" text-anchor="middle">UNCHARTED</text>
+          <text x="985" y="90"  font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing="1.5" fill="#8A93A0" text-anchor="middle">EVIDENCE ABSENT OR UNUSABLE</text>
+
+          <!-- gap markers -->
+          <g font-family="IBM Plex Mono, monospace" font-size="10" fill="#5E6B77">
+            <circle cx="948" cy="188" r="17" fill="none" stroke="#5E6B77" stroke-width="1.3" stroke-dasharray="4 4"/>
+            <text x="948" y="222" text-anchor="middle">G-001</text>
+            <text x="948" y="236" text-anchor="middle" font-size="9" fill="#8A93A0">long-run skill formation</text>
+            <circle cx="1032" cy="330" r="13" fill="none" stroke="#5E6B77" stroke-width="1.3" stroke-dasharray="4 4"/>
+            <text x="1032" y="360" text-anchor="middle">G-002</text>
+            <text x="1032" y="374" text-anchor="middle" font-size="9" fill="#8A93A0">tacit-knowledge transfer</text>
+            <circle cx="905" cy="468" r="15" fill="none" stroke="#5E6B77" stroke-width="1.3" stroke-dasharray="4 4"/>
+            <text x="905" y="500" text-anchor="middle">G-003</text>
+            <text x="905" y="514" text-anchor="middle" font-size="9" fill="#8A93A0">organizational outcomes</text>
+            <circle cx="1072" cy="500" r="13" fill="none" stroke="#5E6B77" stroke-width="1.3" stroke-dasharray="4 4"/>
+            <text x="1072" y="530" text-anchor="middle">G-004</text>
+            <text x="1072" y="544" text-anchor="middle" font-size="9" fill="#8A93A0">high-stakes transfer</text>
+          </g>
+
+          <!-- edges -->
+          <g stroke="#131C26" stroke-opacity="0.4" stroke-width="1.2" fill="none">
+            <line x1="376" y1="340" x2="514" y2="398"/>                       <!-- 005-001 -->
+            <line x1="652" y1="282" x2="558" y2="386"/>                       <!-- 002-001 -->
+            <line x1="646" y1="270" x2="378" y2="324"/>                       <!-- 002-005 -->
+            <line x1="430" y1="174" x2="270" y2="206"/>                       <!-- 003-004 -->
+          </g>
+          <line class="edge-contested" x1="748" y1="460" x2="565" y2="416" stroke="#93321F" stroke-width="1.4" stroke-dasharray="6 5" fill="none"/> <!-- 006 challenges 001 -->
+          <line x1="566" y1="404" x2="930" y2="196" stroke="#5E6B77" stroke-width="1.1" stroke-dasharray="2 5" fill="none"/> <!-- 001 → G-001 unresolved -->
+
+          <!-- edge labels -->
+          <g font-family="IBM Plex Mono, monospace" font-size="9" fill="#6D7885">
+            <text x="440" y="358">supports</text>
+            <text x="600" y="346">bounds</text>
+            <text x="640" y="440" fill="#93321F">challenges · long-run</text>
+            <text x="742" y="284">unresolved →</text>
+          </g>
+
+          <!-- claim nodes -->
+          <g font-family="IBM Plex Mono, monospace">
+            <!-- W-005 robust · 4 studies on file -->
+            <circle cx="350" cy="330" r="28" fill="#1E5F47" fill-opacity="0.14" stroke="#1E5F47" stroke-width="1.6"/>
+            <circle cx="350" cy="330" r="4" fill="#1E5F47"/>
+            <text x="350" y="380" text-anchor="middle" font-size="10.5" fill="#131C26" font-weight="600">W-005</text>
+            <text x="350" y="395" text-anchor="middle" font-size="9.5" fill="#6D7885">task-level output gains</text>
+
+            <!-- W-001 moderate · 4 studies on file -->
+            <circle cx="540" cy="410" r="28" fill="#8A6D1E" fill-opacity="0.13" stroke="#8A6D1E" stroke-width="1.6"/>
+            <circle cx="540" cy="410" r="4" fill="#8A6D1E"/>
+            <text x="540" y="456" text-anchor="middle" font-size="10.5" fill="#131C26" font-weight="600">W-001</text>
+            <text x="540" y="471" text-anchor="middle" font-size="9.5" fill="#6D7885">novice–expert compression</text>
+
+            <!-- W-002 limited · 1 study on file -->
+            <circle cx="660" cy="270" r="14" fill="#A85C1C" fill-opacity="0.13" stroke="#A85C1C" stroke-width="1.6"/>
+            <circle cx="660" cy="270" r="3.5" fill="#A85C1C"/>
+            <text x="660" y="232" text-anchor="middle" font-size="10.5" fill="#131C26" font-weight="600">W-002</text>
+            <text x="660" y="218" text-anchor="middle" font-size="9.5" fill="#6D7885">jagged frontier</text>
+
+            <!-- W-003 moderate · 2 sources on file -->
+            <circle cx="450" cy="170" r="20" fill="#8A6D1E" fill-opacity="0.13" stroke="#8A6D1E" stroke-width="1.6"/>
+            <circle cx="450" cy="170" r="4" fill="#8A6D1E"/>
+            <text x="450" y="130" text-anchor="middle" font-size="10.5" fill="#131C26" font-weight="600">W-003</text>
+            <text x="450" y="116" text-anchor="middle" font-size="9.5" fill="#6D7885">automation bias</text>
+
+            <!-- W-004 contested -->
+            <circle cx="250" cy="210" r="20" fill="#93321F" fill-opacity="0.11" stroke="#93321F" stroke-width="1.6" stroke-dasharray="5 3"/>
+            <circle cx="250" cy="210" r="4" fill="#93321F"/>
+            <text x="250" y="252" text-anchor="middle" font-size="10.5" fill="#131C26" font-weight="600">W-004</text>
+            <text x="250" y="267" text-anchor="middle" font-size="9.5" fill="#6D7885">advice-weighting instability</text>
+
+            <!-- W-006 limited -->
+            <circle cx="760" cy="470" r="14" fill="#A85C1C" fill-opacity="0.13" stroke="#A85C1C" stroke-width="1.6"/>
+            <circle cx="760" cy="470" r="3.5" fill="#A85C1C"/>
+            <text x="760" y="508" text-anchor="middle" font-size="10.5" fill="#131C26" font-weight="600">W-006</text>
+            <text x="760" y="523" text-anchor="middle" font-size="9.5" fill="#6D7885">post-exposure skill erosion</text>
+          </g>
+
+          <!-- cartouche -->
+          <g>
+            <rect x="24" y="24" width="292" height="76" fill="#FAF7F0" stroke="#131C26" stroke-width="1"/>
+            <text x="42" y="52" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="2.5" fill="#93321F" font-weight="600">PLATE I — EVIDENCE MAP</text>
+            <text x="42" y="72" font-family="Newsreader, Georgia, serif" font-size="15" fill="#131C26">Domain 01 · AI-assisted judgment at work</text>
+            <text x="42" y="89" font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing="1" fill="#6D7885">SIX CLAIMS · FOUR REGISTERED GAPS · v0.1</text>
+          </g>
+
+          <!-- legend -->
+          <g font-family="IBM Plex Mono, monospace" font-size="9.5">
+            <rect x="24" y="452" width="252" height="146" fill="#FAF7F0" stroke="#131C26" stroke-opacity="0.35" stroke-width="1"/>
+            <text x="40" y="476" letter-spacing="2" fill="#6D7885" font-size="9">CONFIDENCE GRADE</text>
+            <circle cx="48" cy="494" r="5" fill="#1E5F47"/><text x="62" y="498" fill="#3B4856">Robust</text>
+            <circle cx="48" cy="514" r="5" fill="#8A6D1E"/><text x="62" y="518" fill="#3B4856">Moderate</text>
+            <circle cx="48" cy="534" r="5" fill="#A85C1C"/><text x="62" y="538" fill="#3B4856">Limited</text>
+            <circle cx="150" cy="494" r="5" fill="#93321F"/><text x="164" y="498" fill="#3B4856">Contested</text>
+            <circle cx="150" cy="514" r="5" fill="none" stroke="#5E6B77" stroke-dasharray="3 2"/><text x="164" y="518" fill="#3B4856">Gap (no grade)</text>
+            <text x="40" y="562" letter-spacing="2" fill="#6D7885" font-size="9">NODE AREA = INDEPENDENT STUDIES ON FILE</text>
+            <line x1="40" y1="578" x2="70" y2="578" stroke="#93321F" stroke-width="1.4" stroke-dasharray="6 5"/>
+            <text x="78" y="582" fill="#3B4856">contradiction</text>
+          </g>
+        </svg>
+      </div>
+      <figcaption class="fig-caption">
+        <span class="fig-no">FIG. 01</span>
+        <span>Evidence map of the Atlas's founding domain. Node positions are editorial, not computed; node area reflects the number of independent studies currently on file for each claim — counts for claims other than W-001 are provisional until their full dossiers publish (v0.2). Hatched region marks questions where evidence is absent or unusable — the gap register, not empty space. Schematic, founding release v0.1.</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<hr class="section-foot-rule">
+
+<!-- ============ MISSION ============ -->
+<section class="section" id="mission">
+  <div class="wrap">
+    <p class="kicker"><span class="no">01</span><span>Mission</span></p>
+    <h2 class="reveal">Structure the evidence, not the hype.</h2>
+    <div class="split">
+      <p class="lede reveal">As AI systems advise, augment, and replace human decision-makers, the evidence about their effects is fragmented across economics, medicine, human-computer interaction, organizational studies, and law — fields that rarely read one another.</p>
+      <div class="reveal">
+        <p class="measure">The Atlas organizes that scattered literature by the <strong>decisions themselves</strong> rather than by the papers that study them, so that a student, a journalist, a researcher, or a policymaker can see at a glance what is established, what is disputed, and what remains unknown. Our commitment is not to be comprehensive but to be <em>honest</em>: to represent uncertainty faithfully, to keep contradicting studies on the page, and to update as understanding advances. Every claim answers three questions within one screen — <em>What do we know? How sure are we? What don't we know?</em></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-foot-rule">
+
+<!-- ============ WHY EXISTING RESOURCES ARE NOT ENOUGH ============ -->
+<section class="section" id="why">
+  <div class="wrap">
+    <p class="kicker"><span class="no">02</span><span>Why existing resources are not enough</span></p>
+    <h2 class="reveal">Excellent infrastructure exists. None of it holds the claim.</h2>
+    <div class="ledger reveal">
+      <div class="ledger-row">
+        <div class="who">Our World in Data<span class="cls">Data platform</span></div>
+        <div class="holds"><span class="cell-lbl">Holds</span>Canonical measured quantities over time — CO₂, mortality, GDP.</div>
+        <div class="lacks"><span class="cell-lbl">Cannot hold</span>Contested, qualitative claims about mechanisms. It answers <em>how much</em>, never <em>what do we know and how sure are we</em>.</div>
+      </div>
+      <div class="ledger-row">
+        <div class="who">OpenAlex · Scholar<span class="cls">Bibliographic graph</span></div>
+        <div class="holds"><span class="cell-lbl">Holds</span>Hundreds of millions of papers and their citation links.</div>
+        <div class="lacks"><span class="cell-lbl">Cannot hold</span>What the papers <em>claim</em>, or whether the field's claims cohere. The card catalog, not the synthesis.</div>
+      </div>
+      <div class="ledger-row">
+        <div class="who">AI Index · OECD.AI<span class="cls">Observatory</span></div>
+        <div class="holds"><span class="cell-lbl">Holds</span>Annual macro-snapshots of the AI field; national policy trackers.</div>
+        <div class="lacks"><span class="cell-lbl">Cannot hold</span>Claim-level granularity. Periodic and top-down — not living, not navigable as an evidence graph.</div>
+      </div>
+      <div class="ledger-row">
+        <div class="who">Think tanks<span class="cls">Argument</span></div>
+        <div class="holds"><span class="cell-lbl">Holds</span>Authored, positional essays by named experts.</div>
+        <div class="lacks"><span class="cell-lbl">Cannot hold</span>A neutral, structured, contestable evidence base. Argument is downstream of the layer that's missing.</div>
+      </div>
+    </div>
+    <p class="ledger-thesis reveal">No public resource holds the claim itself — graded, contested, versioned, and citable. <strong>The Atlas exists to hold that layer.</strong></p>
+  </div>
+</section>
+
+<hr class="section-foot-rule">
+
+<!-- ============ HOW HADA WORKS ============ -->
+<section class="section" id="how">
+  <div class="wrap">
+    <p class="kicker"><span class="no">03</span><span>How the Atlas works</span></p>
+    <h2 class="reveal">Five objects. Everything on this site is one of them.</h2>
+    <p class="lede reveal">The atomic unit of the Atlas is not a chart and not a citation. It is a structured claim with an evidence dossier and a confidence grade — situated among its contradictions and its gaps.</p>
+    <div class="objects reveal">
+      <div class="object">
+        <span class="idx">OBJ · 1</span>
+        <h3>Claim</h3>
+        <p>A neutral, falsifiable statement about what AI does to a specific human decision, in a specific context. Carries a permanent identifier.</p>
+        <div class="glyph"><svg width="60" height="26" viewBox="0 0 60 26"><rect x="1" y="4" width="58" height="18" fill="none" stroke="#131C26" stroke-width="1.3"/><line x1="8" y1="11" x2="46" y2="11" stroke="#131C26" stroke-width="1.2"/><line x1="8" y1="16" x2="34" y2="16" stroke="#93321F" stroke-width="1.2"/></svg></div>
+      </div>
+      <div class="object">
+        <span class="idx">OBJ · 2</span>
+        <h3>Evidence dossier</h3>
+        <p>Every study behind the claim: design, setting, population, effect, and what it does <em>not</em> show. No artifact, no number.</p>
+        <div class="glyph"><svg width="60" height="30" viewBox="0 0 60 30"><rect x="8" y="8" width="40" height="20" fill="none" stroke="#131C26" stroke-width="1.2"/><rect x="12" y="4" width="40" height="20" fill="#FAF7F0" stroke="#131C26" stroke-width="1.2"/><line x1="18" y1="10" x2="44" y2="10" stroke="#131C26" stroke-width="1"/><line x1="18" y1="15" x2="38" y2="15" stroke="#131C26" stroke-width="1"/></svg></div>
+      </div>
+      <div class="object">
+        <span class="idx">OBJ · 3</span>
+        <h3>Confidence grade</h3>
+        <p>Strength of evidence, computed against a published rubric — never editorial mood. Five levels, from Robust to Insufficient.</p>
+        <div class="glyph"><svg width="86" height="16" viewBox="0 0 86 16"><circle cx="8" cy="8" r="6" fill="#1E5F47"/><circle cx="26" cy="8" r="6" fill="#8A6D1E"/><circle cx="44" cy="8" r="6" fill="#A85C1C"/><circle cx="62" cy="8" r="6" fill="#93321F"/><circle cx="80" cy="8" r="5.5" fill="none" stroke="#5E6B77" stroke-dasharray="3 2"/></svg></div>
+      </div>
+      <div class="object">
+        <span class="idx">OBJ · 4</span>
+        <h3>Contradiction</h3>
+        <p>Where credible studies disagree, the disagreement is kept on the page — with suspected moderators named, not smoothed over.</p>
+        <div class="glyph"><svg width="60" height="20" viewBox="0 0 60 20"><line x1="4" y1="10" x2="26" y2="10" stroke="#93321F" stroke-width="1.5"/><path d="M 24 6 L 30 10 L 24 14" fill="none" stroke="#93321F" stroke-width="1.5"/><line x1="56" y1="10" x2="36" y2="10" stroke="#93321F" stroke-width="1.5" stroke-dasharray="4 3"/><path d="M 38 6 L 32 10 L 38 14" fill="none" stroke="#93321F" stroke-width="1.5"/></svg></div>
+      </div>
+      <div class="object">
+        <span class="idx">OBJ · 5</span>
+        <h3>Knowledge gap</h3>
+        <p>What remains unknown, registered as a first-class object with its own identifier — so absence of evidence is visible and citable.</p>
+        <div class="glyph"><svg width="34" height="30" viewBox="0 0 34 30"><circle cx="17" cy="15" r="12" fill="none" stroke="#5E6B77" stroke-width="1.4" stroke-dasharray="5 4"/><text x="17" y="20" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#5E6B77">?</text></svg></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-foot-rule">
+
+<!-- ============ WORKED DOSSIER ============ -->
+<section class="section" id="dossier">
+  <div class="wrap">
+    <p class="kicker"><span class="no">04</span><span>Worked example · claim dossier</span></p>
+    <h2 class="reveal">One claim, fully worked.</h2>
+    <p class="lede reveal">This is the founding dossier of the Atlas, shown in full. Every dossier follows this anatomy.</p>
+
+    <article class="dossier reveal" aria-label="Claim dossier W-001">
+      <header class="dossier-head">
+        <h3 class="dossier-claim">
+          <span class="domain-line">Domain 01 · AI-assisted judgment at work</span>
+          AI assistance compresses the performance gap between novice and expert workers — in short-run, task-level settings.
+        </h3>
+        <div class="meta-col">
+          <span class="claim-id">HADA·W-001 <span class="v">· v0.1</span></span>
+          <span class="grade moderate">Moderate</span>
+        </div>
+      </header>
+
+      <div class="dossier-body">
+        <div class="dossier-main">
+          <div class="d-sec"><span>Evidence on file</span><span>4 studies</span></div>
+
+          <div class="evidence-item">
+            <div class="src">Brynjolfsson, Li &amp; Raymond <span class="venue">— Quarterly Journal of Economics, 2025</span></div>
+            <span class="design-tag">Staggered field deployment</span>
+            <p class="finding">5,000+ customer-support agents given a generative AI assistant. Average productivity rose ≈15%; gains were concentrated among the least-experienced agents, with minimal effect for the most experienced.</p>
+          </div>
+          <div class="evidence-item">
+            <div class="src">Noy &amp; Zhang <span class="venue">— Science, 2023</span></div>
+            <span class="design-tag">Preregistered RCT</span>
+            <p class="finding">453 professionals on incentivized writing tasks. ChatGPT cut task time ≈40% and raised quality ≈18%; the performance gap between weaker and stronger writers narrowed.</p>
+          </div>
+          <div class="evidence-item">
+            <div class="src">Dell'Acqua et&nbsp;al. <span class="venue">— Harvard Business School WP 24-013, 2023</span></div>
+            <span class="design-tag">Field experiment</span>
+            <p class="finding">758 BCG consultants. On tasks inside the model's competence, below-median performers gained most (+43% vs +17% for top performers). On tasks beyond it, AI users were 19 percentage points <em>less</em> likely to produce correct solutions — see W-002.</p>
+          </div>
+          <div class="evidence-item">
+            <div class="src">Peng et&nbsp;al. <span class="venue">— arXiv:2302.06590, 2023</span></div>
+            <span class="design-tag">RCT</span>
+            <p class="finding">95 developers, standardized programming task with GitHub Copilot: completion time fell 55.8%. Consistent with compression at the task level; does not measure skill formation.</p>
+          </div>
+
+          <div class="d-sec"><span>Boundary conditions</span></div>
+          <ul class="bounds">
+            <li>Holds in <strong>short-run, task-level</strong> measurements — weeks to months, individual output.</li>
+            <li>Evidence is drawn from <strong>routine knowledge work</strong>: support, writing, consulting tasks, coding. High-stakes domains are untested (→ G-004).</li>
+            <li>Reverses at the <strong>frontier of model competence</strong>: on tasks beyond the model's ability, assistance degrades novice performance most (W-002).</li>
+            <li>Says nothing about <strong>long-run skill formation</strong> — whether compressed gaps reflect learning or dependence is unknown (→ G-001).</li>
+          </ul>
+        </div>
+
+        <aside class="dossier-side">
+          <div class="d-sec"><span>Contradiction on file</span></div>
+          <div class="contra">
+            <div class="contra-head">
+              <svg class="mark" viewBox="0 0 14 14"><line x1="2.5" y1="5.5" x2="11.5" y2="5.5" stroke="#93321F" stroke-width="1.5"/><line x1="2.5" y1="9" x2="11.5" y2="9" stroke="#93321F" stroke-width="1.5"/><line x1="9.5" y1="2.5" x2="4.5" y2="12" stroke="#93321F" stroke-width="1.5"/></svg>
+              Adjacent claim W-004 is contested
+            </div>
+            <div class="contra-rows">
+              <div class="contra-row"><span class="pole">A</span><div><b>Algorithm aversion.</b> People abandon algorithmic advice after seeing it err, even when it outperforms them (Dietvorst, Simmons &amp; Massey, <i>JEP: General</i>, 2015).</div></div>
+              <div class="contra-row"><span class="pole">B</span><div><b>Algorithm appreciation.</b> Lay judges weight identical advice <i>more</i> when told it comes from an algorithm (Logg, Minson &amp; Moore, <i>OBHDP</i>, 2019).</div></div>
+            </div>
+            <p class="contra-note">Suspected moderators — expertise, task subjectivity, visibility of errors — are documented but unmapped. The Atlas records the disagreement; it does not vote.</p>
+          </div>
+
+          <div class="d-sec"><span>What would change this grade</span></div>
+          <div class="uncert">
+            <div class="uncert-head">
+              <svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6" fill="none" stroke="#5E6B77" stroke-width="1.3" stroke-dasharray="3 2"/></svg>
+              Registered uncertainty
+            </div>
+            <ul>
+              <li>Longitudinal field studies of skill formation under sustained assistance. First observational evidence of erosion exists — endoscopists' unassisted detection rates fell after months of AI exposure (Budzyń et&nbsp;al., <i>Lancet Gastroenterology &amp; Hepatology</i>, 2025; single study, not yet replicated → W-006).</li>
+              <li>Replication in high-stakes, regulated decisions.</li>
+              <li>Organization-level productivity accounting, not task-level output.</li>
+            </ul>
+          </div>
+
+          <div class="d-sec"><span>Cite this claim</span></div>
+          <div class="cite-block">
+            <span class="lbl">Suggested citation</span>
+            <span class="cite-text" id="cite-w001">Human-AI Decision Atlas (2026). "AI assistance compresses the novice–expert performance gap in short-run, task-level settings." Claim HADA·W-001, v0.1, Domain 01.</span>
+            <button class="copy-btn" data-copy="cite-w001" type="button">Copy</button>
+          </div>
+        </aside>
+      </div>
+    </article>
+
+    <p class="fig-caption" style="margin-top:1rem"><span class="fig-no">NOTE</span><span>Founding-phase disclosure: this dossier was curated by the founding editor and has not yet been externally reviewed. Reviewer names will appear here once the review is complete — every dossier states its review status until that changes.</span></p>
+  </div>
+</section>
+
+<hr class="section-foot-rule">
+
+<!-- ============ EVIDENCE GRAPH ============ -->
+<section class="section" id="graph">
+  <div class="wrap">
+    <p class="kicker"><span class="no">05</span><span>Worked example · evidence graph</span></p>
+    <h2 class="reveal">How one claim sits inside the evidence.</h2>
+    <div class="relation-band reveal">
+      <svg viewBox="0 0 1160 400" role="img" aria-label="Relation diagram: four studies support claim W-001; claim W-002 bounds it; claim W-006 challenges it in the long run; gap G-001 remains unresolved.">
+        <!-- studies -->
+        <g font-family="IBM Plex Mono, monospace" font-size="11">
+          <g>
+            <rect x="60" y="52" width="240" height="52" fill="#FAF7F0" stroke="#131C26" stroke-opacity="0.5" stroke-width="1"/>
+            <text x="76" y="74" fill="#131C26" font-weight="600">Brynjolfsson et al. 2025</text>
+            <text x="76" y="92" fill="#6D7885" font-size="9.5">FIELD · N&gt;5,000 · QJE</text>
+          </g>
+          <g>
+            <rect x="60" y="124" width="240" height="52" fill="#FAF7F0" stroke="#131C26" stroke-opacity="0.5" stroke-width="1"/>
+            <text x="76" y="146" fill="#131C26" font-weight="600">Noy &amp; Zhang 2023</text>
+            <text x="76" y="164" fill="#6D7885" font-size="9.5">RCT · N=453 · SCIENCE</text>
+          </g>
+          <g>
+            <rect x="60" y="196" width="240" height="52" fill="#FAF7F0" stroke="#131C26" stroke-opacity="0.5" stroke-width="1"/>
+            <text x="76" y="218" fill="#131C26" font-weight="600">Dell'Acqua et al. 2023</text>
+            <text x="76" y="236" fill="#6D7885" font-size="9.5">FIELD EXP · N=758 · HBS WP</text>
+          </g>
+          <g>
+            <rect x="60" y="268" width="240" height="52" fill="#FAF7F0" stroke="#131C26" stroke-opacity="0.5" stroke-width="1"/>
+            <text x="76" y="290" fill="#131C26" font-weight="600">Peng et al. 2023</text>
+            <text x="76" y="308" fill="#6D7885" font-size="9.5">RCT · N=95 · PREPRINT</text>
+          </g>
+        </g>
+
+        <!-- support edges into claim -->
+        <g stroke="#1E5F47" stroke-width="1.3" fill="none" stroke-opacity="0.75">
+          <path d="M 300 78 C 390 78 420 160 470 178"/>
+          <path d="M 300 150 C 380 150 410 175 468 188"/>
+          <path d="M 300 222 C 380 222 410 210 468 202"/>
+          <path d="M 300 294 C 390 294 420 226 470 210"/>
+        </g>
+        <text x="368" y="140" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#1E5F47">supports ×4</text>
+
+        <!-- central claim -->
+        <g>
+          <rect x="472" y="152" width="270" height="92" fill="#FAF7F0" stroke="#131C26" stroke-width="1.5"/>
+          <rect x="472" y="152" width="270" height="26" fill="#131C26"/>
+          <text x="488" y="170" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#FAF7F0" letter-spacing="1.5">HADA·W-001 · MODERATE</text>
+          <text x="488" y="200" font-family="Newsreader, Georgia, serif" font-size="15" fill="#131C26">Novice–expert compression</text>
+          <text x="488" y="222" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#6D7885">SHORT-RUN · TASK-LEVEL · v0.1</text>
+        </g>
+
+        <!-- bounds / challenges / gap -->
+        <g font-family="IBM Plex Mono, monospace" font-size="11">
+          <g>
+            <rect x="880" y="60" width="220" height="52" fill="#FAF7F0" stroke="#A85C1C" stroke-width="1.2"/>
+            <text x="896" y="82" fill="#131C26" font-weight="600">W-002 · jagged frontier</text>
+            <text x="896" y="100" fill="#6D7885" font-size="9.5">LIMITED · BOUNDS W-001</text>
+          </g>
+          <g>
+            <rect x="880" y="172" width="220" height="52" fill="#FAF7F0" stroke="#93321F" stroke-width="1.2" stroke-dasharray="5 3"/>
+            <text x="896" y="194" fill="#131C26" font-weight="600">W-006 · skill erosion</text>
+            <text x="896" y="212" fill="#6D7885" font-size="9.5">LIMITED · CHALLENGES, LONG-RUN</text>
+          </g>
+          <g>
+            <rect x="880" y="284" width="220" height="52" fill="none" stroke="#5E6B77" stroke-width="1.2" stroke-dasharray="4 4"/>
+            <text x="896" y="306" fill="#5E6B77" font-weight="600">G-001 · long-run skills</text>
+            <text x="896" y="324" fill="#8A93A0" font-size="9.5">GAP · NO GRADE POSSIBLE</text>
+          </g>
+        </g>
+        <g fill="none">
+          <path d="M 742 176 C 800 160 820 110 878 92" stroke="#A85C1C" stroke-width="1.3"/>
+          <path class="edge-contested" d="M 742 198 C 800 198 820 198 878 198" stroke="#93321F" stroke-width="1.3" stroke-dasharray="6 5"/>
+          <path d="M 742 222 C 800 240 820 290 878 306" stroke="#5E6B77" stroke-width="1.1" stroke-dasharray="2 5"/>
+        </g>
+        <g font-family="IBM Plex Mono, monospace" font-size="9.5">
+          <text x="790" y="128" fill="#A85C1C">bounds</text>
+          <text x="784" y="190" fill="#93321F">challenges</text>
+          <text x="782" y="272" fill="#5E6B77">unresolved</text>
+        </g>
+      </svg>
+    </div>
+    <p class="fig-caption"><span class="fig-no">FIG. 02</span><span>Anatomy of dossier W-001. Studies support the claim; adjacent claims bound and challenge it; the registered gap G-001 marks what no current study can answer. Every relation shown here appears, with sources, in the dossier above.</span></p>
+  </div>
+</section>
+
+<hr class="section-foot-rule">
+
+<!-- ============ CONFIDENCE FRAMEWORK ============ -->
+<section class="section" id="framework">
+  <div class="wrap">
+    <p class="kicker"><span class="no">06</span><span>Confidence framework</span></p>
+    <h2 class="reveal">Grades are computed against a rubric, not a mood.</h2>
+    <p class="lede reveal">Adapted from the GRADE tradition in evidence-based medicine. A grade can move only when the evidence moves — and every regrade is logged.</p>
+    <div class="framework reveal">
+      <div class="fw-row">
+        <span class="grade robust">Robust</span>
+        <div class="crit"><span class="cell-lbl">Criteria</span>Three or more independent studies across at least two designs, including randomized or quasi-experimental evidence; consistent direction; replicated in two or more contexts; no unresolved credible contradiction.</div>
+        <div class="ex"><span class="cell-lbl">Current example</span>W-005 — short-run, task-level output gains from generative AI assistance in routine knowledge work.</div>
+      </div>
+      <div class="fw-row">
+        <span class="grade moderate">Moderate</span>
+        <div class="crit"><span class="cell-lbl">Criteria</span>Multiple studies with a consistent core finding, but confined contexts, short horizons, or a design monoculture. Direction trusted; scope not yet.</div>
+        <div class="ex"><span class="cell-lbl">Current example</span>W-001 — novice–expert compression. Four studies, one consistent direction, all short-run.</div>
+      </div>
+      <div class="fw-row">
+        <span class="grade limited">Limited</span>
+        <div class="crit"><span class="cell-lbl">Criteria</span>A single study or single setting. Direction plausible; magnitude unstable; replication absent.</div>
+        <div class="ex"><span class="cell-lbl">Current example</span>W-006 — post-exposure skill erosion. One observational study, not yet replicated.</div>
+      </div>
+      <div class="fw-row">
+        <span class="grade contested">Contested</span>
+        <div class="crit"><span class="cell-lbl">Criteria</span>Credible studies point in opposite directions; moderators are suspected but unmapped. The disagreement is the finding.</div>
+        <div class="ex"><span class="cell-lbl">Current example</span>W-004 — advice-weighting instability: algorithm aversion vs. algorithm appreciation.</div>
+      </div>
+      <div class="fw-row">
+        <span class="grade insuff">Insufficient</span>
+        <div class="crit"><span class="cell-lbl">Criteria</span>The question is posed; usable evidence does not exist. No grade is assigned — the entry moves to the gap register.</div>
+        <div class="ex"><span class="cell-lbl">Current example</span>G-001 — long-run skill formation under sustained AI assistance.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-foot-rule">
+
+<!-- ============ GAP REGISTER ============ -->
+<section class="section" id="gaps">
+  <div class="wrap">
+    <p class="kicker"><span class="no">07</span><span>Knowledge gap register</span></p>
+    <h2 class="reveal">The blank spaces are the point.</h2>
+    <p class="lede reveal">A good map shows where the terrain is uncharted. Gaps are first-class objects here: registered, identified, and citable — so that "we don't know" can be said precisely, and research can aim at it.</p>
+    <div class="gaps reveal">
+      <div class="gap-card">
+        <span class="gap-id">G-001</span>
+        <h3>Long-run skill formation under sustained AI assistance</h3>
+        <p class="why">Every study behind W-001 measures weeks or months. Whether compressed performance gaps reflect accelerated learning or accumulated dependence is unknown — and the two imply opposite policies.</p>
+        <p class="resolve"><b>What would resolve it</b>Longitudinal field studies tracking unassisted performance after extended AI exposure. One early observational signal exists (W-006); it needs replication and design variety.</p>
+      </div>
+      <div class="gap-card">
+        <span class="gap-id">G-002</span>
+        <h3>Tacit-knowledge transmission when AI absorbs entry-level work</h3>
+        <p class="why">Novices historically learn by doing the routine tasks AI now performs. Whether expertise pipelines thin out — and how fast — is unmeasured in any published study we have reviewed.</p>
+        <p class="resolve"><b>What would resolve it</b>Cohort studies of skill acquisition in occupations with and without heavy AI delegation of junior tasks.</p>
+      </div>
+      <div class="gap-card">
+        <span class="gap-id">G-003</span>
+        <h3>Organizational outcomes versus task-level productivity</h3>
+        <p class="why">Nearly all causal evidence is individual and task-level. Whether task gains survive aggregation — through coordination costs, quality control, and workflow redesign — is an open question.</p>
+        <p class="resolve"><b>What would resolve it</b>Firm-level accounting studies with credible identification, not extrapolation from task benchmarks.</p>
+      </div>
+      <div class="gap-card">
+        <span class="gap-id">G-004</span>
+        <h3>Transfer to high-stakes, regulated decisions</h3>
+        <p class="why">The strongest experiments sit in low-stakes knowledge work. Medicine, sentencing, and credit carry accountability structures, liability, and time pressure that plausibly change how humans use AI advice.</p>
+        <p class="resolve"><b>What would resolve it</b>Field evidence from regulated settings with real consequences — and honest reporting when effects fail to transfer.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-foot-rule">
+
+<!-- ============ METHODOLOGY ============ -->
+<section class="section" id="method">
+  <div class="wrap">
+    <p class="kicker"><span class="no">08</span><span>Research methodology</span></p>
+    <h2 class="reveal">Trust is a procedure, not a claim.</h2>
+    <p class="lede reveal">The Atlas has no institutional brand to borrow. Its substitute is radical methodological transparency: every editorial rule is published, and every rule is checkable against the pages themselves.</p>
+    <div class="principles reveal">
+      <div class="principle">
+        <h3>Number provenance is absolute</h3>
+        <p>Every statistic on a claim page traces to a named, published artifact. No source, no number — without exception. Interpolations and schematics are labeled as such in the caption.</p>
+      </div>
+      <div class="principle">
+        <h3>Grades follow a published rubric</h3>
+        <p>Confidence grades are computed against the criteria above, written down before the evidence is assembled — not adjusted to fit a preferred conclusion.</p>
+      </div>
+      <div class="principle">
+        <h3>No silent regrades</h3>
+        <p>Claims are versioned. When new evidence moves a grade, the change is logged with its reason, and the prior version remains retrievable.</p>
+      </div>
+      <div class="principle">
+        <h3>Dissent stays on the page</h3>
+        <p>Contradicting studies are not smoothed into a false consensus. Where the literature disagrees, the disagreement is the content.</p>
+      </div>
+      <div class="principle">
+        <h3>Description, not prescription</h3>
+        <p>The Atlas reports what evidence says about AI and human decisions. It does not recommend policy. Argument belongs downstream, in the work of the people who cite it.</p>
+      </div>
+      <div class="principle">
+        <h3>Unknowns are first-class</h3>
+        <p>Every dossier ends with what would change its grade. Every domain carries a gap register. Honesty about the frontier is the product, not a disclaimer.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-foot-rule">
+
+<!-- ============ CONTRIBUTOR MODEL ============ -->
+<section class="section" id="contribute">
+  <div class="wrap">
+    <p class="kicker"><span class="no">09</span><span>Contributor model</span></p>
+    <h2 class="reveal">Built to outgrow its founder.</h2>
+    <div class="roles reveal">
+      <div class="role">
+        <p class="who-for">For domain researchers</p>
+        <h3>Domain reviewer</h3>
+        <p>Check the dossiers in your subfield: missing studies, misread effects, wrong grades. Reviewer names appear on every dossier they verify — credit is the currency of this project.</p>
+      </div>
+      <div class="role">
+        <p class="who-for">For anyone</p>
+        <h3>Correction</h3>
+        <p>Any claim page can be challenged. Corrections are logged publicly with their resolution — accepted or declined, with reasons. A correction that improves a dossier is credited on it.</p>
+      </div>
+      <div class="role">
+        <p class="who-for">For authors</p>
+        <h3>Study submission</h3>
+        <p>Published a result that belongs in a dossier — supporting or contradicting? Submit it. Inclusion follows the rubric, not the conclusion.</p>
+      </div>
+    </div>
+    <p class="founding-note reveal"><strong>Founding-phase disclosure.</strong> The Atlas is currently edited by one person — Shaurya Gupta, an independent researcher studying AI and institutions — and no dossier has yet passed external review. That fact is stated on every dossier until it changes. The design goal is an editorial network in which every claim is reviewed by named researchers in its field; the founding editor's job is to make himself replaceable.</p>
+  </div>
+</section>
+
+<hr class="section-foot-rule">
+
+<!-- ============ CITATION INFRASTRUCTURE ============ -->
+<section class="section" id="cite">
+  <div class="wrap">
+    <p class="kicker"><span class="no">10</span><span>Citation infrastructure</span></p>
+    <h2 class="reveal">Claims are citable objects.</h2>
+    <p class="lede reveal">A resource becomes infrastructure when its objects are addressable. Every claim and every gap carries a permanent identifier, from the first release onward.</p>
+    <div class="id-anatomy reveal">
+      <div class="id-parts">
+        <div class="id-part"><span class="frag">HADA</span><span class="expl">Registry</span></div>
+        <div class="id-part"><span class="frag dim">·</span></div>
+        <div class="id-part"><span class="frag">W</span><span class="expl">Domain — Work &amp; organizations</span></div>
+        <div class="id-part"><span class="frag dim">-</span></div>
+        <div class="id-part"><span class="frag">001</span><span class="expl">Claim number, permanent</span></div>
+        <div class="id-part"><span class="frag dim">·</span></div>
+        <div class="id-part"><span class="frag">v0.1</span><span class="expl">Version — regrades increment it</span></div>
+      </div>
+      <p class="id-promise"><b>The permanence rule:</b> identifiers are never reused and never deleted. If a claim is retired — superseded, merged, or overturned — its identifier resolves permanently to the retirement notice and the full version history. A citation to the Atlas should never rot.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="section-foot-rule">
+
+<!-- ============ ROADMAP ============ -->
+<section class="section" id="roadmap">
+  <div class="wrap">
+    <p class="kicker"><span class="no">11</span><span>Roadmap</span></p>
+    <h2 class="reveal">Sequenced, not scheduled.</h2>
+    <p class="lede reveal">Each stage ships when it meets the methodology, not a date. Depth first buys the right to breadth later.</p>
+    <div class="roadmap reveal">
+      <div class="rm-item now">
+        <span class="ver">v0.1 — CURRENT</span>
+        <h3>Founding release</h3>
+        <p>One domain under curation. Six claims mapped, one dossier fully worked, the confidence rubric and gap register published. Small on purpose: the methodology is on trial before the coverage is.</p>
+      </div>
+      <div class="rm-item">
+        <span class="ver">v0.2</span>
+        <h3>Domain 01, complete</h3>
+        <p>Full dossiers for the five remaining claims of <em>AI-assisted judgment at work</em>. The public correction channel opens; the first external reviewers are recruited.</p>
+      </div>
+      <div class="rm-item">
+        <span class="ver">v0.3</span>
+        <h3>Second domain</h3>
+        <p>Candidate: <em>AI in institutional review and oversight queues</em> — the domain in which the founding research program works. Identifier scheme frozen; changelog becomes public.</p>
+      </div>
+      <div class="rm-item">
+        <span class="ver">v1.0</span>
+        <h3>Reviewed atlas</h3>
+        <p>Every dossier carries at least one named external reviewer. Machine-readable exports of claims, grades, and gaps. At that point — and not before — the Atlas will call itself reviewed.</p>
+      </div>
+    </div>
+    <p class="rm-note">The measure of success is not traffic. It is the day a scholar, writing a sentence, reaches for a HADA identifier to support it.</p>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <p class="foot-mission">HADA maps what humanity actually knows — and does not yet know — about how AI is changing the way people and institutions decide.</p>
+      <div class="foot-col">
+        <h4>The Atlas</h4>
+        <a href="#atlas">Evidence map</a>
+        <a href="#dossier">Worked dossier</a>
+        <a href="#framework">Confidence framework</a>
+        <a href="#gaps">Gap register</a>
+      </div>
+      <div class="foot-col">
+        <h4>About</h4>
+        <a href="#method">Methodology</a>
+        <a href="#contribute">Contributor model</a>
+        <a href="#cite">Citation guide</a>
+        <a href="#roadmap">Roadmap</a>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>Human-AI Decision Atlas · Founding release v0.1</span>
+      <span class="sep">|</span>
+      <span>Independent &amp; non-commercial</span>
+      <span class="sep">|</span>
+      <span>Text licensed CC BY 4.0</span>
+      <span class="sep">|</span>
+      <span>This page last reviewed 2026-07-09</span>
+    </div>
+  </div>
+</footer>
+
+<script src="hada.js?v=1"></script>
+</body>
+</html>
