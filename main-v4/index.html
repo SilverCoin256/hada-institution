@@ -391,7 +391,7 @@ addEventListener('keydown', e => {
   if (!inSpiral && ['ArrowLeft','ArrowRight','ArrowUp',' '].includes(e.key)) e.preventDefault();
   keys[e.key.toLowerCase()] = true;
   if (!inSpiral && (e.key === ' ' || e.key === 'ArrowUp' || e.key.toLowerCase() === 'w') && P.onGround) { P.vy = -13.5; P.onGround = false; SND.jump(); }
-  if (e.key.toLowerCase() === 'e' && near >= 0) useStation(near);
+  if (e.key.toLowerCase() === 'e') { if (near >= 0) useStation(near); else if (!INTRO.on && scrollY < Hh * .5) SND.error(); /* feedback: nothing here */ }
 });
 addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
 const hold = (id, k) => { const el = document.getElementById(id);
