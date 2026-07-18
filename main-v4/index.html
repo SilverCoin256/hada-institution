@@ -27,13 +27,20 @@ body.case-open { overflow: hidden; }
 #world { position: absolute; inset: 0; }
 .hud-name { position: absolute; top: 24px; left: 28px; z-index: 5; font-family: var(--disp); font-weight: 700; }
 .hud-name span { color: var(--accent); }
+.hud-nav { position: absolute; top: 22px; left: 50%; transform: translateX(-50%); z-index: 5;
+  display: flex; gap: 4px; background: rgba(23,16,40,.72); border: 1px solid var(--line);
+  border-radius: 100px; padding: 6px 10px; backdrop-filter: blur(8px); }
+.hud-nav a { font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; color: var(--sub);
+  padding: 6px 12px; border-radius: 100px; transition: all .25s ease; text-transform: uppercase; }
+.hud-nav a:hover { color: var(--ink); background: rgba(124,58,237,.25); }
+@media (max-width: 900px) { .hud-nav { display: none; } }
 .hud-hint { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); z-index: 5;
   font-family: var(--mono); font-size: 11px; letter-spacing: .12em; color: var(--sub); text-transform: uppercase; text-align: center; line-height: 1.9; }
 .hud-hint kbd { border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; padding: 1px 7px; color: var(--ink); background: #171028; }
 .hud-skip { position: absolute; top: 26px; right: 28px; z-index: 5; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; color: var(--sub); }
 /* intro choreography: HUD hides until the auto-intro hands over */
-.hud-name, .hud-hint, .hud-skip { opacity: 0; transition: opacity .9s ease .15s; }
-body.intro-done .hud-name, body.intro-done .hud-hint, body.intro-done .hud-skip { opacity: 1; }
+.hud-name, .hud-hint, .hud-skip, .hud-nav { opacity: 0; transition: opacity .9s ease .15s; }
+body.intro-done .hud-name, body.intro-done .hud-hint, body.intro-done .hud-skip, body.intro-done .hud-nav { opacity: 1; }
 #skip-intro { position: absolute; top: 26px; right: 28px; z-index: 6; font-family: var(--mono); font-size: 11px;
   letter-spacing: .14em; color: var(--sub); text-transform: uppercase; background: rgba(23,16,40,.7);
   border: 1px solid var(--line); border-radius: 6px; padding: 8px 14px; cursor: pointer; transition: all .3s ease; }
@@ -147,6 +154,15 @@ body.intro-done #skip-intro { opacity: 0; pointer-events: none; }
 .outro p { color: var(--sub); max-width: 52ch; margin: 0 auto 30px; }
 .outro a.big { font-family: var(--disp); font-size: 1.15rem; color: var(--ink); border-bottom: 2px solid var(--accent); padding-bottom: 5px; }
 .outro a.big:hover { color: var(--accent); }
+.site-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; max-width: 1100px; margin: 44px auto 0; text-align: left; }
+.site-grid a { border: 1px solid var(--line); border-radius: 14px; padding: 22px 20px; background: rgba(23,16,40,.5);
+  transition: all .35s cubic-bezier(.16,1,.3,1); display: block; }
+.site-grid a:hover { transform: translateY(-6px); border-color: var(--accent); background: rgba(124,58,237,.12); }
+.site-grid .sg-k { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; color: var(--accent); display: block; margin-bottom: 10px; }
+.site-grid b { font-family: var(--disp); font-size: 1.15rem; color: var(--ink); display: block; margin-bottom: 6px; }
+.site-grid i { font-style: normal; font-size: .82rem; color: var(--sub); line-height: 1.55; }
+@media (max-width: 900px) { .site-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .site-grid { grid-template-columns: 1fr; } }
 footer { border-top: 1px solid var(--line); padding: 36px 24px; text-align: center; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; color: var(--sub); }
 </style>
 </head>
@@ -158,6 +174,12 @@ footer { border-top: 1px solid var(--line); padding: 36px 24px; text-align: cent
   <video id="smoke" autoplay muted loop playsinline><source src="../assets/film-smoke.mp4" type="video/mp4"></video>
   <canvas id="world"></canvas>
   <div class="hud-name">SHAURYA <span>GUPTA</span></div>
+  <nav class="hud-nav">
+    <a href="work.html">Work</a>
+    <a href="awards.html">Awards</a>
+    <a href="about.html">About</a>
+    <a href="https://silvercoin256.github.io/hada-institution/">Research ↗</a>
+  </nav>
   <button id="skip-intro">SKIP INTRO →</button>
   <a class="hud-skip" href="#spiral-track">SKIP TO THE SPIRAL ↓</a>
   <div class="hud-hint"><kbd>←</kbd> <kbd>→</kbd> walk &nbsp; <kbd>space</kbd> jump &nbsp; <kbd>E</kbd> open a case — then keep walking right, the spiral is at the end</div>
@@ -185,11 +207,16 @@ footer { border-top: 1px solid var(--line); padding: 36px 24px; text-align: cent
   </div>
 </div>
 
-<!-- OUTRO -->
+<!-- OUTRO — the site directory: this is a whole site, not one page -->
 <section class="outro">
-  <h2>The research has its own building.</h2>
-  <p>Formal models, one peer-reviewed paper, open instruments, and a public failure log — at full depth on the research site.</p>
-  <a class="big" href="https://silvercoin256.github.io/hada-institution/">Enter the research site →</a>
+  <h2>Keep going — there's a whole site.</h2>
+  <p>The walk and the spiral are the front door. The record continues at full depth on the pages behind it.</p>
+  <div class="site-grid">
+    <a href="work.html"><span class="sg-k">01</span><b>Work</b><i>Ten lines of the record, with the numbers attached</i></a>
+    <a href="awards.html"><span class="sg-k">02</span><b>Awards</b><i>Four that survived selection, percentiles included</i></a>
+    <a href="about.html"><span class="sg-k">03</span><b>About</b><i>Who this is, and how to reach me</i></a>
+    <a href="https://silvercoin256.github.io/hada-institution/"><span class="sg-k">04</span><b>Research ↗</b><i>The whole research program — its own building</i></a>
+  </div>
 </section>
 
 <!-- accessible plain-text mirror of the record -->
