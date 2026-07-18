@@ -154,15 +154,26 @@ body.intro-done #skip-intro { opacity: 0; pointer-events: none; }
 .outro p { color: var(--sub); max-width: 52ch; margin: 0 auto 30px; }
 .outro a.big { font-family: var(--disp); font-size: 1.15rem; color: var(--ink); border-bottom: 2px solid var(--accent); padding-bottom: 5px; }
 .outro a.big:hover { color: var(--accent); }
-.site-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; max-width: 1100px; margin: 44px auto 0; text-align: left; }
-.site-grid a { border: 1px solid var(--line); border-radius: 14px; padding: 22px 20px; background: rgba(23,16,40,.5);
-  transition: all .35s cubic-bezier(.16,1,.3,1); display: block; }
-.site-grid a:hover { transform: translateY(-6px); border-color: var(--accent); background: rgba(124,58,237,.12); }
-.site-grid .sg-k { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; color: var(--accent); display: block; margin-bottom: 10px; }
-.site-grid b { font-family: var(--disp); font-size: 1.15rem; color: var(--ink); display: block; margin-bottom: 6px; }
-.site-grid i { font-style: normal; font-size: .82rem; color: var(--sub); line-height: 1.55; }
-@media (max-width: 900px) { .site-grid { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 560px) { .site-grid { grid-template-columns: 1fr; } }
+.dir { max-width: 1100px; margin: 56px auto 0; text-align: left; border-top: 1px solid var(--ink); }
+.dir-row { position: relative; display: grid; grid-template-columns: 84px 1fr auto; grid-template-rows: auto auto;
+  align-items: baseline; column-gap: 26px; padding: 30px 8px 30px 0; border-bottom: 1px solid var(--line);
+  overflow: hidden; transition: padding-left .55s cubic-bezier(.16,1,.3,1); }
+.dir-row:hover { padding-left: 22px; }
+.dir-row .d-i { grid-row: 1 / span 2; font-family: var(--mono); font-size: 12px; letter-spacing: .14em;
+  color: var(--sub); transition: color .3s; align-self: start; padding-top: 10px; }
+.dir-row:hover .d-i { color: var(--accent); }
+.dir-row .d-t { font-family: var(--disp); font-weight: 700; font-size: clamp(1.9rem, 4.6vw, 3.4rem);
+  letter-spacing: -0.025em; color: var(--ink); line-height: 1.02; position: relative; z-index: 2; }
+.dir-row .d-s { grid-column: 2; font-size: .9rem; color: var(--sub); position: relative; z-index: 2; margin-top: 6px; }
+.dir-row .d-m { grid-row: 1; grid-column: 3; font-family: var(--mono); font-size: 10.5px; letter-spacing: .16em;
+  color: var(--sub); position: relative; z-index: 2; transition: color .3s, transform .55s cubic-bezier(.16,1,.3,1); }
+.dir-row:hover .d-m { color: var(--ink); transform: translateX(-6px); }
+.dir-row .d-ghost { position: absolute; right: 8%; top: 50%; width: 300px; height: 150px; object-fit: cover;
+  transform: translateY(-50%) scale(.94) rotate(1.2deg); opacity: 0; border-radius: 10px; z-index: 1;
+  transition: opacity .5s ease, transform .7s cubic-bezier(.16,1,.3,1); pointer-events: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 30%); mask-image: linear-gradient(90deg, transparent, #000 30%); }
+.dir-row:hover .d-ghost { opacity: .5; transform: translateY(-50%) scale(1) rotate(0deg); }
+@media (max-width: 760px) { .dir-row { grid-template-columns: 52px 1fr; } .dir-row .d-m, .dir-row .d-ghost { display: none; } }
 footer { border-top: 1px solid var(--line); padding: 36px 24px; text-align: center; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; color: var(--sub); }
 </style>
 </head>
@@ -211,11 +222,27 @@ footer { border-top: 1px solid var(--line); padding: 36px 24px; text-align: cent
 <section class="outro">
   <h2>Keep going — there's a whole site.</h2>
   <p>The walk and the spiral are the front door. The record continues at full depth on the pages behind it.</p>
-  <div class="site-grid">
-    <a href="work.html"><span class="sg-k">01</span><b>Work</b><i>Ten lines of the record, with the numbers attached</i></a>
-    <a href="awards.html"><span class="sg-k">02</span><b>Awards</b><i>Four that survived selection, percentiles included</i></a>
-    <a href="about.html"><span class="sg-k">03</span><b>About</b><i>Who this is, and how to reach me</i></a>
-    <a href="https://silvercoin256.github.io/hada-institution/"><span class="sg-k">04</span><b>Research ↗</b><i>The whole research program — its own building</i></a>
+  <div class="dir">
+    <a class="dir-row" href="work.html" data-img="../assets/ec-03.png">
+      <span class="d-i">01</span><span class="d-t">Work</span>
+      <span class="d-s">Ten lines. Every number checkable.</span><span class="d-m">THE LEDGER</span>
+      <img class="d-ghost" src="../assets/ec-03.png" alt="" loading="lazy">
+    </a>
+    <a class="dir-row" href="awards.html" data-img="../assets/ec-11.png">
+      <span class="d-i">02</span><span class="d-t">Awards</span>
+      <span class="d-s">Four survived selection.</span><span class="d-m">PERCENTILES</span>
+      <img class="d-ghost" src="../assets/ec-11.png" alt="" loading="lazy">
+    </a>
+    <a class="dir-row" href="about.html" data-img="../assets/ec-06.png">
+      <span class="d-i">03</span><span class="d-t">About</span>
+      <span class="d-s">The person behind the record.</span><span class="d-m">CONTACT</span>
+      <img class="d-ghost" src="../assets/ec-06.png" alt="" loading="lazy">
+    </a>
+    <a class="dir-row" href="https://silvercoin256.github.io/hada-institution/" data-img="../assets/ec-10.png">
+      <span class="d-i">04</span><span class="d-t">Research</span>
+      <span class="d-s">A separate building, fully documented.</span><span class="d-m">EXTERNAL ↗</span>
+      <img class="d-ghost" src="../assets/ec-10.png" alt="" loading="lazy">
+    </a>
   </div>
 </section>
 
@@ -371,7 +398,7 @@ const P = { x: -70, vx: 0, y: 0, vy: 0, onGround: true, face: 1, step: 0 };
 let cam = 0, near = -1, panelFor = -1;
 
 /* ---- AUTO-INTRO: walker walks in, wordmark presents itself, camera pans, then hands over ---- */
-const INTRO = { on: true, t0: null, dur: 4500, k: 0 };
+const INTRO = { on: true, t0: null, dur: 3800, k: 0 };   /* brisk; hard ceiling stays <10s */
 function easeIO(t) { t = Math.max(0, Math.min(1, t)); return t * t * (3 - 2 * t); }
 function introEndX() { return Math.min(W * .42 + 280, 900); }
 function finishIntro() {
@@ -444,7 +471,7 @@ const mod = (a, b) => ((a % b) + b) % b;
    perpetual slow loop — always moving, never gone */
 let loopAnchor = null;
 function drawName(ts) {
-  const size = Math.min(190, W * .16);
+  const size = Math.min(244, W * .195);
   ctx.font = `700 ${size}px "Space Grotesk", sans-serif`;
   const nameW = Math.max(ctx.measureText('SHAURYA').width,
                          ctx.measureText('GUPTA').width + W * .12);

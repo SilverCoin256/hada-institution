@@ -387,22 +387,18 @@ function main() {
   scene.add(dust);
 
   /* ══ LIGHTING — warm key + violet glow + soft fill ══════════ */
-  scene.add(new THREE.HemisphereLight(0x7a6cc8, 0x40301f, .65));
-  scene.add(new THREE.AmbientLight(0x554a8a, .6));
+  scene.add(new THREE.HemisphereLight(0x8a7cd4, 0x4a3a26, 1.05));   /* fill+moon baked in */
   const lampSpot = new THREE.SpotLight(0xffd9a0, 65, 10, .85, .55, 1.8);
   lampSpot.position.set(-1.42 + .58, DESK_Y + .68, -.36);
   lampSpot.target.position.set(.3, DESK_Y, .2);
   scene.add(lampSpot); scene.add(lampSpot.target);
-  const lampGlow = new THREE.PointLight(0xffd9a0, 9, 6, 1.8);
-  lampGlow.position.set(-.85, DESK_Y + .72, -.3); scene.add(lampGlow);
+  
   const screenGlow = new THREE.PointLight(0x8578c8, 5.5, 5, 1.8);
   screenGlow.position.set(0, 1.75, .55); scene.add(screenGlow);
   const keyWarm = new THREE.PointLight(0xffc48a, 42, 18, 1.9);
   keyWarm.position.set(-3.2, 3.4, 3.6); scene.add(keyWarm);
-  const fill = new THREE.PointLight(0x7466b8, 26, 16, 2);
-  fill.position.set(3.4, 2.6, 3); scene.add(fill);
-  const moon = new THREE.DirectionalLight(0x8b7fe0, .5);
-  moon.position.set(2.5, 3.2, 1.5); scene.add(moon);
+  
+  
 
   /* ══ IDLE TERMINAL DRAWING ══════════════════════════════════ */
   const IDLE = window.IDLE_LINES || ['SHAURYA GUPTA — RESEARCH TERMINAL', '', '  > click to sit down_'];
@@ -444,8 +440,8 @@ function main() {
     tx: 0, ty: 1.35, tz: -.2, sTx: 0, sTy: 1.35, sTz: -.2,
     lastInput: 0,
   };
-  const CLAMP = { yawMin: -1.85, yawMax: 1.85, pitchMin: -.02, pitchMax: .85,
-                  rMin: 1.7, rMax: 9.6, xMin: -4.4, xMax: 4.4, zMin: -2.2, zMax: 3.4 };
+  const CLAMP = { yawMin: -2.6, yawMax: 2.6, pitchMin: -.02, pitchMax: 1.15,
+                  rMin: 1.15, rMax: 11, xMin: -5.5, xMax: 5.5, zMin: -2.8, zMax: 4.2 };
 
   let mode = 'gate';
   let zoomStart = 0;
@@ -483,7 +479,7 @@ function main() {
   addEventListener('wheel', e => {
     if (mode !== 'room' && mode !== 'gate') return;
     e.preventDefault();
-    ORBIT.radius = Math.min(CLAMP.rMax, Math.max(CLAMP.rMin, ORBIT.radius * (1 + e.deltaY * .0009)));
+    ORBIT.radius = Math.min(CLAMP.rMax, Math.max(CLAMP.rMin, ORBIT.radius * (1 + e.deltaY * .0007)));
     ORBIT.lastInput = performance.now();
   }, { passive: false });
 
@@ -540,7 +536,8 @@ function main() {
   /* the screen carries the MODERN research site by default; the retro
      OS stays one tab away */
   const SRC = { modern: '../', retro: '../research-v2/' };
-  let osTab = 'retro';   /* terminal → retro OS first, modern one tab away */
+  let osTab = 'retro';   /* first entry: retro boots once, then auto-continues to the modern site */
+  let retroIntroDone = false;
   function setTab(which) {
     osTab = which;
     $('os-frame').src = SRC[which];
@@ -561,6 +558,11 @@ function main() {
       mode = 'os';
       snd('confirm');
       requestAnimationFrame(() => { $('fade').style.opacity = '0'; });
+      /* the retro machine plays its boot ONCE, then the modern site takes over */
+      if (!retroIntroDone && osTab === 'retro') {
+        retroIntroDone = true;
+        setTimeout(() => { if (mode === 'os' && osTab === 'retro') setTab('modern'); }, 4600);
+      }
     }, 460);
   }
 
@@ -612,9 +614,10 @@ function main() {
     const swayP = idle * Math.cos(t / 5300) * .02;
     /* damped smoothing (time-based, frame-rate independent) */
     const k = 1 - Math.exp(-dt * 7);
+    const kr = 1 - Math.exp(-dt * 13);          /* zoom answers immediately */
     ORBIT.sYaw += (ORBIT.yaw + swayY - ORBIT.sYaw) * k;
     ORBIT.sPitch += (ORBIT.pitch + swayP - ORBIT.sPitch) * k;
-    ORBIT.sRadius += (ORBIT.radius - ORBIT.sRadius) * k;
+    ORBIT.sRadius += (ORBIT.radius - ORBIT.sRadius) * kr;
     ORBIT.sTx += (ORBIT.tx - ORBIT.sTx) * k;
     ORBIT.sTy += (ORBIT.ty - ORBIT.sTy) * k;
     ORBIT.sTz += (ORBIT.tz - ORBIT.sTz) * k;
