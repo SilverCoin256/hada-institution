@@ -56,13 +56,16 @@ body { background: #0a0718; overflow: hidden; font-family: 'IBM Plex Mono', mono
 #hint.show { opacity: .9; }
 @media (max-width: 760px) { #hint { display: none; } }
 
-/* screen-mode tabs inside the chrome bar */
-#os-tabs { display: flex; gap: 6px; margin: 0 auto; }
-#os-tabs button { border: 1.5px solid #43336b; color: #8f7fc4; background: rgba(10, 6, 26, .82);
+/* the way back to the main site — right end of the chrome bar */
+#site-link { margin-left: auto; border: 1.5px solid #43336b; color: #8f7fc4; background: rgba(10, 6, 26, .82);
   font-family: inherit; font-size: 11px; letter-spacing: .12em; padding: 8px 14px; cursor: pointer;
-  border-radius: 5px; transition: all .15s; }
-#os-tabs button.active { border-color: #b9a6f5; color: #14093a; background: #b9a6f5; }
-#os-tabs button:hover:not(.active) { color: #cdbcff; }
+  border-radius: 5px; text-decoration: none; transition: all .15s; }
+#site-link:hover { color: #cdbcff; border-color: #b9a6f5; }
+/* …and from inside the room */
+#exit-main { position: fixed; top: 22px; left: 22px; z-index: 44; color: #8f7fc4;
+  background: rgba(10, 6, 26, .6); border: 1px solid #35296159; font-size: 10.5px; font-family: inherit;
+  letter-spacing: .14em; padding: 8px 14px; border-radius: 4px; text-decoration: none; transition: color .15s; }
+#exit-main:hover { color: #cdbcff; }
 
 /* ── the OS revealed after the zoom: iframe inside CRT bezel ─ */
 #os-shell { position: fixed; inset: 0; z-index: 50; display: none; background: #05030d; }
@@ -124,20 +127,19 @@ body { background: #0a0718; overflow: hidden; font-family: 'IBM Plex Mono', mono
   </div>
 </div>
 
+<a id="exit-main" href="../main-v4/">◂ MAIN SITE</a>
+
 <div id="os-shell">
   <div class="bezel"></div>
   <div id="os-chrome">
     <button id="back">◂ STAND UP</button>
-    <div id="os-tabs">
-      <button id="tab-retro" class="active">RETRO OS</button>
-      <button id="tab-modern">MODERN SITE</button>
-    </div>
+    <a id="site-link" href="../main-v4/">MAIN SITE ↗</a>
   </div>
   <div class="glass"></div>
   <iframe id="os-frame" title="The research site, on the machine"></iframe>
 </div>
 
-<script src="../js/sound.js?v=2"></script>
+<script src="../js/sound.js?v=3"></script>
 
 <!-- CONTENT SLOT: idle screen lines -->
 <script>
@@ -171,13 +173,28 @@ function fatal() {
 let renderer = null;
 try {
   if (!window.WebGLRenderingContext) throw new Error('WebGL unsupported');
-  renderer = new THREE.WebGLRenderer({ canvas: $('gl'), antialias: true, powerPreference: 'high-performance' });
+  renderer = new THREE.WebGLRenderer({ canvas: $('gl'), antialias: (devicePixelRatio || 1) < 1.5, powerPreference: 'high-performance' });
 } catch (e) { console.warn('[v3] renderer failed:', e); fatal(); }
 
 if (renderer) { try { main(); } catch (e) { console.warn('[v3] scene failed:', e); fatal(); } }
 
 function main() {
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 1.2)); /* perf: cap DPR hard */
+  /* adaptive resolution — trade pixels for frame-rate the moment frames
+     get expensive, win the pixels back the moment they are cheap. This is
+     what keeps zoom butter-smooth on every GPU. */
+  const DPR_HI = Math.min(devicePixelRatio || 1, 1.5);
+  let dpr = Math.min(DPR_HI, 1.15), ftEMA = 16, lastGov = 0;
+  renderer.setPixelRatio(dpr);
+  function govern(t, rawMs) {
+    ftEMA += (Math.min(rawMs, 80) - ftEMA) * .1;
+    if (t - lastGov < 400) return;
+    if (ftEMA > 19 && dpr > .72) dpr = Math.max(.72, dpr - .16);
+    else if (ftEMA < 12 && dpr < DPR_HI) dpr = Math.min(DPR_HI, dpr + .08);
+    else return;
+    lastGov = t;
+    renderer.setPixelRatio(dpr);
+    renderer.setSize(innerWidth, innerHeight, false);
+  }
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.35;
 
@@ -479,7 +496,10 @@ function main() {
   addEventListener('wheel', e => {
     if (mode !== 'room' && mode !== 'gate') return;
     e.preventDefault();
-    ORBIT.radius = Math.min(CLAMP.rMax, Math.max(CLAMP.rMin, ORBIT.radius * (1 + e.deltaY * .0007)));
+    let d = e.deltaY; if (e.deltaMode === 1) d *= 33;      /* line-scroll mice */
+    d = Math.max(-160, Math.min(160, d));
+    const gain = e.ctrlKey ? .0042 : .0011;                /* trackpad pinch zooms harder */
+    ORBIT.radius = Math.min(CLAMP.rMax, Math.max(CLAMP.rMin, ORBIT.radius * (1 + d * gain)));
     ORBIT.lastInput = performance.now();
   }, { passive: false });
 
@@ -533,26 +553,24 @@ function main() {
   });
   $('enter-btn').addEventListener('click', startZoom);
 
-  /* the screen carries the MODERN research site by default; the retro
-     OS stays one tab away */
+  /* first sit-down: the retro machine boots ONCE, then the modern site
+     takes over on its own — no controls, it just happens. Every later
+     sit-down goes straight to the modern site. */
   const SRC = { modern: '../', retro: '../research-v2/' };
-  let osTab = 'retro';   /* first entry: retro boots once, then auto-continues to the modern site */
+  let osTab = 'retro';
   let retroIntroDone = false;
   function setTab(which) {
     osTab = which;
     $('os-frame').src = SRC[which];
-    $('tab-modern').classList.toggle('active', which === 'modern');
-    $('tab-retro').classList.toggle('active', which === 'retro');
     snd('select');
   }
-  $('tab-modern').addEventListener('click', () => setTab('modern'));
-  $('tab-retro').addEventListener('click', () => setTab('retro'));
 
   function enterOS() {
     $('fade').style.opacity = '1';
     setTimeout(() => {
+      if (retroIntroDone) osTab = 'modern';
       const fr = $('os-frame');
-      if (!fr.getAttribute('src')) fr.src = SRC[osTab];
+      fr.src = SRC[osTab];
       $('os-shell').classList.add('on');
       $('back').style.display = 'block';
       mode = 'os';
@@ -614,7 +632,7 @@ function main() {
     const swayP = idle * Math.cos(t / 5300) * .02;
     /* damped smoothing (time-based, frame-rate independent) */
     const k = 1 - Math.exp(-dt * 7);
-    const kr = 1 - Math.exp(-dt * 13);          /* zoom answers immediately */
+    const kr = 1 - Math.exp(-dt * 17);          /* zoom answers immediately */
     ORBIT.sYaw += (ORBIT.yaw + swayY - ORBIT.sYaw) * k;
     ORBIT.sPitch += (ORBIT.pitch + swayP - ORBIT.sPitch) * k;
     ORBIT.sRadius += (ORBIT.radius - ORBIT.sRadius) * kr;
@@ -633,8 +651,11 @@ function main() {
 
   function tick(t) {
     if (!rafOn) return;
-    const dt = lastT ? Math.min((t - lastT) / 1000, .05) : .016;
+    const rawMs = lastT ? t - lastT : 16;
+    const dt = Math.min(rawMs / 1000, .05);
     lastT = t;
+    if (mode === 'os') { requestAnimationFrame(tick); return; }  /* the CRT owns the GPU while you sit */
+    govern(t, rawMs);
 
     if (mode !== 'os') {
       drawScreen(t);

@@ -1,136 +1,267 @@
 /**
- * sound.js v2 — layered WebAudio sound engine for every site version.
- * No audio files; everything is synthesised live. Muted until first
- * gesture (browser policy), persistent toggle.
+ * sound.js v3 — the estate's sound identity. No audio files; everything
+ * is synthesised and hand-tuned. Muted until first gesture (browser
+ * policy), persistent toggle.
  *
- * Signal path:  voices → [dry] ─┐
- *                        → [wet]→ convolver(reverb) ─┐
- *                                                    ├→ master → out
- *   ambient pad (own bus, very low) ─────────────────┘
+ * IDENTITY — one key for the whole estate: D major. The signature motif
+ * is D → A → E (rising fifths: open, confident). Boot plays it whole,
+ * confirm plays its tail, travel walks its pentatonic scale, and the
+ * ambient room occasionally chimes a distant note of it. Everything you
+ * hear belongs to the same piece of music.
  *
- * Back-compatible API (unchanged names):
+ * CRAFT — no raw square-wave beeps anywhere:
+ *   bells   = 2-operator FM (glass, inharmonic sparkle on the attack)
+ *   clicks  = "thocks": a 5 ms noise transient + a tuned, pitch-dropping
+ *             sine body — a key on a good keyboard, not a buzzer
+ *   whoosh  = stereo-decorrelated noise through swept bandpasses
+ * Every note is humanised (±6 cents, ±18 % velocity, random stereo seat)
+ * so no two clicks are ever identical.
+ *
+ * Signal path: voices → [dry] ──────────────┐
+ *                     → [send] → convolver ─┼→ compressor → master → out
+ *              ambient bus ─────────────────┘
+ *
+ * Public API (unchanged since v1/v2):
  *   click hover key stamp boot jump open error attach toggle on
- * New in v2:
  *   whoosh(dir) travel confirm land select ambient(onOrOff)
  */
 window.SND = (function () {
-  let ctx = null, master, reverb, wetGain, dryGain, padBus, padOsc = [], padOn = false;
+  let ctx = null, comp, master, reverb, send, dry, padBus, padNodes = [], padOn = false, chimeTimer = 0;
   let enabled = localStorage.getItem('snd') !== 'off';
   let started = false;
 
+  /* ── the estate's pitch material (key of D) ─────────────────── */
+  const NOTE = { D2: 73.42, A2: 110.00, D3: 146.83, A3: 220.00,
+                 D4: 293.66, E4: 329.63, Fs4: 369.99, A4: 440.00, B4: 493.88,
+                 D5: 587.33, E5: 659.26, Fs5: 739.99, A5: 880.00 };
+  const MOTIF = [NOTE.D4, NOTE.A4, NOTE.E5];                       /* the signature */
+  const PENTA = [NOTE.D4, NOTE.E4, NOTE.Fs4, NOTE.A4, NOTE.B4,     /* travel scale */
+                 NOTE.D5, NOTE.E5, NOTE.Fs5];
+
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  const human = f => f * Math.pow(2, rnd(-6, 6) / 1200);           /* ±6 cents */
+
   function ac() {
-    if (!ctx) {
-      ctx = new (window.AudioContext || window.webkitAudioContext)();
-      buildGraph();
-    }
+    if (!ctx) { ctx = new (window.AudioContext || window.webkitAudioContext)(); buildGraph(); }
     if (ctx.state === 'suspended') ctx.resume();
     return ctx;
   }
 
-  /* generated impulse response → a small plate-ish reverb */
+  /* generated stereo IR — exponential decay whose tail darkens over time,
+     like a real room swallowing the highs */
   function makeIR(seconds, decay) {
-    const rate = ctx.sampleRate, len = rate * seconds;
+    const rate = ctx.sampleRate, len = Math.floor(rate * seconds);
     const buf = ctx.createBuffer(2, len, rate);
     for (let ch = 0; ch < 2; ch++) {
       const d = buf.getChannelData(ch);
-      for (let i = 0; i < len; i++)
-        d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, decay);
+      let lp = 0;
+      for (let i = 0; i < len; i++) {
+        const k = .38 - .32 * (i / len);                /* one-pole coeff: bright → dark */
+        lp += ((Math.random() * 2 - 1) - lp) * k;
+        d[i] = lp * Math.pow(1 - i / len, decay);
+      }
     }
     return buf;
   }
 
   function buildGraph() {
-    master = ctx.createGain(); master.gain.value = 0.9; master.connect(ctx.destination);
-    reverb = ctx.createConvolver(); reverb.buffer = makeIR(1.7, 3.2);
-    wetGain = ctx.createGain(); wetGain.gain.value = 0.22;
-    dryGain = ctx.createGain(); dryGain.gain.value = 1.0;
-    reverb.connect(wetGain); wetGain.connect(master); dryGain.connect(master);
-    padBus = ctx.createGain(); padBus.gain.value = 0.0; padBus.connect(dryGain); padBus.connect(reverb);
+    comp = ctx.createDynamicsCompressor();
+    comp.threshold.value = -20; comp.knee.value = 14; comp.ratio.value = 3.5;
+    comp.attack.value = .004; comp.release.value = .18;
+    master = ctx.createGain(); master.gain.value = .85;
+    comp.connect(master); master.connect(ctx.destination);
+    reverb = ctx.createConvolver(); reverb.buffer = makeIR(2.4, 2.9);
+    send = ctx.createGain(); send.gain.value = 1;
+    const wet = ctx.createGain(); wet.gain.value = .26;
+    send.connect(reverb); reverb.connect(wet); wet.connect(comp);
+    dry = ctx.createGain(); dry.gain.value = 1; dry.connect(comp);
+    padBus = ctx.createGain(); padBus.gain.value = 0;
+    padBus.connect(dry); padBus.connect(send);
   }
 
-  /* one enveloped oscillator voice */
-  function voice(freq, dur, type, vol, slideTo, sendWet) {
+  /* route a voice into the room with a random stereo seat */
+  function seat(node, wetAmt, width) {
+    const a = ctx;
+    let out = node;
+    if (a.createStereoPanner) {
+      const p = a.createStereoPanner(); p.pan.value = rnd(-(width || .25), width || .25);
+      node.connect(p); out = p;
+    }
+    out.connect(dry);
+    if (wetAmt) { const w = a.createGain(); w.gain.value = wetAmt; out.connect(w); w.connect(send); }
+  }
+
+  /* ── VOICES ─────────────────────────────────────────────────── */
+
+  /* 2-op FM bell — the glass the estate chimes in */
+  function bell(freq, vel, dur, wetAmt) {
     if (!enabled) return;
     try {
-      const a = ac(), o = a.createOscillator(), g = a.createGain();
-      o.type = type || 'square';
-      o.frequency.setValueAtTime(freq, a.currentTime);
-      if (slideTo) o.frequency.exponentialRampToValueAtTime(slideTo, a.currentTime + dur);
-      g.gain.setValueAtTime(0.0001, a.currentTime);
-      g.gain.exponentialRampToValueAtTime(vol || 0.04, a.currentTime + 0.008);
-      g.gain.exponentialRampToValueAtTime(0.0001, a.currentTime + dur);
-      o.connect(g); g.connect(dryGain); if (sendWet) g.connect(reverb);
-      o.start(); o.stop(a.currentTime + dur + 0.02);
+      const a = ac(), t = a.currentTime, f = human(freq);
+      vel = (vel || .05) * rnd(.82, 1.05); dur = dur || 1.1;
+      const car = a.createOscillator(), mod = a.createOscillator();
+      const mg = a.createGain(), g = a.createGain();
+      car.frequency.value = f;
+      mod.frequency.value = f * 2.004;                   /* slightly off 2:1 → glassy */
+      mg.gain.setValueAtTime(f * 1.4, t);                /* bright strike… */
+      mg.gain.exponentialRampToValueAtTime(f * .01, t + dur * .35);  /* …that clears fast */
+      mod.connect(mg); mg.connect(car.frequency);
+      g.gain.setValueAtTime(.0001, t);
+      g.gain.exponentialRampToValueAtTime(vel, t + .006);
+      g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+      car.connect(g); seat(g, wetAmt == null ? .8 : wetAmt);
+      car.start(t); mod.start(t); car.stop(t + dur + .05); mod.stop(t + dur + .05);
     } catch (e) {}
   }
 
-  /* filtered noise burst (whooshes, stamps, transitions) */
-  function noise(dur, vol, f0, f1, q) {
+  /* short pluck — a bell that lets go quickly (travel, jump) */
+  const pluck = (f, vel, wet) => bell(f, vel, .34, wet == null ? .5 : wet);
+
+  /* tactile thock — noise transient + tuned pitch-dropping body */
+  function thock(vel, pitch) {
     if (!enabled) return;
     try {
-      const a = ac(), n = a.sampleRate * dur, buf = a.createBuffer(1, n, a.sampleRate);
+      const a = ac(), t = a.currentTime;
+      vel = (vel || .05) * rnd(.85, 1.1);
+      /* 5 ms transient */
+      const n = Math.floor(a.sampleRate * .006), buf = a.createBuffer(1, n, a.sampleRate);
       const d = buf.getChannelData(0);
-      for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1);
+      for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / n);
       const src = a.createBufferSource(); src.buffer = buf;
-      const bp = a.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = q || 1.2;
-      bp.frequency.setValueAtTime(f0 || 800, a.currentTime);
-      if (f1) bp.frequency.exponentialRampToValueAtTime(f1, a.currentTime + dur);
-      const g = a.createGain();
-      g.gain.setValueAtTime(0.0001, a.currentTime);
-      g.gain.exponentialRampToValueAtTime(vol || 0.05, a.currentTime + 0.02);
-      g.gain.exponentialRampToValueAtTime(0.0001, a.currentTime + dur);
-      src.connect(bp); bp.connect(g); g.connect(dryGain); g.connect(reverb);
-      src.start(); src.stop(a.currentTime + dur + 0.02);
+      const hp = a.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 1700;
+      const ng = a.createGain(); ng.gain.value = vel * .8;
+      src.connect(hp); hp.connect(ng); seat(ng, .25);
+      src.start(t);
+      /* tuned body with a fast pitch drop */
+      const o = a.createOscillator(), g = a.createGain();
+      const f0 = human(pitch || 172);
+      o.type = 'sine';
+      o.frequency.setValueAtTime(f0 * 1.5, t);
+      o.frequency.exponentialRampToValueAtTime(f0, t + .03);
+      g.gain.setValueAtTime(.0001, t);
+      g.gain.exponentialRampToValueAtTime(vel, t + .004);
+      g.gain.exponentialRampToValueAtTime(.0001, t + .07);
+      o.connect(g); seat(g, .3);
+      o.start(t); o.stop(t + .1);
     } catch (e) {}
   }
 
-  /* ambient pad: 3 detuned saws through a slow lowpass LFO */
+  /* stereo whoosh — two decorrelated noise beds through swept bandpasses */
+  function whooshNoise(dur, vol, f0, f1, q) {
+    if (!enabled) return;
+    try {
+      const a = ac(), t = a.currentTime;
+      for (let ch = 0; ch < 2; ch++) {
+        const n = Math.floor(a.sampleRate * dur), buf = a.createBuffer(1, n, a.sampleRate);
+        const d = buf.getChannelData(0);
+        for (let i = 0; i < n; i++) d[i] = Math.random() * 2 - 1;
+        const src = a.createBufferSource(); src.buffer = buf;
+        const bp = a.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = q || 1.1;
+        bp.frequency.setValueAtTime(f0 * rnd(.92, 1.08), t);
+        bp.frequency.exponentialRampToValueAtTime(f1 * rnd(.92, 1.08), t + dur);
+        const g = a.createGain();
+        g.gain.setValueAtTime(.0001, t);
+        g.gain.exponentialRampToValueAtTime(vol * .5, t + dur * .28);
+        g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+        const p = a.createStereoPanner ? a.createStereoPanner() : null;
+        src.connect(bp); bp.connect(g);
+        if (p) { p.pan.value = ch ? .4 : -.4; g.connect(p); p.connect(dry); const w = a.createGain(); w.gain.value = .5; p.connect(w); w.connect(send); }
+        else { g.connect(dry); g.connect(send); }
+        src.start(t); src.stop(t + dur + .02);
+      }
+    } catch (e) {}
+  }
+
+  /* low swell — the weight under boot and land */
+  function swell(freq, vel, dur) {
+    if (!enabled) return;
+    try {
+      const a = ac(), t = a.currentTime;
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = 'sine'; o.frequency.value = freq;
+      g.gain.setValueAtTime(.0001, t);
+      g.gain.exponentialRampToValueAtTime(vel, t + dur * .3);
+      g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+      o.connect(g); g.connect(dry);
+      o.start(t); o.stop(t + dur + .05);
+    } catch (e) {}
+  }
+
+  /* ── AMBIENT — the room hums in D and, rarely, chimes ───────── */
   function startPad() {
     if (padOn || !enabled) return; padOn = true; const a = ac();
-    const base = 110; // A2
-    const lp = a.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 520; lp.Q.value = 0.7;
+    const lp = a.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 340; lp.Q.value = .6;
     lp.connect(padBus);
     const lfo = a.createOscillator(), lfoG = a.createGain();
-    lfo.frequency.value = 0.06; lfoG.gain.value = 240; lfo.connect(lfoG); lfoG.connect(lp.frequency); lfo.start();
-    padOsc = [];
-    [0, 7, 12].forEach((semi, i) => {           // root, fifth, octave
-      const o = a.createOscillator(); o.type = 'sawtooth';
-      o.frequency.value = base * Math.pow(2, semi / 12);
-      o.detune.value = (i - 1) * 6;
-      const g = a.createGain(); g.gain.value = 0.16;
-      o.connect(g); g.connect(lp); o.start(); padOsc.push(o, lfo);
+    lfo.frequency.value = .045; lfoG.gain.value = 150;            /* slow breathing */
+    lfo.connect(lfoG); lfoG.connect(lp.frequency); lfo.start();
+    padNodes = [lfo];
+    [[NOTE.D2, 0], [NOTE.A2, -5], [NOTE.D3, 6]].forEach(([f, det]) => {
+      const o = a.createOscillator(); o.type = 'triangle';
+      o.frequency.value = f; o.detune.value = det;
+      const g = a.createGain(); g.gain.value = .3;
+      o.connect(g); g.connect(lp); o.start(); padNodes.push(o);
     });
-    padBus.gain.setTargetAtTime(0.09, a.currentTime, 1.4);   // fade in slowly
+    padBus.gain.setTargetAtTime(.05, a.currentTime, 2.2);         /* barely there */
+    scheduleChime();
+  }
+  function scheduleChime() {
+    clearTimeout(chimeTimer);
+    chimeTimer = setTimeout(() => {
+      if (padOn && enabled && document.visibilityState === 'visible')
+        bell(MOTIF[Math.floor(Math.random() * MOTIF.length)] / 2, .012, 2.6, 1.6);
+      if (padOn) scheduleChime();
+    }, rnd(12000, 26000));
   }
   function stopPad() {
-    if (!padOn) return; padOn = false;
-    try { padBus.gain.setTargetAtTime(0.0, ctx.currentTime, 0.6);
-      setTimeout(() => padOsc.forEach(o => { try { o.stop(); } catch (e) {} }), 900); } catch (e) {}
+    if (!padOn) return; padOn = false; clearTimeout(chimeTimer);
+    try {
+      padBus.gain.setTargetAtTime(0, ctx.currentTime, .5);
+      setTimeout(() => padNodes.forEach(o => { try { o.stop(); } catch (e) {} }), 900);
+    } catch (e) {}
   }
 
+  /* ── PUBLIC API ─────────────────────────────────────────────── */
+  let lastHover = 0, travelStep = 0, travelDir = 1;
+
   const api = {
-    /* --- back-compatible --- */
-    click:  () => { voice(680, 0.05, 'square', 0.03); },
-    hover:  () => { voice(1180, 0.02, 'sine', 0.012); },
-    key:    () => { voice(300 + Math.random() * 80, 0.028, 'square', 0.018); },
-    stamp:  () => { voice(150, 0.09, 'square', 0.06, null, true); noise(0.07, 0.05, 400, 120, 0.8); },
-    jump:   () => { voice(330, 0.14, 'square', 0.045, 720); },
-    open:   () => { voice(520, 0.06, 'triangle', 0.03, null, true); setTimeout(() => voice(880, 0.09, 'triangle', 0.03, null, true), 55); },
-    error:  () => { voice(200, 0.16, 'sawtooth', 0.05, 90); },
-    boot:   () => { [[392,0],[523,110],[659,220],[784,340],[1046,480]].forEach(([f,t]) => setTimeout(() => voice(f, 0.16, 'triangle', 0.05, null, true), t)); startPad(); },
-    /* --- new v2 --- */
-    whoosh: (dir) => { noise(0.5, 0.06, dir === 'down' ? 1400 : 300, dir === 'down' ? 200 : 1600, 0.9); },
-    travel: () => { voice(520 + Math.random() * 140, 0.045, 'sine', 0.02, null, true); },
-    confirm:() => { voice(660, 0.08, 'triangle', 0.045, null, true); setTimeout(() => voice(990, 0.12, 'triangle', 0.04, null, true), 70); },
-    land:   () => { voice(180, 0.09, 'sine', 0.05, 90); noise(0.05, 0.03, 300, 120, 0.7); },
-    select: () => { voice(780, 0.05, 'square', 0.03, null, true); },
+    /* interface touches — tactile, not tonal */
+    click:  () => { thock(.05); },
+    key:    () => { thock(.03, rnd(150, 200)); },
+    hover:  () => { const n = performance.now(); if (n - lastHover < 70) return; lastHover = n; thock(.011, 320); },
+    select: () => { thock(.045); pluck(NOTE.A4, .022); },
+    open:   () => { thock(.04); bell(NOTE.D5, .028, .8); },
+    stamp:  () => { thock(.09, 120); swell(NOTE.D2, .07, .22); },
+
+    /* movement */
+    jump:   () => { pluck(NOTE.D5, .026, .3); },
+    land:   () => { swell(NOTE.D2 * 2, .05, .1); thock(.035, 130); },
+    error:  () => { thock(.05, 98); setTimeout(() => thock(.045, 87), 105); },  /* a low double-knock, no buzzer */
+    whoosh: dir => { whooshNoise(.62, .07, dir === 'down' ? 1500 : 260, dir === 'down' ? 190 : 1700, 1.0); },
+
+    /* the helix plays the estate's pentatonic as you travel it */
+    travel: () => {
+      travelStep += travelDir;
+      if (travelStep >= PENTA.length - 1 || travelStep <= 0) travelDir *= -1;
+      pluck(PENTA[Math.max(0, Math.min(PENTA.length - 1, travelStep))], .02);
+    },
+
+    /* the signature moments */
+    confirm:() => { bell(NOTE.A4, .035, .7); setTimeout(() => bell(NOTE.E5, .03, .9), 90); },
+    boot:   () => {
+      swell(NOTE.D2 / 2 * 1.5, .06, .9);                          /* low warmth under it */
+      whooshNoise(.7, .03, 220, 1300, .8);
+      MOTIF.forEach((f, i) => setTimeout(() => bell(f, .042, 1.3), 60 + i * 170));
+      startPad();
+    },
+
     ambient(on) { if (on === false) stopPad(); else startPad(); },
 
     get on() { return enabled; },
     toggle() {
       enabled = !enabled;
       localStorage.setItem('snd', enabled ? 'on' : 'off');
-      if (enabled) { api.click(); startPad(); } else stopPad();
+      if (enabled) { api.confirm(); startPad(); } else stopPad();
       document.querySelectorAll('[data-snd-toggle]').forEach(b => b.textContent = enabled ? 'SND ON' : 'SND OFF');
       return enabled;
     },

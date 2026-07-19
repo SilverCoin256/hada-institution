@@ -24,7 +24,7 @@ body.case-open { overflow: hidden; }
 #stage { position: relative; height: 100vh; min-height: 560px; overflow: hidden; }
 #sky { position: absolute; inset: 0; background: url('../assets/world-sky.png') center/cover no-repeat, var(--bg); }
 #smoke { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .5; mix-blend-mode: screen; pointer-events: none; }
-#world { position: absolute; inset: 0; }
+#world { position: absolute; inset: 0; width: 100%; height: 100%; }
 .hud-name { position: absolute; top: 24px; left: 28px; z-index: 5; font-family: var(--disp); font-weight: 700; }
 .hud-name span { color: var(--accent); }
 .hud-nav { position: absolute; top: 22px; left: 50%; transform: translateX(-50%); z-index: 5;
@@ -189,7 +189,7 @@ footer { border-top: 1px solid var(--line); padding: 36px 24px; text-align: cent
     <a href="work.html">Work</a>
     <a href="awards.html">Awards</a>
     <a href="about.html">About</a>
-    <a href="https://silvercoin256.github.io/hada-institution/">Research ↗</a>
+    <a href="../research-v3/">Research ↗</a>
   </nav>
   <button id="skip-intro">SKIP INTRO →</button>
   <a class="hud-skip" href="#spiral-track">SKIP TO THE SPIRAL ↓</a>
@@ -238,9 +238,9 @@ footer { border-top: 1px solid var(--line); padding: 36px 24px; text-align: cent
       <span class="d-s">The person behind the record.</span><span class="d-m">CONTACT</span>
       <img class="d-ghost" src="../assets/ec-06.png" alt="" loading="lazy">
     </a>
-    <a class="dir-row" href="https://silvercoin256.github.io/hada-institution/" data-img="../assets/ec-10.png">
+    <a class="dir-row" href="../research-v3/" data-img="../assets/ec-10.png">
       <span class="d-i">04</span><span class="d-t">Research</span>
-      <span class="d-s">A separate building, fully documented.</span><span class="d-m">EXTERNAL ↗</span>
+      <span class="d-s">A separate building. Enter through the machine.</span><span class="d-m">THE MACHINE ↗</span>
       <img class="d-ghost" src="../assets/ec-10.png" alt="" loading="lazy">
     </a>
   </div>
@@ -269,7 +269,7 @@ footer { border-top: 1px solid var(--line); padding: 36px 24px; text-align: cent
 </section>
 <footer>© 2026 SHAURYA GUPTA · WORLD &amp; HELIX HAND-CODED · BACKDROPS GENERATED</footer>
 
-<script src="../js/sound.js?v=2"></script>
+<script src="../js/sound.js?v=3"></script>
 <script>
 /* ============ CONTENT SLOT: walk stations ============ */
 const STATIONS = [
@@ -471,10 +471,19 @@ const mod = (a, b) => ((a % b) + b) % b;
    perpetual slow loop — always moving, never gone */
 let loopAnchor = null;
 function drawName(ts) {
-  const size = Math.min(244, W * .195);
+  /* the FULL name always fits on screen — size to fit, never clip */
+  let size = Math.min(244, W * .195, Hh * .30);
+  let ind = size * .68;                        /* GUPTA indent scales with the type */
   ctx.font = `700 ${size}px "Space Grotesk", sans-serif`;
-  const nameW = Math.max(ctx.measureText('SHAURYA').width,
-                         ctx.measureText('GUPTA').width + W * .12);
+  let nameW = Math.max(ctx.measureText('SHAURYA').width,
+                       ctx.measureText('GUPTA').width + ind);
+  const fitW = W - 72;
+  if (nameW > fitW) {
+    size *= fitW / nameW; ind = size * .68;
+    ctx.font = `700 ${size}px "Space Grotesk", sans-serif`;
+    nameW = Math.max(ctx.measureText('SHAURYA').width,
+                     ctx.measureText('GUPTA').width + ind);
+  }
   const centerX = W * .5 - nameW * .5;
   const cycle = W + nameW + 320;                 /* off-right → off-left span */
   const SPEED = .028;                            /* px per ms — slow, calm */
@@ -505,7 +514,7 @@ function drawName(ts) {
   ctx.strokeStyle = `rgba(167,139,250,${strokeA.toFixed(3)})`;
   if (glow > 0) { ctx.shadowColor = 'rgba(124,58,237,.55)'; ctx.shadowBlur = glow; }
   ctx.fillText('SHAURYA', nx, y1); ctx.strokeText('SHAURYA', nx, y1);
-  ctx.fillText('GUPTA', nx + W * .12, y2); ctx.strokeText('GUPTA', nx + W * .12, y2);
+  ctx.fillText('GUPTA', nx + ind, y2); ctx.strokeText('GUPTA', nx + ind, y2);
   ctx.restore();
 }
 let last = 0, walkedOff = false;
