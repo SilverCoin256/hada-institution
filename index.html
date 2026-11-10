@@ -313,8 +313,8 @@ footer .footer-bottom {
       <div class="sec-head reveal">
         <span class="sec-num">SEC. 01 — FLAGSHIP RESULT</span>
         <div>
-          <h2>Oversight saturation leaves a signature in ordinary telemetry</h2>
-          <p>The one peer-reviewed, accepted result — and the real data behind it. SEDI (State-Estimation Degradation Index) measures oversight quality from boundary telemetry alone — timestamps, queue depth, dispute rates — without reading a single decision under review.</p>
+          <h2>Estimating oversight from review records</h2>
+          <p>The accepted paper tests whether the State-Estimation Degradation Index (SEDI) can flag changes in oversight using records such as review timestamps and dispute rates. These records offer an indirect measure of review depth.</p>
         </div>
       </div>
 
@@ -325,8 +325,8 @@ footer .footer-bottom {
         </div>
         <canvas id="sedi-canvas"></canvas>
         <figcaption>
-          As load on langchain surged ~33× over eight months, median review latency collapsed from 91h to 8.5h — the saturation signature SEDI is built to catch, months before it would surface in any content-based audit.
-          <strong>Endpoints (91h → 8.5h, 33× load) are the values reported in the paper; the curve between them is illustrative — the full monthly series and the SEDI computation are in the <a href="research.html#paper-p5">paper</a> and the <a href="https://github.com/SilverCoin256/oversight-saturation-sim" target="_blank" rel="noopener">code</a>.</strong>
+          Over eight months, LangChain’s pull-request volume grew about 33-fold while median review latency fell from 91 hours to 8.5 hours. The hybrid SEDI flagged the surge. Review depth was not independently measured in this example.
+          <strong>The curve between the reported endpoints is illustrative. See the <a href="research.html#paper-p5">paper</a> and the <a href="https://github.com/SilverCoin256/oversight-saturation-sim" target="_blank" rel="noopener">code</a> for the monthly series and SEDI calculation.</strong>
         </figcaption>
       </div>
     </div>
@@ -338,8 +338,7 @@ footer .footer-bottom {
       <div class="sec-head reveal">
         <span class="sec-num">SEC. 02 — STANDING QUESTIONS</span>
         <div>
-          <h2>The questions the work keeps returning to</h2>
-          <p>Most of what follows is an attempt at one of these. Start with the question, not the publication list.</p>
+          <h2>Research questions</h2>
         </div>
       </div>
       <div class="q-ledger" id="q-ledger"></div>
@@ -352,8 +351,8 @@ footer .footer-bottom {
       <div class="sec-head reveal">
         <span class="sec-num">SEC. 03 — CURRENT WORK</span>
         <div>
-          <h2>What's open right now, and its honest state</h2>
-          <p>Three active threads beyond the flagship. Each links to the actual paper or data, and each names where it currently stands — including what isn't done.</p>
+          <h2>Current work</h2>
+          <p>Each project lists its current status and links to the available paper or data.</p>
         </div>
       </div>
       <div class="results">
@@ -401,7 +400,7 @@ footer .footer-bottom {
         <span class="sec-num">SEC. 04 — THE RECORD</span>
         <div>
           <h2>From the notebook</h2>
-          <p>Dated entries, written as the work happened — findings, observations, and the failures kept in on purpose.</p>
+          <p>Dated notes on experiments, results, and approaches that failed.</p>
         </div>
       </div>
       <div class="wire" id="wire"></div>
@@ -416,7 +415,7 @@ footer .footer-bottom {
         <span class="sec-num">SEC. 05 — SHARED DATA</span>
         <div>
           <h2>A small open dataset behind the papers</h2>
-          <p>Not a platform, not a dashboard — a modest, versioned collection of public data and five metrics I reuse across this work, so the scraping and provenance don't get rebuilt every paper.</p>
+          <p>The Open Institutional Capacity Observatory collects public records, source notes, and five metrics used across the projects.</p>
         </div>
       </div>
       <div class="results" style="border-top: 1px solid var(--border);">

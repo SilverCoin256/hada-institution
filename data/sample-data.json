@@ -435,7 +435,7 @@
       "status": "complete",
       "sampleSize": 4,
       "duration": "22 months across 4 repositories",
-      "finding": "langchain's 33× load surge produces a detectable hybrid-SEDI saturation signature as review latency collapses from 91 hours to 8.5 — the first real-world (non-synthetic) positive result for the metric.",
+      "finding": "The hybrid SEDI flagged LangChain’s 33-fold rise in pull-request volume. Median review latency fell from 91 hours to 8.5 hours. Review depth was not independently measured.",
       "datasetId": "d4",
       "relatedPapers": ["p5"]
     },
@@ -672,7 +672,7 @@
       "date": "2026-06-25",
       "title": "First real-world signal for SEDI",
       "category": "finding",
-      "body": "Pulled 22 months of real pull-request telemetry from four public repositories. langchain's load surge — 33× over eight months — shows up in the hybrid SEDI signal as review latency collapses from 91 hours to 8.5. First positive result on real data, not synthetic.",
+      "body": "The study used 22 months of pull-request records from four public repositories. The hybrid SEDI flagged LangChain’s 33-fold rise in volume over eight months. Median review latency fell from 91 hours to 8.5 hours.",
       "tags": ["sedi", "real-data", "github"],
       "relatedPapers": ["p5"]
     },
